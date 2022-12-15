@@ -9,34 +9,42 @@ import Register from './src/pages/Auth/Register';
 const Stack = createNativeStackNavigator();
 
 
-
 export default function App() {
   const isLoggedIn = false;
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {isLoggedIn ? (
-          <Stack.Group>
-            <Stack.Screen name="Home" component={Home} />
-          </Stack.Group>
-        ) : (
-          <Stack.Group screenOptions={{ headerShown: true }}>
-            <Stack.Screen name="Welcome" component={Welcome} />
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Register" component={Register} />
-          </Stack.Group>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View className='h-screen bg-fuchsia-300'>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {isLoggedIn ? (
+            <Stack.Group>
+              <Stack.Screen name="Home" component={Home} />
+            </Stack.Group>
+          ) : (
+            <Stack.Group screenOptions={{
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: 'black',
+
+              },
+              headerTitleStyle: {
+                color: "white",
+              },
+              title: ""
+            }}>
+              <Stack.Screen name="Welcome" component={Welcome} />
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="Register" component={Register} />
+            </Stack.Group>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </View>
 
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'black',
   },
 });

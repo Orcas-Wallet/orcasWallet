@@ -3,7 +3,7 @@ import React from 'react'
 
 const Home = () => {
   return (
-    <View>
+    <View className='bg-black'>
       <Text>Home</Text>
     </View>
   )

@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import EmailVerify from '../../components/EmailVerify'
 
 const Register = () => {
   return (
     <View>
-      <Text>Register</Text>
+      <EmailVerify />
     </View>
   )
 }
