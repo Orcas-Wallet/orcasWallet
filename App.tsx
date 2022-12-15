@@ -5,16 +5,16 @@ import Welcome from './src/pages/Auth/Welcome';
 import Home from './src/pages/Home';
 import Login from './src/pages/Auth/Login';
 import Register from './src/pages/Auth/Register';
-import {AppDispatch, RootState, store} from "./src/store";
-import {Provider, useDispatch, useSelector} from "react-redux";
+import {store, useAppDispatch, useAppSelector} from "./src/store";
+import {Provider} from "react-redux";
 import {updateName} from "./src/appSlice";
 import {useEffect} from "react";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-    const {name} = useSelector((state: RootState) => state.app.name)
-    const dispatch = useDispatch<AppDispatch>()
+    const name = useAppSelector((state) => state.app.name)
+    const dispatch = useAppDispatch()
 
     console.log(`app name ${name}`)
     useEffect(() => {
