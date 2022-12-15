@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export interface AppState {
     name: string
@@ -12,7 +12,7 @@ export const appSlice = createSlice({
     name: 'app',
     initialState,
     reducers: {
-        updateName: (state, action) => {
+        updateName: (state, action: PayloadAction<string>) => {
             state.name = action.payload
         }
     }
