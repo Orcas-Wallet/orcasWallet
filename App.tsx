@@ -1,18 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Welcome from './src/pages/Auth/Welcome';
 import Home from './src/pages/Home';
 import Login from './src/pages/Auth/Login';
 import Register from './src/pages/Auth/Register';
+import { store, useAppDispatch, useAppSelector } from "./src/store";
+import { Provider } from "react-redux";
+import { updateName } from "./src/appSlice";
+import { useEffect } from "react";
+
 const Stack = createNativeStackNavigator();
 
-
 export default function App() {
+  const name = useAppSelector((state) => state.app.name)
+  const dispatch = useAppDispatch()
+
+  console.log(`app name ${name}`)
+  useEffect(() => {
+    dispatch(updateName('newApp'))
+  }, [])
+
   const isLoggedIn = false;
   return (
-    <View className='h-screen bg-fuchsia-300'>
+    <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
           {isLoggedIn ? (
@@ -20,17 +31,7 @@ export default function App() {
               <Stack.Screen name="Home" component={Home} />
             </Stack.Group>
           ) : (
-            <Stack.Group screenOptions={{
-              headerShown: true,
-              headerStyle: {
-                backgroundColor: 'black',
-
-              },
-              headerTitleStyle: {
-                color: "white",
-              },
-              title: ""
-            }}>
+            <Stack.Group screenOptions={{ headerShown: true }}>
               <Stack.Screen name="Welcome" component={Welcome} />
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="Register" component={Register} />
@@ -38,7 +39,7 @@ export default function App() {
           )}
         </Stack.Navigator>
       </NavigationContainer>
-    </View>
+    </Provider>
 
   );
 }
