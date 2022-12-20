@@ -18,7 +18,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "本应用使用人脸识别进行身份验证"
+      }
     },
     "android": {
       "adaptiveIcon": {

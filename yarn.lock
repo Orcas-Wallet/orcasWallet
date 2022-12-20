@@ -2546,7 +2546,7 @@ atob@^2.1.2:
 
 axios@^1.2.1:
   version "1.2.1"
-  resolved "https://registry.npmmirror.com/axios/-/axios-1.2.1.tgz#44cf04a3c9f0c2252ebd85975361c026cb9f864a"
+  resolved "https://registry.npmmirror.com/axios/-/axios-1.2.1.tgz"
   integrity sha512-I88cFiGu9ryt/tfVEi4kX2SITsvDddTajXTOFmt2uK1ZVA8LytjtdeyefdQWEf5PU8w+4SSJDoYnggflB5tW4A==
   dependencies:
     follow-redirects "^1.15.0"
@@ -2571,7 +2571,7 @@ babel-loader@8.1.0:
 
 babel-plugin-module-resolver@^4.1.0:
   version "4.1.0"
-  resolved "https://registry.npmjs.org/babel-plugin-module-resolver/-/babel-plugin-module-resolver-4.1.0.tgz"
+  resolved "https://registry.yarnpkg.com/babel-plugin-module-resolver/-/babel-plugin-module-resolver-4.1.0.tgz#22a4f32f7441727ec1fbf4967b863e1e3e9f33e2"
   integrity sha512-MlX10UDheRr3lb3P0WcaIdtCSRlxdQsB1sBqL7W0raF070bGl1HQQq5K3T2vf2XAYie+ww+5AKC/WrkjRO2knA==
   dependencies:
     find-babel-config "^1.2.0"
@@ -4546,11 +4546,6 @@ expo-error-recovery@~4.0.1:
   resolved "https://registry.npmjs.org/expo-error-recovery/-/expo-error-recovery-4.0.1.tgz"
   integrity sha512-wceptnRX+N3qCSVTNbIchUFu3GmY30onRH5L66OF8HMLpAIQfrZMLxJfz7SAMJTcr3jxsJ11vSa2l2RaPKgHsQ==
 
-expo-face-detector@~12.0.0:
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/expo-face-detector/-/expo-face-detector-12.0.0.tgz#b3f1bf95f0494e3ae0fe4d10d5ae3a2b1cce9c72"
-  integrity sha512-s7ttD/6aaCzo3hMKbuvfS5JoaCfiP410LOHgJwL5qChnKXnGc1SCyjmNp0CzSK9z+iPR0KHfEHgZwWqJvRosqQ==
-
 expo-file-system@~15.1.0, expo-file-system@~15.1.1:
   version "15.1.1"
   resolved "https://registry.npmjs.org/expo-file-system/-/expo-file-system-15.1.1.tgz"
@@ -4569,6 +4564,13 @@ expo-keep-awake@~11.0.1:
   version "11.0.1"
   resolved "https://registry.npmjs.org/expo-keep-awake/-/expo-keep-awake-11.0.1.tgz"
   integrity sha512-44ZjgLE4lnce2d40Pv8xsjMVc6R5GvgHOwZfkLYtGmgYG9TYrEJeEj5UfSeweXPL3pBFhXKfFU8xpGYMaHdP0A==
+
+expo-local-authentication@~13.0.2:
+  version "13.0.2"
+  resolved "https://registry.yarnpkg.com/expo-local-authentication/-/expo-local-authentication-13.0.2.tgz#a785e589119538e0c328b65c0f63e162a423ad5f"
+  integrity sha512-YqyIix9+oyBbJ8Wgp/ZBQBbWbo4FMVWWibyOhrUfyx9wwRiElAlJZ52ne6XzcJEjLOSqCy4/xkhhC5LJtbnGTw==
+  dependencies:
+    invariant "^2.2.4"
 
 expo-modules-autolinking@1.0.0:
   version "1.0.0"
@@ -4931,7 +4933,7 @@ flush-write-stream@^1.0.0:
 
 follow-redirects@^1.0.0, follow-redirects@^1.15.0:
   version "1.15.2"
-  resolved "https://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.15.2.tgz#b460864144ba63f2681096f274c4e57026da2c13"
+  resolved "https://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.15.2.tgz"
   integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
 
 fontfaceobserver@^2.1.0:
@@ -4968,7 +4970,7 @@ form-data@^3.0.1:
 
 form-data@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.npmmirror.com/form-data/-/form-data-4.0.0.tgz#93919daeaf361ee529584b9b31664dc12c9fa452"
+  resolved "https://registry.npmmirror.com/form-data/-/form-data-4.0.0.tgz"
   integrity sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==
   dependencies:
     asynckit "^0.4.0"
@@ -8350,6 +8352,11 @@ postcss@^8.4.12, postcss@^8.4.18:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
+prettier@^2.8.1:
+  version "2.8.1"
+  resolved "https://registry.npmjs.org/prettier/-/prettier-2.8.1.tgz"
+  integrity sha512-lqGoSJBQNJidqCHE80vqZJHWHRFoNYsSpP9AjFhlhi9ODCJA541svILes/+/1GM3VaL/abZi7cpFzOpdR9UPKg==
+
 pretty-bytes@5.6.0:
   version "5.6.0"
   resolved "https://registry.npmjs.org/pretty-bytes/-/pretty-bytes-5.6.0.tgz"
@@ -8433,7 +8440,7 @@ proxy-addr@~2.0.7:
 
 proxy-from-env@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.npmmirror.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
+  resolved "https://registry.npmmirror.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz"
   integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
 
 prr@~1.0.1:
