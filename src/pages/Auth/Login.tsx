@@ -1,7 +1,8 @@
-import {Text, View} from 'react-native'
-import React, {useEffect} from 'react'
-import {useAppDispatch, useAppSelector} from "../../store";
-import {updateName} from "../../appSlice";
+import { Text, View } from 'react-native'
+import React, { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from "../../store";
+import { updateName } from "../../appSlice";
+import EmailVerify from '../../components/EmailVerify';
 
 const Login = () => {
     const name = useAppSelector((state) => state.app.name)
@@ -13,7 +14,7 @@ const Login = () => {
     }, [])
     return (
         <View>
-            <Text>Login</Text>
+            <EmailVerify />
         </View>
     )
 }

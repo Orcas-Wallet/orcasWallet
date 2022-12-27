@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, SafeAreaView, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import FullScreenContainer from './Container'
 import CButton from './basics/Button'
+import { createGenericAccount } from '../services/generic'
+import { useNavigation } from '@react-navigation/native'
 
 enum EStep {
   FILL_EMAIL,
@@ -23,8 +25,17 @@ const EmailVerify = () => {
   const [email, setEmail] = useState('keysafe@gmail.com')
   const [code, setCode] = useState('')
   const [step, setStep] = useState(EStep.FILL_EMAIL)
+  const navigation = useNavigation()
   const onNextPress = () => {
-    setStep(EStep.FILL_CODE)
+    if (step === EStep.FILL_EMAIL) {
+      // request email verify code
+      setStep(EStep.FILL_CODE)
+    } else {
+      // createAccount
+      const seed = createGenericAccount()
+      navigation.navigate('FaceId')
+    }
+
   }
   return (
     <FullScreenContainer>
@@ -41,7 +52,7 @@ const EmailVerify = () => {
       <SafeAreaView>
         {
           step === EStep.FILL_EMAIL ? <TextInput
-            className='h-12 border text-base bg-[#373639] rounded-sm px-4 text-white'
+            className='h-12 border text-base bg#373639] rounded-sm px-4 text-white'
             onChangeText={setEmail}
             value={email}
           /> : <TextInput
@@ -49,7 +60,7 @@ const EmailVerify = () => {
             onChangeText={setCode}
             value={code}
           />
-        } 
+        }
       </SafeAreaView>
       <View className='mt-6 pb-24'>
         <Text className='text-sm text-white'>
