@@ -1,14 +1,9 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import FullScreenContainer from '../../components/Container'
-import Assets from './Assets'
+import TokenAssets from './TokenAssets'
+import AddressAndChainSelector from './AddressAndChainSelector/AddressAndChainSelector'
 
-const tokenListMock = {
-  token: 'Ethereum',
-  balance: 45.12,
-  symbol: 'ETH',
-  value: 123219.22
-}
 const Home = () => {
   return (
     <FullScreenContainer passedClassName='bg-black'>
@@ -28,7 +23,8 @@ const Home = () => {
           </View>
         </Text>
       </View>
-      <Assets></Assets>
+      <TokenAssets />
+      <AddressAndChainSelector />
     </FullScreenContainer>
   )
 }

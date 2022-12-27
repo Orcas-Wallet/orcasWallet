@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from "../../store";
-import { updateName } from "../../appSlice";
+import { updateName } from "../../store/appSlice";
 import EmailVerify from '../../components/EmailVerify';
 
 const Login = () => {
