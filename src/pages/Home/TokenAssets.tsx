@@ -8,7 +8,7 @@ const tokenListMock = [{
     symbol: 'ETH',
     value: 123219.22
 }, {
-    token: 'Ethereum',
+    token: 'WEthereum',
     balance: 45.12,
     symbol: 'WETH',
     value: 123219.22

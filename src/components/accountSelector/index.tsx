@@ -5,13 +5,15 @@ import { toggleChainAddressSelectorVisiable } from "../../store/addressSlice";
 
 function AddressSelector() {
     const dispatch = useAppDispatch()
+    const selectedAddress = useAppSelector((state) => state.address.selectedAddress)
+
     const handlePress = () => {
         dispatch(toggleChainAddressSelectorVisiable(true))
     }
     return (
         <TouchableHighlight onPress={handlePress}>
             <Text className='text-white'>
-                EVM #0 </Text>
+                {selectedAddress.name}</Text>
         </TouchableHighlight>
     )
 }

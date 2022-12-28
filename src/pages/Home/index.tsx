@@ -1,10 +1,12 @@
-import { View, Text } from 'react-native'
+import { View, Text, Button } from 'react-native'
 import React from 'react'
 import FullScreenContainer from '../../components/Container'
 import TokenAssets from './TokenAssets'
 import AddressAndChainSelector from './AddressAndChainSelector/AddressAndChainSelector'
+import { getTokenListByAddress } from '../../services/alchemy'
 
 const Home = () => {
+
   return (
     <FullScreenContainer passedClassName='bg-black'>
       <View className='mt-6 mb-32'>
