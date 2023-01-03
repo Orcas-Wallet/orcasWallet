@@ -17,10 +17,11 @@ interface ITokenItem {
 const TokenItem: FC<ITokenItem> = ({ tokenInfo }) => {
     const navigation = useNavigation()
     const sendToken = () => {
-        navigation.navigate('tokenTransfer', {})
+        navigation.navigate('tokenTransfer')
     }
-    const recieveToken = () => { 
-        
+    const recieveToken = () => {
+        navigation.navigate('tokenRecieve')
+
     }
     return (
         <View className='flex-row items-center justify-between mt-4'>
@@ -46,7 +47,7 @@ const TokenItem: FC<ITokenItem> = ({ tokenInfo }) => {
                     <Text className='text-white'>
                         ${tokenInfo.value}
                     </Text>
-                </View> 
+                </View>
             </View>
         </View>
     )

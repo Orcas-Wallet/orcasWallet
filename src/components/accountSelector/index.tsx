@@ -13,7 +13,7 @@ function AddressSelector() {
     return (
         <TouchableHighlight onPress={handlePress}>
             <Text className='text-white'>
-                {selectedAddress.name}</Text>
+                {selectedAddress.name || " enm #1"}</Text>
         </TouchableHighlight>
     )
 }

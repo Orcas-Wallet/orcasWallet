@@ -1,4 +1,5 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
+import "./src/utils/base64Polyfill"
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Welcome from './src/pages/Auth/Welcome';
@@ -9,6 +10,8 @@ import { store, useAppDispatch, useAppSelector } from "./src/store";
 import { Provider } from "react-redux";
 import EnablefaceId from './src/pages/Auth/EnablefaceId';
 import AddressSelector from './src/components/accountSelector';
+import TokenTransfer from './src/pages/TokenTransfer';
+import TokenRecieve from './src/pages/Home/TokenRecieve';
 
 const Stack = createNativeStackNavigator();
 const MyTheme = {
@@ -32,6 +35,16 @@ export default function App() {
                 <Stack.Screen name="Home" component={Home} options={{
                   headerRight: () => (
                     <AddressSelector />
+                  ),
+                }} />
+                <Stack.Screen name="tokenTransfer" component={TokenTransfer} options={{
+                  headerRight: () => (
+                    <Text>C</Text>
+                  ),
+                }} />
+                <Stack.Screen name="tokenRecieve" component={TokenRecieve} options={{
+                  headerRight: () => (
+                    <Text>C</Text>
                   ),
                 }} />
               </Stack.Group>
