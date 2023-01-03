@@ -75,9 +75,9 @@ function AddressAndChainSelector() {
     }
 
     return (
-        <View className='bg-red'>
+        <View >
             <Modal isVisible={chainAddressSelectorVisiable} style={{ margin: 0, justifyContent: 'flex-end' }}>
-                <View className='h-4/6 overflow-y-scroll bg-[#141316] rounded-t-2xl w-screen'>
+                <View className='h-4/6 overflow-y-scroll  rounded-t-2xl w-screen bg-white'>
                     <ChainSelector chainList={chainList} selectChain={selectChain} onSelect={onChainSeleted} />
 
                     <AddressSelector addressList={ethAddressList} selectedAddress={selectedAddress} onSelect={onAddressSelected} />

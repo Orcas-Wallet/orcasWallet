@@ -40,30 +40,30 @@ const EmailVerify = () => {
   return (
     <FullScreenContainer>
       <View className='py-8'>
-        <Text className='text-2xl py-4 text-white font-bold'>
+        <Text className='text-2xl py-4  font-bold'>
           {
             text[step].title
           }
         </Text>
-        <Text className='text-white text-base'>
+        <Text className=' text-base'>
           {text[step].subTitle}
         </Text>
       </View>
       <SafeAreaView>
         {
           step === EStep.FILL_EMAIL ? <TextInput
-            className='h-12 border text-base bg#373639] rounded-sm px-4 text-white'
+            className='h-12 border text-base rounded-sm px-4 '
             onChangeText={setEmail}
             value={email}
           /> : <TextInput
-            className='h-12 border text-base bg-[#373639] rounded-sm px-4 text-white'
+            className='h-12 border text-base  rounded-sm px-4 '
             onChangeText={setCode}
             value={code}
           />
         }
       </SafeAreaView>
       <View className='mt-6 pb-24'>
-        <Text className='text-sm text-white'>
+        <Text className='text-sm '>
           {text[step].desc}
         </Text>
       </View>

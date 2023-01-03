@@ -1,23 +1,28 @@
-import { View, Text, Button } from 'react-native'
-import React, { FC } from 'react'
-import { styled } from 'nativewind';
+import { Text, TouchableOpacity } from 'react-native'
+import React, { FC, ReactNode } from 'react'
 
 interface TCButton {
-    title: string,
-
     theme?: "dark" | "light",
+    circle?: boolean,
     passedClassName?: string
     onPress: () => void
+    children: ReactNode | string
 }
-const StyledButton = styled(Button);
-
-const CButton: FC<TCButton> = ({ theme, title, onPress, passedClassName }) => {
-    const buttonTheme = theme === 'dark' ? "bg-zinc-600" : "bg-white"
-    const color = theme === 'dark' ? "white" : "black"
+const CButton: FC<TCButton> = ({ theme, onPress, passedClassName, circle, children }) => {
+    const buttonTheme = theme === 'dark' ? {
+        bgColor: "bg-main-900",
+        textColor: "text-main-100"
+    } : {
+        bgColor: "bg-main-100",
+        textColor: "text-main-900"
+    }
+    const circleTheme = circle ? "rounded-full h-14 w-14" : "w-5/12 rounded-2xl"
     return (
-        <View className={`bg-white text-black w-5/12 rounded-2xl lihei text-base inline-block ${passedClassName} ${buttonTheme}`}>
-            <StyledButton color={color} className='text-center  leading-8 leading-lg' onPress={onPress} title={title} />
-        </View>
+        <TouchableOpacity className={`bg-white  text-base inline-block ${passedClassName}  ${buttonTheme.bgColor} ${circleTheme} flex justify-center`} onPress={onPress}>
+            <Text className={`text-center  ${buttonTheme.textColor}`}  >
+                {children}
+            </Text>
+        </TouchableOpacity>
     )
 }
 

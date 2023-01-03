@@ -7,7 +7,7 @@ interface IFullScreenContainer {
 }
 const FullScreenContainer: FC<IFullScreenContainer> = ({ children, passedClassName }) => {
     return (
-        <View className={`bg-black h-screen px-3 ${passedClassName}`} children={children}></View >
+        <View className={`h-screen px-6 ${passedClassName}`} children={children}></View >
     )
 }
 

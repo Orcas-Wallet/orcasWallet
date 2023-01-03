@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableHighlight } from 'react-native'
+import { View, Text, TouchableHighlight, TouchableOpacity } from 'react-native'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { toggleChainAddressSelectorVisiable } from "../../store/addressSlice";
 
@@ -11,10 +11,10 @@ function AddressSelector() {
         dispatch(toggleChainAddressSelectorVisiable(true))
     }
     return (
-        <TouchableHighlight onPress={handlePress}>
-            <Text className='text-white'>
+        <TouchableOpacity onPress={handlePress}>
+            <Text className=''>
                 {selectedAddress.name || " enm #1"}</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
     )
 }
 

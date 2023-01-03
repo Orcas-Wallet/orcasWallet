@@ -26,12 +26,12 @@ export default function App() {
   const isLoggedIn = true;
 
   return (
-    <View className=' h-screen bg-black'>
+    <View className=' h-screen'>
       <Provider store={store}>
         <NavigationContainer theme={MyTheme}>
           <Stack.Navigator>
             {isLoggedIn ? (
-              <Stack.Group screenOptions={{ headerShown: true, title: "", headerStyle: { backgroundColor: 'black' } }}>
+              <Stack.Group screenOptions={{ headerShown: true, title: "", headerStyle: { backgroundColor: 'white' }, headerShadowVisible: false }}>
                 <Stack.Screen name="Home" component={Home} options={{
                   headerRight: () => (
                     <AddressSelector />
@@ -49,7 +49,7 @@ export default function App() {
                 }} />
               </Stack.Group>
             ) : (
-              <Stack.Group screenOptions={{ headerShown: true, title: "", headerStyle: { backgroundColor: 'black' } }} >
+              <Stack.Group screenOptions={{ headerShown: true, title: "", headerStyle: { backgroundColor: 'white' } }} >
                 <Stack.Screen name="Welcome" component={Welcome} />
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Register" component={Register} />

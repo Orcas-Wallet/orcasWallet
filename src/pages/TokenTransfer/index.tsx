@@ -8,7 +8,7 @@ function TokenTransfer() {
     return (
         <FullScreenContainer passedClassName='px-4'>
             <View className='mt-20 mb-30'>
-                <Text className='text-white text-3xl'>
+                <Text className=' text-3xl'>
                     <Text className=''>{address.slice(0, 5)}</Text>
                     <Text className='text-[#454545]'>{address.slice(5, -5)}</Text>
                     <Text>{address.slice(-5)}</Text>

@@ -14,9 +14,9 @@ const Welcome = ({ navigation }) => {
         <FullScreenContainer>
             <View>
                 <View className='h-4/5 pt-80 pl-2'>
-                    <Text className='text-white text-4xl '>The safest way</Text>
-                    <Text className='text-white text-4xl '>to store your </Text>
-                    <Text className='text-white text-4xl '>crypto</Text>
+                    <Text className=' text-4xl '>The safest way</Text>
+                    <Text className=' text-4xl '>to store your </Text>
+                    <Text className=' text-4xl '>crypto</Text>
                 </View>
                 <View className='flex justify-between flex-row'>
                     <CButton theme='dark' title={"Sign In"} onPress={handleLogin} />

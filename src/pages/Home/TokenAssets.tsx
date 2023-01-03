@@ -28,7 +28,7 @@ function TokenAssets() {
     return (
         <View>
             <View>
-                <Text className='text-white text-xl'>Crypto</Text>
+                <Text className=' text-xl'>Crypto</Text>
             </View>
             <View>
                 {
