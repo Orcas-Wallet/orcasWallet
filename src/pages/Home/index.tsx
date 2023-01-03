@@ -1,12 +1,14 @@
 import { View, Text, Button } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import FullScreenContainer from '../../components/Container'
 import TokenAssets from './TokenAssets'
 import AddressAndChainSelector from './AddressAndChainSelector/AddressAndChainSelector'
-import { getTokenListByAddress } from '../../services/alchemy'
+import Modal from "react-native-modal";
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import CButton from '../../components/basics/Button'
+import TokenRecieve from './TokenRecieve'
+import CModal from '../../components/basics/CModal'
 const buttonGroup = [
   {
     name: "Send",
@@ -26,12 +28,16 @@ const buttonGroup = [
   }
 ]
 const Home = () => {
+  const [showModal, setShowModal] = useState(false)
   const handleButtonPress = (btnType: string) => {
     switch (btnType) {
       case "Send":
         console.log("send");
+        break;
       case "Recieve":
-        console.log("send");
+        // console.log("send");
+        setShowModal(true)
+        break;
       default:
         return
     }
@@ -67,6 +73,7 @@ const Home = () => {
       </View>
       <TokenAssets />
       <AddressAndChainSelector />
+      <CModal isVisible={showModal} onClose={() => {setShowModal(false)}}><TokenRecieve /></CModal>
     </FullScreenContainer>
   )
 }

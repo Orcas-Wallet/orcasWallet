@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableHighlight, TouchableOpacity } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { toggleChainAddressSelectorVisiable } from "../../store/addressSlice";
 
