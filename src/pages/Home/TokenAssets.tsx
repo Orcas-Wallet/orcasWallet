@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text } from 'react-native'
+import CModal from '../../components/basics/CModal'
+import TokenDetail from '../../components/Token/TokenDetail'
+import TokenTransfer from '../TokenTransfer'
 import TokenItem from './TokenItem'
 
 const tokenListMock = [{
@@ -24,7 +27,7 @@ const tokenListMock = [{
     value: 123219.22
 }]
 function TokenAssets() {
-
+    const [showModal, setShowModal] = useState(false)
     return (
         <View>
             <View>
@@ -32,10 +35,13 @@ function TokenAssets() {
             </View>
             <View>
                 {
-                    tokenListMock.map((tokeninfo) => <TokenItem key={tokeninfo.token} tokenInfo={tokeninfo} />)
+                    tokenListMock.map((tokeninfo) => <TokenItem key={tokeninfo.token} tokenInfo={tokeninfo} onPress={() => { setShowModal(true) }} />)
                 }
             </View>
-        </View>
+            <CModal isVisible={showModal} onClose={() => { setShowModal(false) }}>
+                <TokenDetail />
+            </CModal>
+        </View >
     )
 }
 

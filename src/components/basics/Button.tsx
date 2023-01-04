@@ -18,7 +18,7 @@ const CButton: FC<TCButton> = ({ theme, onPress, passedClassName, circle, childr
     }
     const circleTheme = circle ? "rounded-full w-14" : "w-5/12 rounded-2xl"
     return (
-        <TouchableOpacity className={`bg-white h-14 text-base inline-block  ${buttonTheme.bgColor} ${circleTheme} flex justify-center ${passedClassName}`} onPress={onPress}>
+        <TouchableOpacity className={`bg-white h-14 text-base  ${buttonTheme.bgColor} ${circleTheme} flex justify-center ${passedClassName}`} onPress={onPress}>
             <Text className={`text-center  ${buttonTheme.textColor}`}  >
                 {children}
             </Text>

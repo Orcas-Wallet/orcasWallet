@@ -7,20 +7,14 @@ interface ICModal {
     isVisible: boolean,
     style?: any,
     onClose: () => void
-    scrollTo?: (p: number) => void
-    scrollOffset?: number
-    scrollOffsetMax?: number
     passedClassName?: string
 }
 
-const CModal: FC<ICModal> = ({ children, passedClassName, isVisible, style, onClose, scrollOffsetMax, scrollTo, scrollOffset }) => {
+const CModal: FC<ICModal> = ({ children, passedClassName, isVisible, style, onClose }) => {
     return (
         <Modal
             swipeDirection={['down']}
-            scrollOffset={scrollOffset}
             onSwipeComplete={onClose}
-            scrollTo={scrollTo}
-            scrollOffsetMax={scrollOffsetMax}
             propagateSwipe={true}
             onBackdropPress={onClose}
             isVisible={isVisible}

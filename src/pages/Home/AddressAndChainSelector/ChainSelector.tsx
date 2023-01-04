@@ -1,13 +1,9 @@
-import React, { useState } from 'react'
-import { View, TouchableHighlight, Text, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { View, Text } from 'react-native'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CoinIcon from '../../../components/CoinIcon';
-import { useAppDispatch, useAppSelector } from '../../../store';
-import { updateSelectedChain } from "../../../store/addressSlice";
-import { CHAIN_TYPE } from '../../../types';
-
-
-function ChainSelector({ chainList, onSelect, selectChain }) {
+import ListItem from '../../../components/Token/ListItem';
+function ChainSelector({ chainList, onSelect }) {
 
     return (
         <View className='w-full px-8 justify-center'>
@@ -17,24 +13,19 @@ function ChainSelector({ chainList, onSelect, selectChain }) {
             <View className=''>
                 {
                     chainList.map((chain) =>
-                        <TouchableOpacity key={chain.chain} className={"w-full"} onPress={() => onSelect(chain)}>
-                            <View className={"mb-2 px-4 rounded-xl flex-row w-full bg-[#F9F9FA]  h-[72] justify-between items-center"}>
-                                <View className='flex-row flex-grow items-center'>
-                                    <CoinIcon name={chain.chain} />
-                                    <View className='justify-items-start ml-4'>
-                                        <Text>{chain.chain}</Text>
-                                    </View>
+                        <ListItem onPress={() => { onSelect(chain) }} passedClassName={"w-full"}>
+                            <View className='flex-row flex-grow items-center'>
+                                <CoinIcon name={chain.chain} />
+                                <View className='justify-items-start ml-4'>
+                                    <Text>{chain.chain}</Text>
                                 </View>
-                                <View>
-                                    <Text>
-                                        <MCIcons name={'chevron-right'} color={"#0F6EFF"} size={24} />
-                                    </Text>
-                                </View>
-
-
                             </View>
-
-                        </TouchableOpacity>
+                            <View>
+                                <Text>
+                                    <MCIcons name={'chevron-right'} color={"#0F6EFF"} size={24} />
+                                </Text>
+                            </View>
+                        </ListItem>
                     )
                 }
             </View>

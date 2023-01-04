@@ -13,7 +13,7 @@ function AddressSelector() {
     return (
         <TouchableOpacity onPress={handlePress}>
             <Text className=''>
-                {selectedAddress.name}</Text>
+                {selectedAddress.name || "evm"} </Text>
         </TouchableOpacity>
     )
 }

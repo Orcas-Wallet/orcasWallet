@@ -67,9 +67,7 @@ function AddressAndChainSelector() {
     const [step, setStep] = useState(STEP.SELECT_CHAIN)
     const { selectedAddress } = useAppSelector((state) => state.address)
     const chainAddressSelectorVisiable = useAppSelector((state) => state.address.chainAddressSelectorVisiable)
-    const [scrollOffset, setScrollOffset] = useState(null)
 
-    const scrollViewRef = useRef(null);
 
     const dispatch = useDispatch()
     const closeModal = () => {
@@ -84,24 +82,17 @@ function AddressAndChainSelector() {
         dispatch(updateSelectedAddress(addressInfo))
         closeModal()
     }
-    const handleOnScroll = (event) => {
-        setScrollOffset(event.nativeEvent.contentOffset.y)
-    }
-    const handleScrollTo = p => {
-        if (scrollViewRef.current) {
-            scrollViewRef.current.scrollTo(p);
-        }
-    };
+   
 
     return (
         <View >
-            <CModal passedClassName={step === STEP.SELECT_CHAIN ? "" : "h-3/4"} isVisible={chainAddressSelectorVisiable} onClose={closeModal} scrollTo={handleScrollTo} scrollOffsetMax={100} scrollOffset={scrollOffset}
+            <CModal passedClassName={step === STEP.SELECT_CHAIN ? "" : "h-3/4"} isVisible={chainAddressSelectorVisiable} onClose={closeModal}
             >
                 {
                     step === STEP.SELECT_CHAIN ? <View className='px-8'>
-                        <ChainSelector chainList={chainList} selectChain={selectChain} onSelect={onChainSeleted} />
+                        <ChainSelector chainList={chainList} onSelect={onChainSeleted} />
                     </View> :
-                        <View className='h-full px-8'>
+                        <View className='h-full px-4'>
                             <View className='items-center my-5'>
                                 <Text className='text-2xl font-bold'>Accounts</Text>
                                 <View className='flex-row items-center justify-center mt-3'>
@@ -109,7 +100,7 @@ function AddressAndChainSelector() {
                                     <Text>&nbsp;&nbsp;{selectChain.chain}</Text>
                                 </View>
                             </View>
-                            <ScrollView showsVerticalScrollIndicator={false} ref={scrollViewRef} onScroll={handleOnScroll} scrollEventThrottle={16}>
+                            <ScrollView showsVerticalScrollIndicator={false}   scrollEventThrottle={16}>
                                 <AddressSelector addressList={ethAddressList} selectedAddress={selectedAddress} onSelect={onAddressSelected} />
                             </ScrollView>
                         </View>
