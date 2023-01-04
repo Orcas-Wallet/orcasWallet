@@ -5,11 +5,11 @@ import AddressItem from './AddressItem'
 
 function AddressSelector({ addressList, onSelect, selectedAddress }) {
     return (
-        <ScrollView className='flex-1'>
+        <View>
             {
                 addressList.map((address) => <AddressItem key={address.address} onSelect={() => onSelect(address)} addressInfo={address} />)
             }
-        </ScrollView>
+        </View>
     )
 }
 

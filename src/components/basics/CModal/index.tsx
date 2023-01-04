@@ -7,14 +7,26 @@ interface ICModal {
     isVisible: boolean,
     style?: any,
     onClose: () => void
+    scrollTo?: (p: number) => void
+    scrollOffset?: number
+    scrollOffsetMax?: number
+    passedClassName?: string
 }
 
-const CModal: FC<ICModal> = ({ children, isVisible, style, onClose }) => {
+const CModal: FC<ICModal> = ({ children, passedClassName, isVisible, style, onClose, scrollOffsetMax, scrollTo, scrollOffset }) => {
     return (
-        <Modal swipeDirection={['down']} onSwipeComplete={onClose} useNativeDriverForBackdrop swipeThreshold={100}
-         onBackdropPress={onClose} isVisible={isVisible} style={{ margin: 0, justifyContent: 'flex-end', ...style }} >
-            <View className='h-5/6 bg-white rounded-t-3xl items-center pt-4'>
-                <View className='w-10 h-2 bg-gray-200 rounded-full'></View>
+        <Modal
+            swipeDirection={['down']}
+            scrollOffset={scrollOffset}
+            onSwipeComplete={onClose}
+            scrollTo={scrollTo}
+            scrollOffsetMax={scrollOffsetMax}
+            propagateSwipe={true}
+            onBackdropPress={onClose}
+            isVisible={isVisible}
+            style={{ margin: 0, justifyContent: 'flex-end', ...style }} >
+            <View className={`bg-white rounded-t-3xl items-center pt-4 ${passedClassName}`}>
+                <View className='w-10 h-2 bg-gray-200 rounded-full' />
                 {children}
             </View>
         </Modal>

@@ -11,8 +11,8 @@ import TokenRecieve from './TokenRecieve'
 import CModal from '../../components/basics/CModal'
 const buttonGroup = [
   {
+    icon: "arrow-top-right",
     name: "Send",
-    icon: "arrow-top-right"
   },
   {
     name: "Recieve",
@@ -73,7 +73,7 @@ const Home = () => {
       </View>
       <TokenAssets />
       <AddressAndChainSelector />
-      <CModal isVisible={showModal} onClose={() => {setShowModal(false)}}><TokenRecieve /></CModal>
+      <CModal isVisible={showModal} onClose={() => { setShowModal(false) }}><TokenRecieve /></CModal>
     </FullScreenContainer>
   )
 }
