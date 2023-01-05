@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, View, Text, ScrollView } from 'react-native'
 import ChainSelector from './ChainSelector'
 import AddressSelector from './AddressSelector'
@@ -9,6 +9,7 @@ import { toggleChainAddressSelectorVisiable, updateSelectedAddress } from '../..
 import { CHAIN_TYPE } from '../../../types';
 import CModal from '../../../components/basics/CModal';
 import CoinIcon from '../../../components/CoinIcon';
+import { getData, storeData } from '../../../services/storage';
 
 const chainList = [
     {
@@ -58,6 +59,47 @@ const ethAddressList = [
         chain: CHAIN_TYPE.ETHEREUM
     },
 ]
+const btcAddressList = [
+    {
+        name: "btc# 1",
+        address: "0xa328...aeff",
+        chain: CHAIN_TYPE.ETHEREUM
+    },
+    {
+        name: "btc# 2",
+        address: "0xa328...aefgf",
+        chain: CHAIN_TYPE.BITCOIN
+    },
+    {
+        name: "btc# 3",
+        address: "0xa328...aefaf",
+        chain: CHAIN_TYPE.BITCOIN
+    },
+    {
+        name: "btc# 4",
+        address: "0xa328...aefsf",
+        chain: CHAIN_TYPE.BITCOIN
+    },
+    {
+        name: "btc# 6",
+        address: "0xa328...aesdf",
+        chain: CHAIN_TYPE.BITCOIN
+    },
+    {
+        name: "btc# 7",
+        address: "0xa328...asdef",
+        chain: CHAIN_TYPE.BITCOIN
+    },
+    {
+        name: "btc# 9",
+        address: "0xa328...aeasf",
+        chain: CHAIN_TYPE.BITCOIN
+    },
+]
+const addressList = {
+    [CHAIN_TYPE.BITCOIN]: btcAddressList,
+    [CHAIN_TYPE.ETHEREUM]: ethAddressList
+}
 enum STEP {
     SELECT_CHAIN,
     SELECT_ADDRESS
@@ -68,6 +110,17 @@ function AddressAndChainSelector() {
     const { selectedAddress } = useAppSelector((state) => state.address)
     const chainAddressSelectorVisiable = useAppSelector((state) => state.address.chainAddressSelectorVisiable)
 
+    useEffect(() => {
+        getData('selectedAccount').then(async (data) => {
+            const addressInfo = JSON.parse(data)
+            saveAddressInfo(addressInfo)
+        }).catch(async (e) => {
+            console.log(e)
+            // no storaged data
+            const addressInfo = addressList[CHAIN_TYPE.ETHEREUM][0]
+            await saveAddressInfo(addressInfo)
+        })
+    }, [])
 
     const dispatch = useDispatch()
     const closeModal = () => {
@@ -78,11 +131,15 @@ function AddressAndChainSelector() {
         setSelectChain(chain)
         setStep(STEP.SELECT_ADDRESS)
     }
-    const onAddressSelected = (addressInfo) => {
-        dispatch(updateSelectedAddress(addressInfo))
+    const onAddressSelected = async (addressInfo) => {
+        await saveAddressInfo(addressInfo)
         closeModal()
     }
-   
+    const saveAddressInfo = async (addressInfo) => {
+        await storeData('selectedAccount', JSON.stringify(addressInfo))
+        dispatch(updateSelectedAddress(addressInfo))
+    }
+
 
     return (
         <View >
@@ -100,8 +157,8 @@ function AddressAndChainSelector() {
                                     <Text>&nbsp;&nbsp;{selectChain.chain}</Text>
                                 </View>
                             </View>
-                            <ScrollView showsVerticalScrollIndicator={false}   scrollEventThrottle={16}>
-                                <AddressSelector addressList={ethAddressList} selectedAddress={selectedAddress} onSelect={onAddressSelected} />
+                            <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={16}>
+                                <AddressSelector addressList={addressList[selectChain.chain]} selectedAddress={selectedAddress} onSelect={onAddressSelected} />
                             </ScrollView>
                         </View>
                 }
