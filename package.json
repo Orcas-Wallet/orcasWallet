@@ -24,6 +24,7 @@
     "base-64": "^1.0.0",
     "ethers": "^5.7.2",
     "expo": "~47.0.8",
+    "expo-barcode-scanner": "^12.1.0",
     "expo-clipboard": "~4.0.1",
     "expo-crypto": "~12.0.0",
     "expo-face-detector": "~12.0.0",

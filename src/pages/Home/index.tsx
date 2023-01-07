@@ -10,6 +10,7 @@ import TokenRecieve from './TokenRecieve'
 import CModal from '../../components/basics/CModal'
 import { useAppSelector } from '../../store'
 import { useNavigation } from '@react-navigation/native'
+import QRcodeScanner from '../../components/Qrcode/Scanner'
 const buttonGroup = [
   {
     icon: "arrow-top-right",

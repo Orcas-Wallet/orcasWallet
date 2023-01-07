@@ -1,3 +1,4 @@
+import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Button, Platform } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
@@ -24,13 +25,18 @@ const txInfo = {
     gasFee: "",
     totalCost: ""
 }
-function TokenTransfer() {
+function TokenTransfer({ route }) {
+    const { scannedAddress } = route.params;
+    console.log(scannedAddress)
     const { selectedToken } = useAppSelector(((state) => state.token))
     const { selectedAddress } = useAppSelector(((state) => state.address))
-    const [target, setTarget] = useState("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
+    const [target, setTarget] = useState("")
     const [step, setStep] = useState(STEP.INPUT_ADDRESS)
     const [amount, setAmount] = useState("0")
     const dispatch = useAppDispatch()
+    useEffect(() => {
+        setTarget(scannedAddress)
+    }, [scannedAddress])
     const onPress = () => {
         Keyboard.dismiss()
         let _step = step

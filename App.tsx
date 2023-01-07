@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from 'react-native';
 import "./src/utils/base64Polyfill"
-import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Welcome from './src/pages/Auth/Welcome';
 import Home from './src/pages/Home';
@@ -12,6 +12,8 @@ import EnablefaceId from './src/pages/Auth/EnablefaceId';
 import AddressSelector from './src/components/accountSelector';
 import TokenTransfer from './src/pages/TokenTransfer';
 import TokenRecieve from './src/pages/Home/TokenRecieve';
+import QrcodeScanner from './src/components/Qrcode/Scanner';
+import ScanButton from './src/components/Qrcode/ScanButton';
 
 const Stack = createNativeStackNavigator();
 const MyTheme = {
@@ -24,7 +26,6 @@ const MyTheme = {
 
 export default function App() {
   const isLoggedIn = true;
-
   return (
     <View className=' h-screen'>
       <Provider store={store}>
@@ -39,14 +40,14 @@ export default function App() {
                 }} />
                 <Stack.Screen name="tokenTransfer" component={TokenTransfer} options={{
                   headerRight: () => (
-                    <Text>C</Text>
+                    <ScanButton />
                   ),
                 }} />
                 <Stack.Screen name="tokenRecieve" component={TokenRecieve} options={{
-                  headerRight: () => (
-                    <Text>C</Text>
-                  ),
+
                 }} />
+                <Stack.Screen name="scanner" component={QrcodeScanner} />
+
               </Stack.Group>
             ) : (
               <Stack.Group screenOptions={{ headerShown: true, title: "", headerStyle: { backgroundColor: 'white' } }} >

@@ -1,3 +1,5 @@
+import { HISTORY_TYPE } from "../types"
+
 export const tokenListMock = [{
     token: 'Ethereum',
     balance: 45.12,
@@ -22,4 +24,51 @@ export const tokenListMock = [{
     symbol: 'USDC',
     value: 123219.22,
     netowrk: "Ethereum"
+}]
+export const historyList = [{
+    type: HISTORY_TYPE.SENT,
+    amount: 45.12,
+    token: "BTC",
+    value: "123,219.22"
+},
+{
+    type: HISTORY_TYPE.RECIEVED,
+    amount: 45.12,
+    token: "BTC",
+    value: "123,219.22"
+},
+{
+    type: HISTORY_TYPE.RECIEVED,
+    amount: 45.12,
+    token: "BTC",
+    value: "123,219.22"
+}, {
+    type: HISTORY_TYPE.SENT,
+    amount: 45.12,
+    token: "BTC",
+    value: "123,219.22"
+},
+{
+    type: HISTORY_TYPE.SENT,
+    amount: 45.12,
+    token: "BTC",
+    value: "123,219.22"
+},
+{
+    type: HISTORY_TYPE.SENT,
+    amount: 45.12,
+    token: "BTC",
+    value: "123,219.22"
+},
+{
+    type: HISTORY_TYPE.SENT,
+    amount: 45.12,
+    token: "BTC",
+    value: "123,219.22"
+},
+{
+    type: HISTORY_TYPE.SENT,
+    amount: 45.12,
+    token: "BTC",
+    value: "123,219.22"
 }]

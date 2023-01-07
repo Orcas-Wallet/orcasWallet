@@ -3,59 +3,13 @@ import { View, Text, ScrollView } from 'react-native'
 import CButton from '../basics/Button'
 import CoinIcon from '../CoinIcon'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import ListItem from './ListItem';
 import HistoryItem from './HistoryItem';
 import { HISTORY_TYPE } from '../../types';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../../store';
+import { historyList } from '../../mock/mock';
 
-const historyList = [{
-    type: HISTORY_TYPE.SENT,
-    amount: 45.12,
-    token: "BTC",
-    value: "123,219.22"
-},
-{
-    type: HISTORY_TYPE.RECIEVED,
-    amount: 45.12,
-    token: "BTC",
-    value: "123,219.22"
-},
-{
-    type: HISTORY_TYPE.RECIEVED,
-    amount: 45.12,
-    token: "BTC",
-    value: "123,219.22"
-}, {
-    type: HISTORY_TYPE.SENT,
-    amount: 45.12,
-    token: "BTC",
-    value: "123,219.22"
-},
-{
-    type: HISTORY_TYPE.SENT,
-    amount: 45.12,
-    token: "BTC",
-    value: "123,219.22"
-},
-{
-    type: HISTORY_TYPE.SENT,
-    amount: 45.12,
-    token: "BTC",
-    value: "123,219.22"
-},
-{
-    type: HISTORY_TYPE.SENT,
-    amount: 45.12,
-    token: "BTC",
-    value: "123,219.22"
-},
-{
-    type: HISTORY_TYPE.SENT,
-    amount: 45.12,
-    token: "BTC",
-    value: "123,219.22"
-}]
+
 function TokenDetail({ onButtonPress }) {
     const navigation = useNavigation()
     const { selectedToken } = useAppSelector(((state) => state.token))
@@ -74,7 +28,7 @@ function TokenDetail({ onButtonPress }) {
                 </View>
                 <View>
                     <Text className='text-center font-bold text-2xl pt-6 pb-2'>$3,488.12</Text>
-                    <Text className='text-center'>0.30462 BTC</Text>
+                    <Text className='text-center'>{selectedToken.balance} {selectedToken.symbol}</Text>
                 </View>
                 <View className='flex-row w-full mt-10'>
                     <CButton theme='dark' passedClassName='item-center w-5/12 mr-4' onPress={handleSend}>
