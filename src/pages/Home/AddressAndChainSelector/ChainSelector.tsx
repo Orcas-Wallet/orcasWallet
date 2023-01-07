@@ -13,7 +13,7 @@ function ChainSelector({ chainList, onSelect }) {
             <View className=''>
                 {
                     chainList.map((chain) =>
-                        <ListItem onPress={() => { onSelect(chain) }} passedClassName={"w-full"}>
+                        <ListItem onPress={() => { onSelect(chain) }} key={chain.name} passedClassName={"w-full"}>
                             <View className='flex-row flex-grow items-center'>
                                 <CoinIcon name={chain.chain} />
                                 <View className='justify-items-start ml-4'>

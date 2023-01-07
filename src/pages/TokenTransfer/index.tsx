@@ -1,10 +1,13 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Button, Platform } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Keyboard, Button, Platform } from 'react-native'
+import MCIcons from 'react-native-vector-icons/Ionicons';
+
 import CButton from '../../components/basics/Button'
+import BackButton from '../../components/basics/Button/BackButton';
 import CoinIcon from '../../components/CoinIcon'
 import FullScreenContainer from '../../components/Container'
+import ScanButton from '../../components/Qrcode/ScanButton';
 import { tokenListMock } from '../../mock/mock'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { updateSelectedToken } from '../../store/tokenSlice'
@@ -19,24 +22,41 @@ enum STEP {
     REVIEWING,
     SENDING
 }
-const txInfo = {
-    target: "",
-    network: "",
-    gasFee: "",
-    totalCost: ""
-}
 function TokenTransfer({ route }) {
     const { scannedAddress } = route.params;
-    console.log(scannedAddress)
     const { selectedToken } = useAppSelector(((state) => state.token))
     const { selectedAddress } = useAppSelector(((state) => state.address))
-    const [target, setTarget] = useState("")
-    const [step, setStep] = useState(STEP.INPUT_ADDRESS)
+    const [target, setTarget] = useState("0x3F523280AC40E0C2A92c8DE99C5C0059EcE64Cdf")
+    const [step, setStep] = useState(0)
     const [amount, setAmount] = useState("0")
+    const navigation = useNavigation()
     const dispatch = useAppDispatch()
     useEffect(() => {
         setTarget(scannedAddress)
     }, [scannedAddress])
+    useEffect(() => {
+        if (step > STEP.INPUTED_ADDRESS) {
+            navigation.setOptions({ title: shortenAddress(target) })
+        }
+        if (step <= STEP.INPUTED_ADDRESS) {
+            navigation.setOptions({
+                headerRight: () => (
+                    <ScanButton />
+                ),
+            })
+        }
+        if (step > STEP.INPUT_ADDRESS) {
+            navigation.setOptions({ headerLeft: () => <BackButton passedClassName={"-mx-3"} onPress={onBack} /> })
+        }
+    }, [step, navigation])
+    const onBack = () => {
+        let _step = step
+        _step = _step - 1
+        if (_step < STEP.INPUT_ADDRESS) {
+            navigation.goBack()
+        }
+        setStep(_step)
+    }
     const onPress = () => {
         Keyboard.dismiss()
         let _step = step
@@ -67,26 +87,35 @@ function TokenTransfer({ route }) {
             dispatch(updateSelectedToken(null))
         }
     }, [])
-
     return (
         <FullScreenContainer passedClassName=''>
             <View className='bg-gray-100 h-0.5 my-4 w-full'>
-                <View className='bg-main-900 h-0.5 w-2/5'></View>
+                <View className={`bg-main-900 h-0.5`} style={{ width: `${(step + 1) * 20}%` }}></View>
             </View>
             {
                 step === STEP.INPUT_ADDRESS &&
                 <>
-                    <View className='border-b border-gray-100'>
+                    <View className='relative border-b border-gray-100'>
+                        {
+                            !target && <View className='absolute top-8 flex-row items-center'>
+                                <MCIcons name="search" size={30} color="#00000040" />
+                                <Text className='text-2xl text-gray-50'>Address</Text>
+                            </View>
+                        }
                         <TextInput
-                            className='h-24 text-gray-300 text-3xl'
+                            className='h-24 text-3xl'
                             value={target}
+                            placeholder={""}
                             onChangeText={(v) => { setTarget(v) }}
-                            placeholder="Address" />
+                        />
                     </View>
                     <View>
-                        <View className='mt-4'>
-                            <Text className='text-2xl font-semibold'>
-                                Recents
+                        <View className='mt-10'>
+                            <Text className='text-2xl font-semibold text-center'>
+                                No recents
+                            </Text>
+                            <Text className='text-gray-100 text-center mt-2'  >
+                                Sent addresses will be shown here
                             </Text>
                         </View>
                     </View></>
@@ -94,17 +123,12 @@ function TokenTransfer({ route }) {
             {
                 step === STEP.INPUTED_ADDRESS &&
                 <View>
-                    <Text className='text-3xl text-black'>
-                        <Text >
-                            {target.slice(0, 6)}
-                        </Text>
-                        <Text className='text-gray-300'>
-                            {target.slice(6, -5)}
-                        </Text>
-                        <Text>
-                            {target.slice(-5)}
-                        </Text>
-                    </Text>
+                    <TextInput
+                        className='h-24 text-3xl'
+                        value={target}
+                        placeholder={""}
+                        onChangeText={(v) => { setTarget(v) }}
+                    />
                 </View>
             }
             {
@@ -205,7 +229,7 @@ function TokenTransfer({ route }) {
                     </View>
                 </KeyboardAvoidingView>
             }
-        </FullScreenContainer>
+        </FullScreenContainer >
 
     )
 }

@@ -6,7 +6,7 @@ import Welcome from './src/pages/Auth/Welcome';
 import Home from './src/pages/Home';
 import Login from './src/pages/Auth/Login';
 import Register from './src/pages/Auth/Register';
-import { store, useAppDispatch, useAppSelector } from "./src/store";
+import { store } from "./src/store";
 import { Provider } from "react-redux";
 import EnablefaceId from './src/pages/Auth/EnablefaceId';
 import AddressSelector from './src/components/accountSelector';
@@ -32,17 +32,18 @@ export default function App() {
         <NavigationContainer theme={MyTheme}>
           <Stack.Navigator>
             {isLoggedIn ? (
-              <Stack.Group screenOptions={{ headerShown: true, title: "", headerStyle: { backgroundColor: 'white' }, headerShadowVisible: false }}>
+              <Stack.Group screenOptions={{
+                headerShown: true, title: "", headerStyle: { backgroundColor: 'white' }, headerTintColor: '#0F6EFF',
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                }, headerShadowVisible: false
+              }}>
                 <Stack.Screen name="Home" component={Home} options={{
                   headerRight: () => (
                     <AddressSelector />
                   ),
                 }} />
-                <Stack.Screen name="tokenTransfer" component={TokenTransfer} options={{
-                  headerRight: () => (
-                    <ScanButton />
-                  ),
-                }} />
+                <Stack.Screen name="tokenTransfer" component={TokenTransfer} />
                 <Stack.Screen name="tokenRecieve" component={TokenRecieve} options={{
 
                 }} />

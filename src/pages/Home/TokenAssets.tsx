@@ -6,7 +6,7 @@ import TokenDetail from '../../components/Token/TokenDetail'
 import { tokenListMock } from '../../mock/mock'
 import TokenItem from './TokenItem'
 
-function TokenAssets() {
+function TokenAssets({ onRecieveBtnPress }) {
     const [showModal, setShowModal] = useState(false)
     return (
         <View>
@@ -20,7 +20,10 @@ function TokenAssets() {
             </View>
             {
                 <CModal isVisible={showModal} onClose={() => { setShowModal(false) }}>
-                    <TokenDetail onButtonPress={() => { setShowModal(false) }} />
+                    <TokenDetail onSendBtnPress={() => { setShowModal(false) }} onRecieveBtnPress={() => {
+                        setShowModal(false);
+                        onRecieveBtnPress()
+                    }} />
                 </CModal>
             }
         </View >

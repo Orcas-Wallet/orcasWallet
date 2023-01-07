@@ -10,7 +10,6 @@ import TokenRecieve from './TokenRecieve'
 import CModal from '../../components/basics/CModal'
 import { useAppSelector } from '../../store'
 import { useNavigation } from '@react-navigation/native'
-import QRcodeScanner from '../../components/Qrcode/Scanner'
 const buttonGroup = [
   {
     icon: "arrow-top-right",
@@ -31,8 +30,6 @@ const buttonGroup = [
 ]
 const Home = () => {
   const [showModal, setShowModal] = useState(false)
-  const { selectedToken } = useAppSelector(((state) => state.token))
-  console.log(selectedToken, "home")
   const navigation = useNavigation()
 
   const handleButtonPress = (btnType: string) => {
@@ -77,7 +74,7 @@ const Home = () => {
         </View>
 
       </View>
-      <TokenAssets />
+      <TokenAssets onRecieveBtnPress={() => {setShowModal(true)}}/>
       <AddressAndChainSelector />
       <CModal isVisible={showModal} onClose={() => { setShowModal(false) }}><TokenRecieve /></CModal>
     </FullScreenContainer>

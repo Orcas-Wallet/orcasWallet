@@ -10,15 +10,18 @@ import { useAppSelector } from '../../store';
 import { historyList } from '../../mock/mock';
 
 
-function TokenDetail({ onButtonPress }) {
+function TokenDetail({ onSendBtnPress, onRecieveBtnPress }) {
     const navigation = useNavigation()
     const { selectedToken } = useAppSelector(((state) => state.token))
 
     const handleSend = () => {
-        onButtonPress()
+        onSendBtnPress()
         navigation.navigate("tokenTransfer", {
             token: selectedToken
         })
+    }
+    const handleRecieve = () => {
+        
     }
     return (
         <View className='h-3/4'>
@@ -35,7 +38,7 @@ function TokenDetail({ onButtonPress }) {
                         <MCIcons name={'arrow-top-right'} size={18} />
                         <Text className=' text-base font-semibold'>&nbsp;Send</Text>
                     </CButton>
-                    <CButton onPress={() => { }} passedClassName={"item-center w-5/12"}>
+                    <CButton onPress={handleRecieve} passedClassName={"item-center w-5/12"}>
                         <MCIcons name={'arrow-bottom-right'} size={18} />
                         <Text className=' text-base font-semibold'>&nbsp;Recieve</Text>
                     </CButton>

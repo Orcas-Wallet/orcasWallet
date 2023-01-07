@@ -28,7 +28,6 @@ export const addressSlice = createSlice({
             state.selectedChain = action.payload
         },
         updateSelectedAddress(state, action: PayloadAction<IAddressInfo>) {
-            console.log(action.payload)
             state.selectedAddress = action.payload
         }
     }
