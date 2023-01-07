@@ -3,12 +3,13 @@ import React, { useState } from 'react'
 import FullScreenContainer from '../../components/Container'
 import TokenAssets from './TokenAssets'
 import AddressAndChainSelector from './AddressAndChainSelector/AddressAndChainSelector'
-import Modal from "react-native-modal";
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import CButton from '../../components/basics/Button'
 import TokenRecieve from './TokenRecieve'
 import CModal from '../../components/basics/CModal'
+import { useAppSelector } from '../../store'
+import { useNavigation } from '@react-navigation/native'
 const buttonGroup = [
   {
     icon: "arrow-top-right",
@@ -29,10 +30,14 @@ const buttonGroup = [
 ]
 const Home = () => {
   const [showModal, setShowModal] = useState(false)
+  const { selectedToken } = useAppSelector(((state) => state.token))
+  console.log(selectedToken, "home")
+  const navigation = useNavigation()
+
   const handleButtonPress = (btnType: string) => {
     switch (btnType) {
       case "Send":
-        console.log("send");
+        navigation.navigate("tokenTransfer", {})
         break;
       case "Recieve":
         // console.log("send");

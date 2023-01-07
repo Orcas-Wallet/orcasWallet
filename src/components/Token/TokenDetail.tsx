@@ -6,6 +6,8 @@ import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ListItem from './ListItem';
 import HistoryItem from './HistoryItem';
 import { HISTORY_TYPE } from '../../types';
+import { useNavigation } from '@react-navigation/native';
+import { useAppSelector } from '../../store';
 
 const historyList = [{
     type: HISTORY_TYPE.SENT,
@@ -54,7 +56,16 @@ const historyList = [{
     token: "BTC",
     value: "123,219.22"
 }]
-function TokenDetail() {
+function TokenDetail({ onButtonPress }) {
+    const navigation = useNavigation()
+    const { selectedToken } = useAppSelector(((state) => state.token))
+
+    const handleSend = () => {
+        onButtonPress()
+        navigation.navigate("tokenTransfer", {
+            token: selectedToken
+        })
+    }
     return (
         <View className='h-3/4'>
             <View className='mt-5 mb-10 w-full'>
@@ -66,7 +77,7 @@ function TokenDetail() {
                     <Text className='text-center'>0.30462 BTC</Text>
                 </View>
                 <View className='flex-row w-full mt-10'>
-                    <CButton theme='dark' passedClassName='item-center w-5/12 mr-4' onPress={() => { }}>
+                    <CButton theme='dark' passedClassName='item-center w-5/12 mr-4' onPress={handleSend}>
                         <MCIcons name={'arrow-top-right'} size={18} />
                         <Text className=' text-base font-semibold'>&nbsp;Send</Text>
                     </CButton>
@@ -78,12 +89,12 @@ function TokenDetail() {
                 <View className='mt-12'>
                     <Text className='text-left font-bold text-xl mb-6'>Transaction History</Text>
                     <ScrollView className='h-1/4' showsVerticalScrollIndicator={false} scrollEventThrottle={16}>
-                            {
-                                historyList.map((_h, idx) => (
-                                    <HistoryItem item={_h} onPress={() => { }} key={`h${idx}`} />
-                                ))
-                            }
-                        </ScrollView>
+                        {
+                            historyList.map((_h, idx) => (
+                                <HistoryItem item={_h} onPress={() => { }} key={`h${idx}`} />
+                            ))
+                        }
+                    </ScrollView>
                 </View>
             </View>
         </View>

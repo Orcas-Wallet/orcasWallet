@@ -1,7 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { FC } from 'react'
 import { View, Text, TouchableWithoutFeedback } from 'react-native'
 import CoinIcon from '../../components/CoinIcon';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { updateSelectedToken } from '../../store/tokenSlice';
 
 type IToken = {
     token: string,
@@ -16,8 +17,13 @@ interface ITokenItem {
 }
 
 const TokenItem: FC<ITokenItem> = ({ tokenInfo, onPress }) => {
+    const dispatch = useAppDispatch()
+    const onItemPress = () => {
+        onPress(tokenInfo)
+        dispatch(updateSelectedToken(tokenInfo))
+    }
     return (
-        <TouchableWithoutFeedback onPress={() => onPress(tokenInfo)}>
+        <TouchableWithoutFeedback onPress={onItemPress}>
             <View className='flex-row items-center justify-between py-4 border-b border-[#F6F7FB]'>
                 <View className='flex-row  flex-1 items-center '>
                     <View className='mr-4'>

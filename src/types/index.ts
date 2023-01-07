@@ -11,3 +11,10 @@ export enum HISTORY_TYPE {
     SENT,
     RECIEVED
 }
+export interface ITokenInfo {
+    token: string,
+    balance: number,
+    symbol: string,
+    value: number,
+    network: string
+}

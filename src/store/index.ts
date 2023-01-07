@@ -1,12 +1,14 @@
 import {configureStore} from "@reduxjs/toolkit";
 import {appReducer} from "./appSlice";
 import {addressReducer} from "./addressSlice";
+import {tokenReducer} from "./tokenSlice";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 
 export const store = configureStore({
     reducer: {
         app: appReducer,
-        address: addressReducer
+        address: addressReducer,
+        token: tokenReducer
     }
 })
 
