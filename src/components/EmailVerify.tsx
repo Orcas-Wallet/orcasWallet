@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, SafeAreaView, TextInput } from 'react-native'
 import React, { FC, useState } from 'react'
-import FullScreenContainer from './Container'
+import FullScreenContainer from './FullScreenContainer'
 import CButton from './basics/Button'
 import { createGenericAccount } from '../services/generic'
 import { useNavigation } from '@react-navigation/native'

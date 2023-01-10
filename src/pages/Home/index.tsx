@@ -1,6 +1,6 @@
 import { View, Text, Button } from 'react-native'
 import React, { useState } from 'react'
-import FullScreenContainer from '../../components/Container'
+import FullScreenContainer from '../../components/FullScreenContainer'
 import TokenAssets from './TokenAssets'
 import AddressAndChainSelector from './AddressAndChainSelector/AddressAndChainSelector'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';

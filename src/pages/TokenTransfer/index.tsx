@@ -6,7 +6,7 @@ import MCIcons from 'react-native-vector-icons/Ionicons';
 import CButton from '../../components/basics/Button'
 import BackButton from '../../components/basics/Button/BackButton';
 import CoinIcon from '../../components/CoinIcon'
-import FullScreenContainer from '../../components/Container'
+import FullScreenContainer from '../../components/FullScreenContainer'
 import ScanButton from '../../components/Qrcode/ScanButton';
 import { tokenListMock } from '../../mock/mock'
 import { useAppDispatch, useAppSelector } from '../../store'
@@ -44,9 +44,6 @@ function TokenTransfer({ route }) {
                     <ScanButton />
                 ),
             })
-        }
-        if (step > STEP.INPUT_ADDRESS) {
-            navigation.setOptions({ headerLeft: () => <BackButton passedClassName={"-mx-3"} onPress={onBack} /> })
         }
     }, [step, navigation])
     const onBack = () => {
@@ -88,7 +85,7 @@ function TokenTransfer({ route }) {
         }
     }, [])
     return (
-        <FullScreenContainer passedClassName=''>
+        <FullScreenContainer passedClassName='' withBackBtn={step > STEP.INPUT_ADDRESS} onBack={onBack}>
             <View className='bg-gray-100 h-0.5 my-4 w-full'>
                 <View className={`bg-main-900 h-0.5`} style={{ width: `${(step + 1) * 20}%` }}></View>
             </View>

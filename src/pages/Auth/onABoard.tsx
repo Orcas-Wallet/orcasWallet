@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import EmailVerify from '../../components/EmailVerify'
 import CButton from '../../components/basics/Button'
-import FullScreenContainer from '../../components/Container'
+import FullScreenContainer from '../../components/FullScreenContainer'
 import MCIcons from 'react-native-vector-icons/Ionicons';
 
 const stepText = [

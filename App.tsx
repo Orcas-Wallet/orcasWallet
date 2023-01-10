@@ -5,7 +5,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Welcome from './src/pages/Auth/Welcome';
 import Home from './src/pages/Home';
 import Login from './src/pages/Auth/Regsiter';
-import Register from './src/pages/Auth/onABoard';
 import { store } from "./src/store";
 import { Provider } from "react-redux";
 import EnablefaceId from './src/pages/Auth/EnablefaceId';
@@ -39,9 +38,9 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
-  const isLoggedIn = false;
+  const isLoggedIn = true;
   return (
-    <View className=' h-screen'>
+    <View className='h-screen'>
       <Provider store={store}>
         <NavigationContainer theme={MyTheme}>
           <Stack.Navigator screenOptions={{ headerShadowVisible: false, title: "", headerStyle: { backgroundColor: 'white' }, headerShown: true, }}>

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import CButton from '../../components/basics/Button'
-import FullScreenContainer from '../../components/Container'
+import FullScreenContainer from '../../components/FullScreenContainer'
 import InterText from '../../components/basics/Button/InterText'
 const stepText = [
     {
