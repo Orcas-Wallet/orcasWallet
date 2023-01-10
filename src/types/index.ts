@@ -1,3 +1,4 @@
+
 export enum CHAIN_TYPE {
     ETHEREUM = 'Ethereum',
     BITCOIN = "Bitcoin"
@@ -18,3 +19,4 @@ export interface ITokenInfo {
     value: number,
     network: string
 }
+export type TEmailVerifyType = "REGISTER" | "LOGIN" | "RECOVER"

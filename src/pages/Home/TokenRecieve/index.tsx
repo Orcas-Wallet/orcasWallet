@@ -7,6 +7,7 @@ import CButton from '../../../components/basics/Button'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CoinIcon from '../../../components/CoinIcon';
 import { useAppSelector } from '../../../store';
+import InterText from '../../../components/basics/Button/InterText';
 
 
 function TokenRecieve() {
@@ -19,7 +20,7 @@ function TokenRecieve() {
         <View className=''>
             <View className=''>
                 <View className='mt-5 mb-10'>
-                    <Text className=' text-center text-2xl font-bold'>Receive</Text>
+                    <InterText passedClassName=' text-center text-2xl font-bold'>Receive</InterText>
                     <View className='flex-row items-center justify-center mt-3'>
                         <CoinIcon name={"ethereum"} passedClassName={"w-8 h-8"} size={24} />
                         <Text>&nbsp;&nbsp;{selectedAddress.chain}</Text>
