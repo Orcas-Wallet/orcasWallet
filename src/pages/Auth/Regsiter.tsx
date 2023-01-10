@@ -6,7 +6,7 @@ const Login = () => {
 
     return (
         <View>
-            <EmailVerify type={"LOGIN"} />
+            <EmailVerify type='REGISTER' />
         </View>
     )
 }

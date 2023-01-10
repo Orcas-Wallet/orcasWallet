@@ -122,13 +122,16 @@ function TokenTransfer({ route }) {
             }
             {
                 step === STEP.INPUTED_ADDRESS &&
-                <View>
+                <View className='flex-row justify-start flex-wrap'>
+
                     <TextInput
                         className='h-24 text-3xl'
                         value={target}
                         placeholder={""}
                         onChangeText={(v) => { setTarget(v) }}
+                        autoFocus
                     />
+
                 </View>
             }
             {
