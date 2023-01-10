@@ -1,21 +1,24 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import CButton from '../../components/basics/Button'
+import InterText from '../../components/basics/Button/InterText'
 import FullScreenContainer from '../../components/FullScreenContainer'
 
 function EnablefaceId() {
     return (
-        <FullScreenContainer>
-            <View className="mt-96 px-2">
-                <Text className="text-2xl pb-8 ">Enable biometric ID</Text>
+        <FullScreenContainer passedClassName='flex-1  justify-between'>
+            <View></View>
+            <View className="h-3/5 px-2 justify-around">
                 <View>
-                    <Text className="text-base pb-10 ">Biometric authentication verifies your identity and prevents unauthorized access of your account
-                    </Text>
+                    <InterText passedClassName="text-xl pb-4" weight='100'>Privacy</InterText>
+                    <InterText passedClassName="text-2xl pb-8" weight='600'>Enable biometric ID to secure your account</InterText>
                 </View>
-                <CButton title='Enable biometric ID' passedClassName='w-full' onPress={() => { alert('Need apple device')}} />
+                <CButton passedClassName='w-full' theme='dark' onPress={() => { alert('Need apple device') }} >
+                    Enable biometric ID
+                </CButton>
             </View>
 
-        </FullScreenContainer>
+        </FullScreenContainer >
     )
 }
 

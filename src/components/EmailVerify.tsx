@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, SafeAreaView, TextInput } from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView, TextInput, Platform, KeyboardAvoidingView } from 'react-native'
 import React, { FC, useState } from 'react'
 import FullScreenContainer from './FullScreenContainer'
 import CButton from './basics/Button'
@@ -9,6 +9,7 @@ import InterText from './basics/Button/InterText'
 import MCIcons from 'react-native-vector-icons/Fontisto';
 import { CodeField, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field'
 import VerifyCodeInput from './VerifyCodeInput'
+import TextButton from './basics/Button/TextButton'
 
 enum EStep {
   FILL_EMAIL,
@@ -16,24 +17,24 @@ enum EStep {
 }
 const text = {
   "REGISTER": [{
-    title: "Welcome to Keysafe",
-    subTitle: "This email address is required to access your crypto accounts",
+    title: "Getting Started",
+    subTitle: "Your email will be kept private and secure by DAuth. Even Orcas will not have access to this information.",
     desc: "By signing up, you are agreeing to our Terms and Privacy policy",
   },
   {
-    title: "Verify your email",
-    subTitle: "Enter the confirmation code we just emailed to you",
+    title: "Verify your identity",
+    subTitle: "We have just sent a code to",
     desc: "",
   }],
   "LOGIN": [
     {
-      title: "Welcome to Keysafe",
-      subTitle: "This email address is required to access your crypto accounts",
-      desc: "By signing up, you are agreeing to our Terms and Privacy policy",
+      title: "Welcome back!",
+      subTitle: "To access your account, please sign in using your email address.",
+      desc: "",
     },
     {
-      title: "Verify your email",
-      subTitle: "Enter the confirmation code we just emailed to you",
+      title: "Verify your identity",
+      subTitle: "We have just sent a code to",
       desc: "",
     }
   ]
@@ -59,44 +60,69 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
   }
   return (
     <FullScreenContainer>
-      <View className='py-8'>
-        <InterText passedClassName='text-2xl py-4'>
+      <View className='flex-1'>
+        <View className='py-2'>
+          <InterText passedClassName='text-2xl py-4'>
+            {
+              text[type][step].title
+            }
+          </InterText>
+          <InterText passedClassName='text-base text-[#A2A0A8]' weight='300'>
+            {text[type][step].subTitle}
+          </InterText>
           {
-            text[type][step].title
+            step === EStep.FILL_CODE && <InterText passedClassName='text-base'>
+              {email}
+            </InterText>
           }
-        </InterText>
-        <InterText passedClassName='text-base text-[#A2A0A8]' weight='300'>
-          {text[type][step].subTitle}
-        </InterText>
+        </View>
+        <SafeAreaView>
+          {
+            step === EStep.FILL_EMAIL ? <View className='bg-[#F9F9FA] flex-row items-center pl-6 rounded-2xl'>
+              <MCIcons name={'male'} size={24}></MCIcons>
+              <TextInput
+                className='h-14	text-base px-4 flex-1' style={{ lineHeight: 0, fontFamily: "Inter_400" }}
+                onChangeText={setEmail}
+                value={email}
+              />
+            </View> : <VerifyCodeInput onComplete={setCode} />
+          }
+        </SafeAreaView>
+        <View className='mt-6 pb-24'>
+          <InterText passedClassName='text-sm text-gray-100 text-center' weight='300'>
+            By creating an account, you agree to our
+          </InterText>
+          <View className='flex-row items-center justify-center'>
+            <TextButton onPress={() => { }}>Terms</TextButton>
+            <InterText passedClassName='text-sm text-gray-100 text-center' weight='300'>
+              {" "}and {" "}
+            </InterText>
+            <TextButton onPress={() => { }}>Conditions</TextButton>
+          </View>
+        </View>
       </View>
-      <SafeAreaView>
-        {
-          step === EStep.FILL_EMAIL ? <View className='bg-[#F9F9FA] flex-row items-center pl-4 rounded-2xl'>
-            <MCIcons name={'male'} size={24}></MCIcons>
-            <TextInput
-              className='h-14	text-base px-4 ' style={{ lineHeight: 0, fontFamily: "Inter_400" }}
-              onChangeText={setEmail}
-              value={email}
-            />
-          </View> : <VerifyCodeInput onComplete={setCode} />
-        }
-      </SafeAreaView>
-      <View className='mt-6 pb-24'>
-        <InterText passedClassName='text-sm text-gray-100' weight='300'>
-          {text[type][step].desc}
-        </InterText>
-      </View>
-      <View>
-        {
-          step === EStep.FILL_EMAIL && <CButton theme='dark' passedClassName='w-full' onPress={onNextPress} >Let’s go!</CButton>
-        }
-        {
-          step === EStep.FILL_CODE && <CButton theme='dark' disabled={code.length !== 6} passedClassName='w-full' onPress={onVerify} >Verify</CButton>
-        }
-      </View>
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className={"flex-1"}
+      >
+        <View className='flex-1 justify-around'>
+          {
+            step === EStep.FILL_EMAIL && <CButton theme='dark' passedClassName='w-full' onPress={onNextPress} >Let’s go!</CButton>
+          }
+          {
+            step === EStep.FILL_CODE && <CButton theme='dark' disabled={code.length !== 6} passedClassName='w-full' onPress={onVerify} >Verify</CButton>
+          }
+        </View>
+      </KeyboardAvoidingView>
     </FullScreenContainer >
 
   )
 }
+const styles = StyleSheet.create({
+  container: {
+  },
+
+});
 
 export default EmailVerify

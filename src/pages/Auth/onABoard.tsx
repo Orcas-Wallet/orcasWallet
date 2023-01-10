@@ -34,15 +34,15 @@ const OnAboard = ({ navigation }) => {
     navigation.navigate("Register")
   }
   return (
-    <FullScreenContainer passedClassName='flex-1'>
-      <View className='h-2/5  items-center'>
+    <FullScreenContainer passedClassName='flex-1 justify-between'>
+      <View className='items-center flex-auto justify-between'>
         <View>
           <Text>asds</Text>
         </View>
 
       </View>
-      <View className='h-3/5 items-center justify-around'>
-        <View className='mb-10'>
+      <View className='items-center justify-evenly flex-auto'>
+        <View className=' flex-initial'>
           <Text className='text-gray-100 text-sm mb-2'>
             {stepText[step].subTitle}
           </Text>
@@ -50,7 +50,8 @@ const OnAboard = ({ navigation }) => {
             {stepText[step].title}
           </Text>
         </View>
-        <View className=' flex-row w-16 justify-between'>
+
+        <View className=' flex-row w-16 justify-around'>
           {
             [0, 1, 2].map((idx) => {
               return step === idx ? <View className='w-8 h-2 bg-main-900 rounded-full' /> : <View className='w-2 h-2 bg-main-100 rounded-full' />
@@ -68,6 +69,7 @@ const OnAboard = ({ navigation }) => {
             step < 2 && <CButton theme='dark' passedClassName='w-full  flex-initial' onPress={onNext}>Next</CButton>
           }
         </View>
+
       </View>
 
       {/* <EmailVerify /> */}

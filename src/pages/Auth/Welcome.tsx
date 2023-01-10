@@ -26,7 +26,7 @@ const Welcome = ({ navigation }) => {
         navigation.navigate('Aboard')
     }
     return (
-        <FullScreenContainer passedClassName='flex-auto'>
+        <FullScreenContainer passedClassName='flex-1  justify-between'>
             <ScrollView className="flex-auto">
                 <View className='h-32'>
                     <Text>
@@ -49,7 +49,7 @@ const Welcome = ({ navigation }) => {
                 </View>
             </ScrollView>
 
-            <View className='items-center flex-auto'>
+            <View className='items-center flex-1'>
                 <CButton theme='dark' passedClassName='w-full' onPress={handleRegister}>Register</CButton>
                 <CButton passedClassName='w-full mt-6' onPress={handleLogin}>Login</CButton>
             </View>

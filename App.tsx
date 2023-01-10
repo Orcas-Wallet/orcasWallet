@@ -38,7 +38,7 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
-  const isLoggedIn = true;
+  const isLoggedIn = false;
   return (
     <View className='h-screen'>
       <Provider store={store}>
