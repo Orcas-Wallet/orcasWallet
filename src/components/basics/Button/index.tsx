@@ -1,5 +1,6 @@
 import { Text, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import React, { FC, ReactNode } from 'react'
+import InterText from './InterText'
 
 interface TCButton {
     theme?: "dark" | "light",
@@ -28,9 +29,9 @@ const CButton: FC<TCButton> = ({ theme, onPress, passedClassName, circle, childr
             disabled={disabled}
             className={`bg-white h-14  ${buttonTheme.bgColor} ${circleTheme} flex justify-center ${passedClassName} ${disabledClassed}`}
             onPress={onButtonPress}>
-            <Text className={`text-center font-bold  text-base  ${buttonTheme.textColor}`}  >
+            <InterText passedClassName={`text-center font-bold  text-base  ${buttonTheme.textColor}`} weight={"700"} >
                 {children}
-            </Text>
+            </InterText>
         </TouchableOpacity>
     )
 }
