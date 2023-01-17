@@ -3,11 +3,13 @@ import React, { useState } from 'react'
 import { View, Text } from 'react-native'
 import CModal from '../../components/basics/CModal'
 import TokenDetail from '../../components/Token/TokenDetail'
-import { tokenListMock } from '../../mock/mock'
+import { useAppSelector } from '../../store'
+import { tokenMetas } from '../../utils/tokens/const'
 import TokenItem from './TokenItem'
 
 function TokenAssets({ onRecieveBtnPress }) {
     const [showModal, setShowModal] = useState(false)
+    const { tokenBalance } = useAppSelector((state) => state.address)
     return (
         <View>
             <View>
@@ -15,7 +17,8 @@ function TokenAssets({ onRecieveBtnPress }) {
             </View>
             <View>
                 {
-                    tokenListMock.map((tokeninfo) => <TokenItem key={tokeninfo.token} tokenInfo={tokeninfo} onPress={() => { setShowModal(true) }} />)
+                    tokenMetas.map((tokeninfo) =>
+                        <TokenItem key={tokeninfo.name} tokenInfo={tokeninfo} balance={tokenBalance[tokeninfo.name]} onPress={() => { setShowModal(true) }} />)
                 }
             </View>
             {

@@ -4,13 +4,12 @@ import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Keyboard, Butt
 import MCIcons from 'react-native-vector-icons/Ionicons';
 
 import CButton from '../../components/basics/Button'
-import BackButton from '../../components/basics/Button/BackButton';
 import CoinIcon from '../../components/CoinIcon'
 import FullScreenContainer from '../../components/FullScreenContainer'
 import ScanButton from '../../components/Qrcode/ScanButton';
-import { tokenListMock } from '../../mock/mock'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { updateSelectedToken } from '../../store/tokenSlice'
+import { tokenMetas } from '../../utils/tokens/const';
 import { shortenAddress } from '../../utils/utils'
 import TokenItem from '../Home/TokenItem'
 
@@ -26,6 +25,7 @@ function TokenTransfer({ route }) {
     const { scannedAddress } = route.params;
     const { selectedToken } = useAppSelector(((state) => state.token))
     const { selectedAddress } = useAppSelector(((state) => state.address))
+    const { tokenBalance } = useAppSelector(((state) => state.address))
     const [target, setTarget] = useState("0x3F523280AC40E0C2A92c8DE99C5C0059EcE64Cdf")
     const [step, setStep] = useState(0)
     const [amount, setAmount] = useState("0")
@@ -135,10 +135,12 @@ function TokenTransfer({ route }) {
                 step === STEP.SELECT_ASSET &&
                 <View>
                     {
-                        tokenListMock.map((tokeninfo) =>
-                            <TokenItem key={tokeninfo.token}
-                                tokenInfo={tokeninfo}
-                                onPress={() => { selectToken(tokeninfo) }} />)
+                        tokenMetas.map((tokenInfo) =>
+                            <TokenItem
+                                balance={tokenBalance[tokenInfo.name]}
+                                key={tokenInfo.name}
+                                tokenInfo={tokenInfo}
+                                onPress={() => { selectToken(tokenInfo) }} />)
                     }
                 </View>
             }
@@ -147,9 +149,9 @@ function TokenTransfer({ route }) {
                 step === STEP.INPUT_AMOUNT &&
                 <View>
                     <View className={"flex-row items-center justify-start bg-white"}>
-                        <CoinIcon name={selectedToken.token} passedClassName={"rounded-full"} size={24} />
+                        <CoinIcon name={selectedToken.name} passedClassName={"rounded-full"} size={24} />
                         <View className='ml-4'>
-                            <Text className=' font-semibold'>{selectedToken.token}</Text>
+                            <Text className=' font-semibold'>{selectedToken.name}</Text>
                             <Text className='text-sm text-gray-100 font-light'>{selectedToken.balance} available</Text>
                         </View>
                     </View>

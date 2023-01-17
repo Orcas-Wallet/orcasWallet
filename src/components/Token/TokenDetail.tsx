@@ -8,12 +8,17 @@ import { HISTORY_TYPE } from '../../types';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../../store';
 import { historyList } from '../../mock/mock';
+import { useMemo } from 'react';
 
 
 function TokenDetail({ onSendBtnPress, onRecieveBtnPress }) {
     const navigation = useNavigation()
-    const { selectedToken } = useAppSelector(((state) => state.token))
+    const { selectedToken, tokenPrice } = useAppSelector(((state) => state.token))
+    const { tokenBalance } = useAppSelector(((state) => state.address))
 
+    const balance = useMemo(() => tokenBalance[selectedToken.name], [tokenBalance, selectedToken])
+    const price = useMemo(() => tokenPrice[selectedToken.name].usd, [tokenPrice, selectedToken])
+    const totalValue = useMemo(() => price * balance, [balance, price])
     const handleSend = () => {
         onSendBtnPress()
         navigation.navigate("tokenTransfer", {
@@ -21,7 +26,7 @@ function TokenDetail({ onSendBtnPress, onRecieveBtnPress }) {
         })
     }
     const handleRecieve = () => {
-        
+
     }
     return (
         <View className='h-3/4'>
@@ -30,8 +35,8 @@ function TokenDetail({ onSendBtnPress, onRecieveBtnPress }) {
                     <CoinIcon name={"ethereum"} passedClassName={"w-12 h-12"} size={32} />
                 </View>
                 <View>
-                    <Text className='text-center font-bold text-2xl pt-6 pb-2'>$3,488.12</Text>
-                    <Text className='text-center'>{selectedToken.balance} {selectedToken.symbol}</Text>
+                    <Text className='text-center font-bold text-2xl pt-6 pb-2'>${totalValue | 0}</Text>
+                    <Text className='text-center'>{balance} {selectedToken.symbol}</Text>
                 </View>
                 <View className='flex-row w-full mt-10'>
                     <CButton theme='dark' passedClassName='item-center w-5/12 mr-4' onPress={handleSend}>
