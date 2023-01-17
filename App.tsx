@@ -14,6 +14,7 @@ import TokenRecieve from './src/pages/Home/TokenRecieve';
 import QrcodeScanner from './src/components/Qrcode/Scanner';
 import onAboard from './src/pages/Auth/onABoard';
 import { useFonts, Inter_400Regular, Inter_100Thin, Inter_300Light, Inter_600SemiBold, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
+import Keychain from './src/components/Keychain';
 
 const Stack = createNativeStackNavigator();
 const MyTheme = {
@@ -38,7 +39,7 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
-  const isLoggedIn = false;
+  const isLoggedIn = true;
   return (
     <View className='h-screen'>
       <Provider store={store}>
@@ -70,6 +71,7 @@ export default function App() {
                 <Stack.Screen name="Register" component={Login} />
                 <Stack.Screen name="Aboard" component={onAboard} />
                 <Stack.Screen name="FaceId" component={EnablefaceId} />
+                {/* <Stack.Screen name="keyChain" component={Keychain}></Stack.Screen> */}
               </Stack.Group>
             )}
           </Stack.Navigator>

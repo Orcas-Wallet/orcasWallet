@@ -13,10 +13,8 @@ export enum HISTORY_TYPE {
     RECIEVED
 }
 export interface ITokenInfo {
-    token: string,
-    balance: number,
+    name: string,
     symbol: string,
-    value: number,
-    network: string
+    [k: string]: any
 }
 export type TEmailVerifyType = "REGISTER" | "LOGIN" | "RECOVER"

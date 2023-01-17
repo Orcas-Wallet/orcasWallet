@@ -3,25 +3,24 @@ import { View, Text, TouchableWithoutFeedback } from 'react-native'
 import CoinIcon from '../../components/CoinIcon';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { updateSelectedToken } from '../../store/tokenSlice';
+import { ITokenInfo } from '../../types';
 
-type IToken = {
-    token: string,
-    balance: number,
-    symbol: string,
-    value: number
-}
 interface ITokenItem {
-    tokenInfo: IToken,
-    onPress: (tokenInfo: IToken) => void
+    tokenInfo: ITokenInfo,
+    balance: string,
+    onPress: (tokenInfo: ITokenInfo) => void
 
 }
 
-const TokenItem: FC<ITokenItem> = ({ tokenInfo, onPress }) => {
+const TokenItem: FC<ITokenItem> = ({ tokenInfo, onPress, balance }) => {
+    const { tokenPrice } = useAppSelector(((state) => state.token))
     const dispatch = useAppDispatch()
     const onItemPress = () => {
         onPress(tokenInfo)
         dispatch(updateSelectedToken(tokenInfo))
     }
+    const price = tokenPrice[tokenInfo.name] ?
+        tokenPrice[tokenInfo.name].usd : 0
     return (
         <TouchableWithoutFeedback onPress={onItemPress}>
             <View className='flex-row items-center justify-between py-4 border-b border-[#F6F7FB]'>
@@ -31,8 +30,8 @@ const TokenItem: FC<ITokenItem> = ({ tokenInfo, onPress }) => {
 
                     </View>
                     <View>
-                        <Text className=''>{tokenInfo.token}</Text>
-                        <Text className=''>{tokenInfo.balance} {tokenInfo.symbol}</Text>
+                        <Text className=''>{tokenInfo.name}</Text>
+                        <Text className=''>{balance} {tokenInfo.symbol}</Text>
                     </View>
                 </View>
                 <View className='flex-row flex-grow justify-between items-center'>
@@ -41,7 +40,7 @@ const TokenItem: FC<ITokenItem> = ({ tokenInfo, onPress }) => {
                     </View>
                     <View>
                         <Text className=''>
-                            ${tokenInfo.value}
+                            {price * Number(balance)}
                         </Text>
                     </View>
                 </View>
