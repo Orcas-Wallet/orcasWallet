@@ -19,8 +19,8 @@ const alchemy = new Alchemy(config);
 
 export const getTokenListByAddress = async (address: string) => {
     const tokenContractList = tokenMetas.filter(meta => meta.name !== 'Ethereum').map((meta) => meta.contract)
-    const coinBalances = await alchemy.core.getTokenBalances('clearlove.eth', tokenContractList);
-    const balance = await alchemy.core.getBalance('clearlove.eth')
+    const coinBalances = await alchemy.core.getTokenBalances(address, tokenContractList);
+    const balance = await alchemy.core.getBalance(address)
     const tokenBalance: Partial<Record<TTokens, string>> = {
         Ethereum: Number(ethers.utils.formatEther(balance)).toFixed(4)
     }

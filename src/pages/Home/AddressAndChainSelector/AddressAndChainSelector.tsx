@@ -5,7 +5,7 @@ import AddressSelector from './AddressSelector'
 import Modal from "react-native-modal";
 import { useAppSelector } from '../../../store';
 import { useDispatch } from 'react-redux';
-import { toggleChainAddressSelectorVisiable, updateSelectedAddress } from '../../../store/addressSlice';
+import { toggleChainAddressSelectorVisiable, updateSelectedAddress, updateTokenBalance } from '../../../store/addressSlice';
 import { CHAIN_TYPE } from '../../../types';
 import CModal from '../../../components/basics/CModal';
 import CoinIcon from '../../../components/CoinIcon';

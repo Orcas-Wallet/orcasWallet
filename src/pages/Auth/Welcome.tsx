@@ -24,6 +24,7 @@ const Welcome = ({ navigation }) => {
     }
     const handleRegister = () => {
         navigation.navigate('Aboard')
+        // navigation.navigate('keyChain')
     }
     return (
         <FullScreenContainer passedClassName='flex-1  justify-between'>
