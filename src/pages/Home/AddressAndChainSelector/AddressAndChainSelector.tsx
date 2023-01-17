@@ -10,6 +10,7 @@ import { CHAIN_TYPE } from '../../../types';
 import CModal from '../../../components/basics/CModal';
 import CoinIcon from '../../../components/CoinIcon';
 import { getData, storeData } from '../../../services/storage';
+import { ethAddressList } from '../../../mock/mock';
 
 const chainList = [
     {
@@ -21,43 +22,6 @@ const chainList = [
         icon: "currency-btc"
     }
 
-]
-const ethAddressList = [
-    {
-        name: "evm# 1",
-        address: "0xa328...aeff",
-        chain: CHAIN_TYPE.ETHEREUM
-    },
-    {
-        name: "evm# 2",
-        address: "0xa328...aefgf",
-        chain: CHAIN_TYPE.ETHEREUM
-    },
-    {
-        name: "evm# 3",
-        address: "0xa328...aefaf",
-        chain: CHAIN_TYPE.ETHEREUM
-    },
-    {
-        name: "evm# 4",
-        address: "0xa328...aefsf",
-        chain: CHAIN_TYPE.ETHEREUM
-    },
-    {
-        name: "evm# 6",
-        address: "0xa328...aesdf",
-        chain: CHAIN_TYPE.ETHEREUM
-    },
-    {
-        name: "evm# 7",
-        address: "0xa328...asdef",
-        chain: CHAIN_TYPE.ETHEREUM
-    },
-    {
-        name: "evm# 9",
-        address: "0xa328...aeasf",
-        chain: CHAIN_TYPE.ETHEREUM
-    },
 ]
 const btcAddressList = [
     {

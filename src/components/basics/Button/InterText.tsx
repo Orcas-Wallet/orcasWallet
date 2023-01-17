@@ -11,7 +11,7 @@ interface IInterText {
 
 const InterText: FC<IInterText> = ({ passedClassName, style, children, weight = 600 }) => {
     return (
-        <Text className={`${passedClassName}`} style={{ fontFamily: `Inter_${weight}`, ...style }}>{children}</Text >
+        <Text className={`${passedClassName} leading-6`} style={{ fontFamily: `Inter_${weight}`, ...style }}>{children}</Text >
     )
 }
 

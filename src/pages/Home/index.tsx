@@ -15,6 +15,8 @@ import { getTokenPrice } from '../../services/coingecko'
 import { useDispatch } from 'react-redux'
 import { fetchTokenBalance, updateTokenBalance } from '../../store/addressSlice'
 import { tokenMetas } from '../../utils/tokens/const'
+import { shortenAddress } from '../../utils/utils'
+import InterText from '../../components/basics/Button/InterText'
 const buttonGroup = [
   {
     icon: "arrow-top-right",
@@ -70,12 +72,12 @@ const Home = () => {
   return (
     <FullScreenContainer passedClassName='bg-white'>
       <View className='mt-6 mb-32'>
-        <Text className=''>
-          0xA328...AE31
-        </Text>
-        <Text className='text-2xl py-2'>
+        <InterText weight='400'>
+          {shortenAddress(selectedAddress.address)}
+        </InterText>
+        <InterText weight='500' passedClassName='text-2xl py-2'>
           ${totalValue.toFixed(4)}
-        </Text>
+        </InterText>
         {/* <Text className='flex justify-center'>
           <View><Text className=''>+$2,150.92</Text></View>
           <View className='px-2 py-1 rounded-full'>
@@ -90,7 +92,7 @@ const Home = () => {
               <CButton key={btn.name} theme='dark' circle passedClassName='' onPress={() => handleButtonPress(btn.name)}>
                 <MCIcons name={btn.icon} color={'white'} size="26" />
               </CButton>
-              <Text className='text-center pt-2'>{btn.name}</Text>
+              <InterText passedClassName='text-center pt-2' weight='400'>{btn.name}</InterText>
             </View>))
           }
         </View>

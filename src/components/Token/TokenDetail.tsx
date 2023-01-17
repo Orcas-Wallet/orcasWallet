@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../../store';
 import { historyList } from '../../mock/mock';
 import { useMemo } from 'react';
+import InterText from '../basics/Button/InterText';
 
 
 function TokenDetail({ onSendBtnPress, onRecieveBtnPress }) {
@@ -26,7 +27,7 @@ function TokenDetail({ onSendBtnPress, onRecieveBtnPress }) {
         })
     }
     const handleRecieve = () => {
-
+        onRecieveBtnPress()
     }
     return (
         <View className='h-3/4'>
@@ -35,25 +36,25 @@ function TokenDetail({ onSendBtnPress, onRecieveBtnPress }) {
                     <CoinIcon name={"ethereum"} passedClassName={"w-12 h-12"} size={32} />
                 </View>
                 <View>
-                    <Text className='text-center font-bold text-2xl pt-6 pb-2'>${totalValue | 0}</Text>
-                    <Text className='text-center'>{balance} {selectedToken.symbol}</Text>
+                    <InterText passedClassName='text-center font-bold text-2xl pt-6 pb-2'>$ {totalValue | 0}</InterText>
+                    <InterText passedClassName='text-center'>{balance} {selectedToken.symbol}</InterText>
                 </View>
                 <View className='flex-row w-full mt-10'>
                     <CButton theme='dark' passedClassName='item-center w-5/12 mr-4' onPress={handleSend}>
                         <MCIcons name={'arrow-top-right'} size={18} />
-                        <Text className=' text-base font-semibold'>&nbsp;Send</Text>
+                        <InterText passedClassName=' text-base' >&nbsp;Send</InterText>
                     </CButton>
                     <CButton onPress={handleRecieve} passedClassName={"item-center w-5/12"}>
                         <MCIcons name={'arrow-bottom-right'} size={18} />
-                        <Text className=' text-base font-semibold'>&nbsp;Recieve</Text>
+                        <InterText passedClassName=' text-base' >&nbsp;Receive</InterText>
                     </CButton>
                 </View>
                 <View className='mt-12'>
-                    <Text className='text-left font-bold text-xl mb-6'>Transaction History</Text>
+                    <InterText passedClassName='text-left text-xl mb-6' weight='700'>Transaction History</InterText>
                     <ScrollView className='h-1/4' showsVerticalScrollIndicator={false} scrollEventThrottle={16}>
                         {
                             historyList.map((_h, idx) => (
-                                <HistoryItem item={_h} onPress={() => { }} key={`h${idx}`} />
+                                <HistoryItem key={_h.name} item={_h} onPress={() => { }} />
                             ))
                         }
                     </ScrollView>

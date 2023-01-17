@@ -13,7 +13,19 @@ import TokenTransfer from './src/pages/TokenTransfer';
 import TokenRecieve from './src/pages/Home/TokenRecieve';
 import QrcodeScanner from './src/components/Qrcode/Scanner';
 import onAboard from './src/pages/Auth/onABoard';
-import { useFonts, Inter_400Regular, Inter_100Thin, Inter_300Light, Inter_600SemiBold, Inter_500Medium, Inter_700Bold } from '@expo-google-fonts/inter';
+import {
+  useFonts,
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_600SemiBold,
+  Inter_500Medium,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black
+
+} from '@expo-google-fonts/inter';
 import Keychain from './src/components/Keychain';
 
 const Stack = createNativeStackNavigator();
@@ -28,14 +40,16 @@ const MyTheme = {
 
 export default function App() {
   let [fontsLoaded] = useFonts({
-    Inter_400: Inter_400Regular,
     Inter_100: Inter_100Thin,
-    Inter_500: Inter_500Medium,
-    Inter_700: Inter_700Bold,
+    Inter_200: Inter_200ExtraLight,
     Inter_300: Inter_300Light,
-    Inter_600: Inter_600SemiBold
+    Inter_400: Inter_400Regular,
+    Inter_500: Inter_500Medium,
+    Inter_600: Inter_600SemiBold,
+    Inter_700: Inter_700Bold,
+    Inter_800: Inter_800ExtraBold,
+    Inter_900: Inter_900Black,
   });
-  console.log(fontsLoaded)
   if (!fontsLoaded) {
     return null;
   }

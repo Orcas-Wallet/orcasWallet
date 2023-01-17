@@ -8,11 +8,13 @@ interface ICModal {
     style?: any,
     onClose: () => void
     passedClassName?: string
+    onModalHide?: () => void
 }
 
-const CModal: FC<ICModal> = ({ children, passedClassName, isVisible, style, onClose }) => {
+const CModal: FC<ICModal> = ({ children, passedClassName, isVisible, style, onClose, onModalHide }) => {
     return (
         <Modal
+            onModalHide={onModalHide}
             swipeDirection={['down']}
             onSwipeComplete={onClose}
             propagateSwipe={true}

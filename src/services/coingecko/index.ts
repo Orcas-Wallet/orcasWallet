@@ -16,7 +16,6 @@ export const getTokenPrice = async () => {
         const priceInfo: any = {}
         priceInfo.Ethereum = res.data.ethereum;
         priceInfo.WETH = res.data.weth;
-        console.log(priceInfo)
         return priceInfo
     } catch (error) {
 

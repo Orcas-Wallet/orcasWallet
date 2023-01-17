@@ -1,42 +1,22 @@
-import { HISTORY_TYPE } from "../types"
+import { createEthWallets } from "../services/walletAdapter/ethereum"
+import { CHAIN_TYPE, HISTORY_TYPE } from "../types"
 
-export const tokenListMock = [{
-    name: 'Ethereum',
-    balance: 45.12,
-    symbol: 'ETH',
-    value: 123219.22,
-}, {
-    name: 'WEthereum',
-    balance: 45.12,
-    symbol: 'WETH',
-    value: 123219.22,
-}, {
-    name: 'Tether',
-    balance: 10000,
-    symbol: 'USDT',
-    value: 10000,
-}, {
-    name: 'USDC',
-    balance: 45.12,
-    symbol: 'USDC',
-    value: 123219.22,
-}]
 export const historyList = [{
     type: HISTORY_TYPE.SENT,
     amount: 45.12,
-    name: "BTC",
+    name: "BTC1",
     value: "123,219.22"
 },
 {
     type: HISTORY_TYPE.RECIEVED,
     amount: 45.12,
-    name: "BTC",
+    name: "BTC2",
     value: "123,219.22"
 },
 {
     type: HISTORY_TYPE.RECIEVED,
     amount: 45.12,
-    name: "BTC",
+    name: "BTC3",
     value: "123,219.22"
 }, {
     type: HISTORY_TYPE.SENT,
@@ -47,24 +27,33 @@ export const historyList = [{
 {
     type: HISTORY_TYPE.SENT,
     amount: 45.12,
-    name: "BTC",
+    name: "BTC4",
     value: "123,219.22"
 },
 {
     type: HISTORY_TYPE.SENT,
     amount: 45.12,
-    name: "BTC",
+    name: "BTC5",
     value: "123,219.22"
 },
 {
     type: HISTORY_TYPE.SENT,
     amount: 45.12,
-    name: "BTC",
+    name: "BTC6",
     value: "123,219.22"
 },
 {
     type: HISTORY_TYPE.SENT,
     amount: 45.12,
-    name: "BTC",
+    name: "BTC7",
     value: "123,219.22"
 }]
+
+export const ethAddressList = (() => {
+    const wallets = createEthWallets(5).map((_w, idx) => ({
+        name: `EVM #${idx}`,
+        address: _w.address,
+        chain: CHAIN_TYPE.ETHEREUM
+    }))
+    return wallets
+})()
