@@ -41,10 +41,10 @@ const TokenItem: FC<ITokenItem> = ({ tokenInfo, onPress, balance }) => {
                     </View>
                     <View>
                         <InterText weight='500' passedClassName='text-right' >
-                            {price * Number(balance)} {tokenInfo.symbol}
+                            {balance} {tokenInfo.symbol}
                         </InterText>
                         <InterText weight='400' passedClassName='text-right'>
-                           $ {price * Number(balance)}
+                           $ {(price * Number(balance)).toFixed(4)}
                         </InterText>
                     </View>
                 </View>

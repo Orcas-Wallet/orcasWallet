@@ -13,7 +13,7 @@ if (!global.atob) {
 }
 const config = {
     apiKey,
-    network: Network.ETH_MAINNET
+    network: Network.ETH_GOERLI
 };
 const alchemy = new Alchemy(config);
 
@@ -25,9 +25,10 @@ export const getTokenListByAddress = async (address: string) => {
     const tokenBalance: Partial<Record<TTokens, string>> = {
         Ethereum: Number(ethers.utils.formatEther(balance)).toFixed(4)
     }
+    console.log(coinBalances, 'coinBalances')
     for (const _token of coinBalances.tokenBalances) {
         const tokenMetaData = tokenMetas.find((token) => token.contract.toLocaleLowerCase() === _token.contractAddress.toLocaleLowerCase())
-        let balance = Number(_token.tokenBalance)
+        let balance = Number(_token.tokenBalance === '0x' ? '0' : _token.tokenBalance)
         balance = balance / Math.pow(10, tokenMetaData.decimals);
         tokenBalance[tokenMetaData.name] = balance.toFixed(4)
     }
