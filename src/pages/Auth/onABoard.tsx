@@ -39,8 +39,8 @@ const OnAboard = ({ navigation }) => {
   }
   return (
     <FullScreenContainer passedClassName='flex-1 justify-between'>
-      <PagerView initialPage={0}>
-        <View className='items-center flex-auto justify-between'>
+      
+      <View className='items-center flex-auto justify-between'>
           <View>
             <Text>asds</Text>
           </View>
@@ -59,7 +59,7 @@ const OnAboard = ({ navigation }) => {
           <View className=' flex-row w-16 justify-around'>
             {
               [0, 1, 2].map((idx) => {
-                return step === idx ? <View className='w-8 h-2 bg-main-900 rounded-full' /> : <View className='w-2 h-2 bg-main-100 rounded-full' />
+                return step === idx ? <View key={idx} className='w-8 h-2 bg-main-900 rounded-full' /> : <View key={idx} className='w-2 h-2 bg-main-100 rounded-full' />
               })
             }
           </View>
@@ -80,7 +80,7 @@ const OnAboard = ({ navigation }) => {
         {/* <EmailVerify /> */}
 
 
-      </PagerView>
+      
 
     </FullScreenContainer>
   )
