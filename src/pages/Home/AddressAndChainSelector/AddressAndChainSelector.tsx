@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, View, Text, ScrollView } from 'react-native'
+import { Button, View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native'
 import ChainSelector from './ChainSelector'
 import AddressSelector from './AddressSelector'
+import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from "react-native-modal";
 import { useAppSelector } from '../../../store';
 import { useDispatch } from 'react-redux';
@@ -11,6 +12,8 @@ import CModal from '../../../components/basics/CModal';
 import CoinIcon from '../../../components/CoinIcon';
 import { getData, storeData } from '../../../services/storage';
 import { ethAddressList } from '../../../mock/mock';
+import ListItem from '../../../components/Token/ListItem';
+import CButton from '../../../components/basics/Button';
 
 const chainList = [
     {
@@ -66,13 +69,15 @@ const addressList = {
 }
 enum STEP {
     SELECT_CHAIN,
-    SELECT_ADDRESS
+    SELECT_ADDRESS,
+    ADD_ACCOUNT
 }
 function AddressAndChainSelector() {
     const [selectChain, setSelectChain] = useState(chainList[0])
     const [step, setStep] = useState(STEP.SELECT_CHAIN)
     const { selectedAddress } = useAppSelector((state) => state.address)
     const chainAddressSelectorVisiable = useAppSelector((state) => state.address.chainAddressSelectorVisiable)
+    const [walletName, setWalletName] = useState('')
 
     useEffect(() => {
         getData('selectedAccount').then(async (data) => {
@@ -103,6 +108,7 @@ function AddressAndChainSelector() {
         await storeData('selectedAccount', JSON.stringify(addressInfo))
         dispatch(updateSelectedAddress(addressInfo))
     }
+    const onCreate = () => {}
 
 
     return (
@@ -110,21 +116,54 @@ function AddressAndChainSelector() {
             <CModal passedClassName={step === STEP.SELECT_CHAIN ? "" : "h-3/4"} isVisible={chainAddressSelectorVisiable} onClose={closeModal}
             >
                 {
-                    step === STEP.SELECT_CHAIN ? <View className='px-8'>
+                    step === STEP.SELECT_CHAIN && <View className='px-8'>
                         <ChainSelector chainList={chainList} onSelect={onChainSeleted} />
-                    </View> :
-                        <View className='h-full px-4'>
-                            <View className='items-center my-5'>
-                                <Text className='text-2xl font-bold'>Accounts</Text>
-                                <View className='flex-row items-center justify-center mt-3'>
-                                    <CoinIcon name={selectChain.chain} passedClassName={"w-8 h-8"} size={24} />
-                                    <Text>&nbsp;&nbsp;{selectChain.chain}</Text>
+                    </View>
+                }
+                {
+                    step === STEP.SELECT_ADDRESS && <View className='h-full px-4'>
+                        <View className='items-center my-5'>
+                            <TouchableOpacity className='absolute right-0 w-8 h-8 rounded-full bg-slate-200 border border-gray-400 justify-center items-center' onPress={() => setStep(STEP.ADD_ACCOUNT)}>
+                                <MCIcons name={"plus"} color={"#0F6EFF"} size={18} />
+                            </TouchableOpacity>
+                            <Text className='text-2xl font-bold'>Accounts</Text>
+                            <View className='flex-row items-center justify-center mt-3'>
+                                <CoinIcon name={selectChain.chain} passedClassName={"w-8 h-8"} size={24} />
+                                <Text>&nbsp;&nbsp;{selectChain.chain}</Text>
+                            </View>
+                            <View>
+
+                            </View>
+                        </View>
+                        <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={16}>
+                            <AddressSelector addressList={addressList[selectChain.chain]} selectedAddress={selectedAddress} onSelect={onAddressSelected} />
+                        </ScrollView>
+                    </View>
+                }
+                {
+                    step === STEP.ADD_ACCOUNT &&
+                    <View className='w-full px-4'>
+                        <Text className='text-2xl text-center font-bold'>Add Account</Text>
+                        <View className='flex-row mt-4 h-[72] bg-[#F9F9FA] px-4  w-full rounded-2xl justify-between items-center'>
+                            <View className='flex-row items-center'>
+                                <CoinIcon name={selectChain.chain} />
+                                <View className='justify-items-start ml-4'>
+                                    <Text>{selectChain.chain}</Text>
                                 </View>
                             </View>
-                            <ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={16}>
-                                <AddressSelector addressList={addressList[selectChain.chain]} selectedAddress={selectedAddress} onSelect={onAddressSelected} />
-                            </ScrollView>
+                            <View></View>
+
                         </View>
+                        <View className=' h-[72] px-4 mt-4 bg-[#F9F9FA] w-full rounded-2xl  justify-center'>
+                            <TextInput value={walletName}
+                                className={'text-base'}
+                                style={{ fontFamily: 'Inter_500' }}
+                                placeholder={'Account name'}
+                                onChangeText={(e) => setWalletName(e)}></TextInput>
+                        </View>
+                        <CButton passedClassName='w-full mt-4' theme='dark' onPress={onCreate}>Create</CButton>
+
+                    </View>
                 }
             </CModal >
         </View>
