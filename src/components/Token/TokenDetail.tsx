@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import CButton from '../basics/Button'
 import CoinIcon from '../CoinIcon'
@@ -10,12 +10,14 @@ import { useAppSelector } from '../../store';
 import { historyList } from '../../mock/mock';
 import { useMemo } from 'react';
 import InterText from '../basics/Button/InterText';
+import { getETHTransferTx, getTokenReceiveTx, getTokenTransferTx } from '../../services/alchemy';
 
 
 function TokenDetail({ onSendBtnPress, onRecieveBtnPress }) {
     const navigation = useNavigation()
     const { selectedToken, tokenPrice } = useAppSelector(((state) => state.token))
-    const { tokenBalance } = useAppSelector(((state) => state.address))
+    const { tokenBalance, selectedAddress } = useAppSelector(((state) => state.address))
+    const [hisTxs, setHisTxs] = useState([])
 
     const balance = useMemo(() => tokenBalance[selectedToken.name], [tokenBalance, selectedToken])
     const price = useMemo(() => tokenPrice[selectedToken.name].usd, [tokenPrice, selectedToken])
@@ -29,6 +31,19 @@ function TokenDetail({ onSendBtnPress, onRecieveBtnPress }) {
     const handleRecieve = () => {
         onRecieveBtnPress()
     }
+
+    useEffect(() => {
+        if (selectedToken.symbol === 'ETH') {
+            getETHTransferTx(selectedAddress.address).then(res => {
+                setHisTxs(res)
+            })
+        } else {
+            getTokenTransferTx(selectedAddress.address, selectedToken.contract).then(res => {
+                setHisTxs(res)
+            })
+        }
+    }, [selectedAddress.address, selectedToken])
+
     return (
         <View className='h-3/4'>
             <View className='mt-5 mb-10 w-full'>
@@ -53,8 +68,8 @@ function TokenDetail({ onSendBtnPress, onRecieveBtnPress }) {
                     <InterText passedClassName='text-left text-xl mb-6' weight='700'>Transaction History</InterText>
                     <ScrollView className='h-1/4' showsVerticalScrollIndicator={false} scrollEventThrottle={16}>
                         {
-                            historyList.map((_h, idx) => (
-                                <HistoryItem key={_h.name} item={_h} onPress={() => { }} />
+                            hisTxs.map((_h, idx) => (
+                                <HistoryItem onPress={onSendBtnPress} price={price} key={_h.hash} item={_h} />
                             ))
                         }
                     </ScrollView>

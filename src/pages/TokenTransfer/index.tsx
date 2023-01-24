@@ -1,9 +1,11 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
-import React, { useEffect, useState } from 'react'
+import { utils } from 'ethers';
+import React, { useEffect, useMemo, useState } from 'react'
 import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Keyboard, Button, Platform } from 'react-native'
 import MCIcons from 'react-native-vector-icons/Ionicons';
 
 import CButton from '../../components/basics/Button'
+import CModal from '../../components/basics/CModal';
 import CoinIcon from '../../components/CoinIcon'
 import FullScreenContainer from '../../components/FullScreenContainer'
 import ScanButton from '../../components/Qrcode/ScanButton';
@@ -26,6 +28,7 @@ function TokenTransfer({ route }) {
     const { selectedToken } = useAppSelector(((state) => state.token))
     const { selectedAddress } = useAppSelector(((state) => state.address))
     const { tokenBalance } = useAppSelector(((state) => state.address))
+    const [showModal, setShowModal] = useState(false)
     const [target, setTarget] = useState("0x3F523280AC40E0C2A92c8DE99C5C0059EcE64Cdf")
     const [step, setStep] = useState(0)
     const [amount, setAmount] = useState("0")
@@ -84,6 +87,7 @@ function TokenTransfer({ route }) {
             dispatch(updateSelectedToken(null))
         }
     }, [])
+    const isValid = useMemo(() => utils.isAddress(target), [target])
     return (
         <FullScreenContainer passedClassName='' withBackBtn={step > STEP.INPUT_ADDRESS} onBack={onBack}>
             <View className='bg-gray-100 h-0.5 my-4 w-full'>
@@ -92,7 +96,7 @@ function TokenTransfer({ route }) {
             {
                 step === STEP.INPUT_ADDRESS &&
                 <>
-                    <View className='relative border-b border-gray-100'>
+                    <View className='relative border-b border-gray-300'>
                         {
                             !target && <View className='absolute top-8 flex-row items-center'>
                                 <MCIcons name="search" size={30} color="#00000040" />
@@ -122,6 +126,7 @@ function TokenTransfer({ route }) {
                 <View className='flex-row justify-start flex-wrap'>
 
                     <TextInput
+                        multiline
                         className='h-24 text-3xl'
                         value={target}
                         placeholder={""}
@@ -217,7 +222,7 @@ function TokenTransfer({ route }) {
                     style={styles.container}
                 >
                     <View style={styles.inner}>
-                        <CButton disabled={!target} onPress={onPress} passedClassName={"w-full"} theme={"dark"}>
+                        <CButton disabled={!isValid} onPress={onPress} passedClassName={"w-full"} theme={"dark"}>
                             {
                                 step <= STEP.SELECT_ASSET && "Continue"
                             }
@@ -231,6 +236,18 @@ function TokenTransfer({ route }) {
                     </View>
                 </KeyboardAvoidingView>
             }
+            <CModal isVisible={showModal} onClose={() => setShowModal(false)}>
+                <View>
+                    <Text>
+                        Your transfer is on its way!
+                    </Text>
+                    <Text>
+                        Your transaction is in progress. Track it by clicking 'View Transfer' below.
+                    </Text>
+                    <CButton onPress={() => { }} >Done</CButton>
+                    <CButton onPress={() => { }}>View Transfer</CButton>
+                </View>
+            </CModal>
         </FullScreenContainer >
 
     )

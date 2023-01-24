@@ -5,12 +5,14 @@ import { ITokenInfo } from "../types";
 import { TTokens } from "../utils/tokens/const";
 
 export interface tokenState {
+    ethPrice: string,
     tokenPrice: Record<TTokens, { "usd": string }>,
     selectedToken: ITokenInfo,
     tokenMetaDatas: TokenMetadataResponse[],
 }
 
 const initialState: tokenState = {
+    ethPrice: "0",
     tokenPrice: {
         Tether: { usd: '1' },
         Ethereum: { usd: '0' },
@@ -30,8 +32,9 @@ export const tokenSlice = createSlice({
         },
         updateTokenPrice(state, action: PayloadAction<Record<TTokens, { "usd": string }>>) {
             state.tokenPrice = { ...state.tokenPrice, ...action.payload }
+            state.ethPrice = state.tokenPrice.Ethereum.usd
         },
-        
+
     }
 })
 

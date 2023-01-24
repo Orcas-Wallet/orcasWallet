@@ -5,6 +5,7 @@ import CoinIcon from '../../components/CoinIcon';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { updateSelectedToken } from '../../store/tokenSlice';
 import { ITokenInfo } from '../../types';
+import { shortNumber } from '../../utils/utils';
 
 interface ITokenItem {
     tokenInfo: ITokenInfo,
@@ -44,7 +45,7 @@ const TokenItem: FC<ITokenItem> = ({ tokenInfo, onPress, balance }) => {
                             {balance} {tokenInfo.symbol}
                         </InterText>
                         <InterText weight='400' passedClassName='text-right'>
-                           $ {(price * Number(balance)).toFixed(4)}
+                           $ {shortNumber(price * Number(balance))}
                         </InterText>
                     </View>
                 </View>

@@ -16,6 +16,7 @@ function TokenAssets({onRecieveBtnPress}) {
     const onModalHide = () => {
         if (showRecieve) {
             onRecieveBtnPress()
+            setShowRecieve(false)
         }
     }
     return (

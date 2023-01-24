@@ -33,6 +33,7 @@ import UserAgreement from './src/pages/Menu/MenuNav/UserAgreement';
 import PrivacyPolicy from './src/pages/Menu/MenuNav/PrivacyPolicy';
 import HelpCenter from './src/pages/Menu/MenuNav/HelpCenter';
 import ContactUs from './src/pages/Menu/MenuNav/ContactUs';
+import TxDetail from './src/pages/TxDetail';
 
 const Stack = createNativeStackNavigator();
 const MyTheme = {
@@ -87,6 +88,7 @@ export default function App() {
                 <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
                 <Stack.Screen name="HelpCenter" component={HelpCenter} />
                 <Stack.Screen name="ContactUs" component={ContactUs} />
+                <Stack.Screen name="TxDetail" component={TxDetail} />
               </Stack.Group>
             ) : (
               <Stack.Group >

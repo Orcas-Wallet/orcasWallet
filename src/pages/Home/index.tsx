@@ -15,7 +15,7 @@ import { getTokenPrice } from '../../services/coingecko'
 import { useDispatch } from 'react-redux'
 import { fetchTokenBalance, updateTokenBalance } from '../../store/addressSlice'
 import { tokenMetas } from '../../utils/tokens/const'
-import { shortenAddress } from '../../utils/utils'
+import { shortenAddress, shortNumber } from '../../utils/utils'
 import InterText from '../../components/basics/Button/InterText'
 import MenuButton from './MenuButton'
 const buttonGroup = [
@@ -84,7 +84,7 @@ const Home = () => {
           {shortenAddress(selectedAddress.address)}
         </InterText>
         <InterText weight='500' passedClassName='text-2xl py-2'>
-          ${totalValue.toFixed(4)}
+          ${shortNumber(totalValue)}
         </InterText>
         {/* <Text className='flex justify-center'>
           <View><Text className=''>+$2,150.92</Text></View>

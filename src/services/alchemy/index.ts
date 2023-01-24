@@ -1,7 +1,9 @@
-import { Alchemy, Network } from 'alchemy-sdk'
+import { Alchemy, AssetTransfersCategory, Network, SortingOrder } from 'alchemy-sdk'
 import { decode, encode } from 'base-64'
 import { ethers, utils } from 'ethers';
+import { HISTORY_TYPE } from '../../types';
 import { tokenMetas, TTokens } from '../../utils/tokens/const';
+import { shortNumber } from '../../utils/utils';
 import { apiKey } from './const';
 
 if (!global.btoa) {
@@ -30,10 +32,67 @@ export const getTokenListByAddress = async (address: string) => {
         const tokenMetaData = tokenMetas.find((token) => token.contract.toLocaleLowerCase() === _token.contractAddress.toLocaleLowerCase())
         let balance = Number(_token.tokenBalance === '0x' ? '0' : _token.tokenBalance)
         balance = balance / Math.pow(10, tokenMetaData.decimals);
-        tokenBalance[tokenMetaData.name] = balance.toFixed(4)
+        tokenBalance[tokenMetaData.name] = shortNumber(balance)
     }
     return tokenBalance;
 }
 export const getTokenMeta = async (addresses: string) => {
     return alchemy.core.getTokenMetadata(addresses)
+}
+export const getTokenSentTx = (account: string, tokenContract: string) => {
+    return alchemy.core.getAssetTransfers({
+        fromAddress: account,
+        category: [AssetTransfersCategory.ERC20],
+        contractAddresses: [tokenContract],
+        order: SortingOrder.DESCENDING
+    })
+}
+export const getTokenReceiveTx = (account: string, tokenContract: string) => {
+    return alchemy.core.getAssetTransfers({
+        toAddress: account,
+        category: [AssetTransfersCategory.ERC20],
+        contractAddresses: [tokenContract],
+        order: SortingOrder.DESCENDING
+    })
+}
+
+export const getETHReceiveTx = (account: string) => {
+    return alchemy.core.getAssetTransfers({
+        toAddress: account,
+        category: [AssetTransfersCategory.EXTERNAL],
+        order: SortingOrder.DESCENDING
+    })
+}
+export const getETHSentTx = async (account: string) => {
+    return alchemy.core.getAssetTransfers({
+        fromAddress: account,
+        category: [AssetTransfersCategory.EXTERNAL],
+        order: SortingOrder.DESCENDING
+    })
+
+}
+export const getETHTransferTx = async (account: string) => {
+    const [receiveHis, sentHis] = await Promise.all([
+        getETHReceiveTx(account),
+        getETHSentTx(account)
+    ])
+    const txs = [...receiveHis.transfers, ...sentHis.transfers].sort((a, b) => Number(a.blockNum) - Number(b.blockNum))
+    txs.forEach(tx => {
+        tx["type"] = account === tx.from ? HISTORY_TYPE.SENT : HISTORY_TYPE.RECIEVED
+    });
+    return txs
+}
+export const getTokenTransferTx = async (account: string, tokenContract: string) => {
+    const [receiveHis, sentHis] = await Promise.all([
+        getTokenReceiveTx(account, tokenContract),
+        getTokenSentTx(account, tokenContract)
+    ])
+    const txs = [...receiveHis.transfers, ...sentHis.transfers].sort((a, b) => Number(a.blockNum) - Number(b.blockNum))
+    txs.forEach(tx => {
+        tx["type"] = account === tx.from ? HISTORY_TYPE.SENT : HISTORY_TYPE.RECIEVED
+    });
+    return txs
+}
+export const getTxDetails = async (hash: string) => {
+    return alchemy.core.getTransactionReceipt(hash)
 }
