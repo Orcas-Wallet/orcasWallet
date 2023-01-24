@@ -27,6 +27,12 @@ import {
 
 } from '@expo-google-fonts/inter';
 import Keychain from './src/components/Keychain';
+import Menu from './src/pages/Menu';
+import React from 'react';
+import UserAgreement from './src/pages/Menu/MenuNav/UserAgreement';
+import PrivacyPolicy from './src/pages/Menu/MenuNav/PrivacyPolicy';
+import HelpCenter from './src/pages/Menu/MenuNav/HelpCenter';
+import ContactUs from './src/pages/Menu/MenuNav/ContactUs';
 
 const Stack = createNativeStackNavigator();
 const MyTheme = {
@@ -76,7 +82,11 @@ export default function App() {
 
                 }} />
                 <Stack.Screen name="scanner" component={QrcodeScanner} />
-
+                <Stack.Screen name="Menu" component={Menu} />
+                <Stack.Screen name="UserAgreement" component={UserAgreement} />
+                <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+                <Stack.Screen name="HelpCenter" component={HelpCenter} />
+                <Stack.Screen name="ContactUs" component={ContactUs} />
               </Stack.Group>
             ) : (
               <Stack.Group >
@@ -84,7 +94,6 @@ export default function App() {
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Register" component={Login} />
                 <Stack.Screen name="Aboard" component={onAboard} />
-                <Stack.Screen name="FaceId" component={EnablefaceId} />
                 {/* <Stack.Screen name="keyChain" component={Keychain}></Stack.Screen> */}
               </Stack.Group>
             )}

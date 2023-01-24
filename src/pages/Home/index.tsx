@@ -17,6 +17,7 @@ import { fetchTokenBalance, updateTokenBalance } from '../../store/addressSlice'
 import { tokenMetas } from '../../utils/tokens/const'
 import { shortenAddress } from '../../utils/utils'
 import InterText from '../../components/basics/Button/InterText'
+import MenuButton from './MenuButton'
 const buttonGroup = [
   {
     icon: "arrow-top-right",
@@ -36,8 +37,8 @@ const buttonGroup = [
   }
 ]
 const Home = () => {
-  const {selectedAddress, tokenBalance} = useAppSelector((state) => state.address)
-  const {tokenPrice} = useAppSelector((state) => state.token)
+  const { selectedAddress, tokenBalance } = useAppSelector((state) => state.address)
+  const { tokenPrice } = useAppSelector((state) => state.token)
   const [showModal, setShowModal] = useState(false)
   const navigation = useNavigation()
 
@@ -68,6 +69,13 @@ const Home = () => {
     })
     dispatch(fetchTokenBalance(selectedAddress.address) as any)
   }, [selectedAddress.address])
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <MenuButton />
+      ),
+    })
+  }, [])
 
   return (
     <FullScreenContainer passedClassName='bg-white'>

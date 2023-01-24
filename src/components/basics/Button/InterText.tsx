@@ -9,7 +9,7 @@ interface IInterText {
     children ?: ReactNode
 }
 
-const InterText: FC<IInterText> = ({ passedClassName, style, children, weight = 600 }) => {
+const InterText: FC<IInterText> = ({ passedClassName, style, children, weight = 700 }) => {
     return (
         <Text className={`${passedClassName} leading-6`} style={{ fontFamily: `Inter_${weight}`, ...style }}>{children}</Text >
     )
