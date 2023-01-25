@@ -18,8 +18,18 @@ const config = {
     network: Network.ETH_GOERLI
 };
 const alchemy = new Alchemy(config);
+export const getAlchemyProvider = async () => {
+    return alchemy.config.getProvider()
 
+}
+export const getGasData = async () => {
+    const feeData = await alchemy.core.getFeeData()
+    return {
+        maxFeePerGas: feeData.maxFeePerGas,
+        maxPriorityFeePerGas: feeData.maxPriorityFeePerGas
+    }
 
+}
 export const getTokenListByAddress = async (address: string) => {
     const tokenContractList = tokenMetas.filter(meta => meta.name !== 'Ethereum').map((meta) => meta.contract)
     const coinBalances = await alchemy.core.getTokenBalances(address, tokenContractList);
@@ -78,7 +88,7 @@ export const getETHTransferTx = async (account: string) => {
     ])
     const txs = [...receiveHis.transfers, ...sentHis.transfers].sort((a, b) => Number(a.blockNum) - Number(b.blockNum))
     txs.forEach(tx => {
-        tx["type"] = account === tx.from ? HISTORY_TYPE.SENT : HISTORY_TYPE.RECIEVED
+        tx["type"] = account.toLowerCase() === tx.from.toLowerCase() ? HISTORY_TYPE.SENT : HISTORY_TYPE.RECIEVED
     });
     return txs
 }
@@ -88,8 +98,10 @@ export const getTokenTransferTx = async (account: string, tokenContract: string)
         getTokenSentTx(account, tokenContract)
     ])
     const txs = [...receiveHis.transfers, ...sentHis.transfers].sort((a, b) => Number(a.blockNum) - Number(b.blockNum))
+    console.log(account)
     txs.forEach(tx => {
-        tx["type"] = account === tx.from ? HISTORY_TYPE.SENT : HISTORY_TYPE.RECIEVED
+        tx["type"] = account.toLowerCase() === tx.from.toLowerCase()
+            ? HISTORY_TYPE.SENT : HISTORY_TYPE.RECIEVED
     });
     return txs
 }

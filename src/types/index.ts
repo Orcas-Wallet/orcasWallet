@@ -4,6 +4,7 @@ export enum CHAIN_TYPE {
     BITCOIN = "Bitcoin"
 }
 export interface IAddressInfo {
+    index: number,
     name: string,
     address: string,
     chain: CHAIN_TYPE

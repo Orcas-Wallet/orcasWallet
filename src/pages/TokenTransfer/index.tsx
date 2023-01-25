@@ -1,18 +1,21 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { utils } from 'ethers';
+import { Utils } from 'alchemy-sdk';
+import { ethers, utils } from 'ethers';
 import React, { useEffect, useMemo, useState } from 'react'
 import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView, Keyboard, Button, Platform } from 'react-native'
 import MCIcons from 'react-native-vector-icons/Ionicons';
 
 import CButton from '../../components/basics/Button'
+import BackButton from '../../components/basics/Button/BackButton';
 import CModal from '../../components/basics/CModal';
 import CoinIcon from '../../components/CoinIcon'
 import FullScreenContainer from '../../components/FullScreenContainer'
 import ScanButton from '../../components/Qrcode/ScanButton';
+import { sendERC20Token, sendETH } from '../../services/tokens/tokens';
 import { useAppDispatch, useAppSelector } from '../../store'
 import { updateSelectedToken } from '../../store/tokenSlice'
 import { tokenMetas } from '../../utils/tokens/const';
-import { shortenAddress } from '../../utils/utils'
+import { shortenAddress, shortNumber } from '../../utils/utils'
 import TokenItem from '../Home/TokenItem'
 
 enum STEP {
@@ -25,7 +28,7 @@ enum STEP {
 }
 function TokenTransfer({ route }) {
     const { scannedAddress } = route.params;
-    const { selectedToken } = useAppSelector(((state) => state.token))
+    const { selectedToken, ethPrice, tokenPrice } = useAppSelector(((state) => state.token))
     const { selectedAddress } = useAppSelector(((state) => state.address))
     const { tokenBalance } = useAppSelector(((state) => state.address))
     const [showModal, setShowModal] = useState(false)
@@ -34,6 +37,11 @@ function TokenTransfer({ route }) {
     const [amount, setAmount] = useState("0")
     const navigation = useNavigation()
     const dispatch = useAppDispatch()
+    const price = useMemo(() => !selectedToken ? 0 : tokenPrice[selectedToken.name].usd, [tokenPrice, selectedToken])
+    const gasFee = useMemo(() => shortNumber(Number(ethPrice) * Number(utils.formatUnits('21000', 'gwei'))), [ethPrice])
+    const amountValue = useMemo(() => shortNumber(Number(amount) * Number(price)), [amount, ethPrice])
+    const totalCost = useMemo(() => shortNumber(Number(amountValue) + Number(gasFee)), [amountValue, gasFee])
+
     useEffect(() => {
         setTarget(scannedAddress)
     }, [scannedAddress])
@@ -52,10 +60,10 @@ function TokenTransfer({ route }) {
     const onBack = () => {
         let _step = step
         _step = _step - 1
-        if (_step < STEP.INPUT_ADDRESS) {
+        setStep(_step)
+        if (_step <= STEP.INPUT_ADDRESS) {
             navigation.goBack()
         }
-        setStep(_step)
     }
     const onPress = () => {
         Keyboard.dismiss()
@@ -71,10 +79,23 @@ function TokenTransfer({ route }) {
             // generate tx info 
         } else if (step === STEP.REVIEWING) {
             console.log("toggle send")
+            sendToken()
         } else {
             _step += 1
         }
         setStep(_step)
+    }
+    const sendToken = async () => {
+        try {
+            if (selectedToken.symbol === 'ETH') {
+                console.log(selectedAddress)
+                await sendETH(selectedAddress.index, target, amount)
+            } else {
+                await sendERC20Token(selectedAddress.index, selectToken, target, amount)
+            }
+        } catch (error) {
+            console.error(error)
+        }
     }
     const selectToken = (_tokeInfo) => {
         // setTokenInfo()
@@ -157,7 +178,7 @@ function TokenTransfer({ route }) {
                         <CoinIcon name={selectedToken.name} passedClassName={"rounded-full"} size={24} />
                         <View className='ml-4'>
                             <Text className=' font-semibold'>{selectedToken.name}</Text>
-                            <Text className='text-sm text-gray-100 font-light'>{selectedToken.balance} available</Text>
+                            <Text className='text-sm text-gray-100 font-light'>{tokenBalance[selectedToken.name]} available</Text>
                         </View>
                     </View>
                     <View className='mt-10'>
@@ -168,12 +189,12 @@ function TokenTransfer({ route }) {
                                     value={amount}
                                     keyboardType="numeric"
                                     onChangeText={(v) => { setAmount(v) }} />
-                                <CButton onPress={() => { setAmount(selectedToken.balance.toString()) }} passedClassName={"w-12 h-6"}>
+                                <CButton onPress={() => { setAmount(tokenBalance[selectedToken.name].toString()) }} passedClassName={"w-12 h-6"}>
                                     <Text className='text-sm'>
                                         Max</Text></CButton>
                             </View>
                             <Text className='text-gray-100'>
-                                $ 0.242351
+                                $ {amountValue}
                             </Text>
                         </View>
                     </View>
@@ -207,11 +228,11 @@ function TokenTransfer({ route }) {
                         </View>
                         <View className='flex-row py-5 border-b border-gray-100 justify-between'>
                             <Text>Estimated fee</Text>
-                            <Text>$0.1</Text>
+                            <Text>{gasFee}</Text>
                         </View>
                         <View className='flex-row py-5 border-b border-gray-100 justify-between'>
                             <Text>Total Cost</Text>
-                            <Text>0</Text>
+                            <Text>{totalCost}</Text>
                         </View>
                     </View>
                 </View>

@@ -53,6 +53,7 @@ export const ethAddressList = (() => {
     const wallets = createEthWallets(5).map((_w, idx) => ({
         name: `EVM #${idx}`,
         address: _w.address,
+        index: idx,
         chain: CHAIN_TYPE.ETHEREUM
     }))
     return wallets

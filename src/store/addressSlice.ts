@@ -15,6 +15,7 @@ const initialState: addressState = {
     chainAddressSelectorVisiable: false,
 
     selectedAddress: {
+        index: 0,
         name: "",
         address: "",
         chain: CHAIN_TYPE.ETHEREUM

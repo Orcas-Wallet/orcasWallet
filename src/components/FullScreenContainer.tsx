@@ -13,7 +13,9 @@ interface IFullScreenContainer {
 const FullScreenContainer: FC<IFullScreenContainer> = ({ children, passedClassName, style, onBack, withBackBtn }) => {
     const navigation = useNavigation()
     useEffect(() => {
-        withBackBtn && navigation.setOptions({ headerLeft: () => <BackButton passedClassName={"-mx-5"} onPress={onBack} /> })
+        if (withBackBtn) {
+            navigation.setOptions({ headerLeft: () => <BackButton passedClassName={"-mx-5"} onPress={onBack} /> })
+        }
     }, [withBackBtn, navigation])
 
     return (
