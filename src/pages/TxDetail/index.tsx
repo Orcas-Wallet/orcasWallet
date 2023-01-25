@@ -43,11 +43,10 @@ const TxDetail = () => {
     const { ethPrice } = useAppSelector(state => state.token)
     useEffect(() => {
         getTxDetails(route.params.hash).then(res => {
-            console.log(res)
             setTxDetail(res)
         })
     }, [route.params])
-    console.log(ethPrice)
+    console.log(route.params)
 
 
     return (

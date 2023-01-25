@@ -17,6 +17,7 @@ import { updateSelectedToken } from '../../store/tokenSlice'
 import { tokenMetas } from '../../utils/tokens/const';
 import { shortenAddress, shortNumber } from '../../utils/utils'
 import TokenItem from '../Home/TokenItem'
+import TransferResult from './TransferResult';
 
 enum STEP {
     INPUT_ADDRESS,
@@ -32,9 +33,14 @@ function TokenTransfer({ route }) {
     const { selectedAddress } = useAppSelector(((state) => state.address))
     const { tokenBalance } = useAppSelector(((state) => state.address))
     const [showModal, setShowModal] = useState(false)
-    const [target, setTarget] = useState("0x3F523280AC40E0C2A92c8DE99C5C0059EcE64Cdf")
+    const [target, setTarget] = useState("")
     const [step, setStep] = useState(0)
     const [amount, setAmount] = useState("0")
+    const [txHash, setTxHash] = useState('')
+    const [result, setResult] = useState({
+        hash: "",
+        status: 0
+    })
     const navigation = useNavigation()
     const dispatch = useAppDispatch()
     const price = useMemo(() => !selectedToken ? 0 : tokenPrice[selectedToken.name].usd, [tokenPrice, selectedToken])
@@ -47,7 +53,7 @@ function TokenTransfer({ route }) {
     }, [scannedAddress])
     useEffect(() => {
         if (step > STEP.INPUTED_ADDRESS) {
-            navigation.setOptions({ title: shortenAddress(target) })
+            navigation.setOptions({ title: `to: ${shortenAddress(target)}` })
         }
         if (step <= STEP.INPUTED_ADDRESS) {
             navigation.setOptions({
@@ -89,11 +95,24 @@ function TokenTransfer({ route }) {
         try {
             if (selectedToken.symbol === 'ETH') {
                 console.log(selectedAddress)
-                await sendETH(selectedAddress.index, target, amount)
+                const hash = await sendETH(selectedAddress.index, target, amount)
+                setResult({
+                    status: 1,
+                    hash
+                })
             } else {
-                await sendERC20Token(selectedAddress.index, selectToken, target, amount)
+                const hash = await sendERC20Token(selectedAddress.index, selectedToken, target, amount)
+                setResult({
+                    status: 1,
+                    hash
+                })
             }
+            setShowModal(true)
         } catch (error) {
+            setResult({
+                status: 0,
+                hash: ""
+            })
             console.error(error)
         }
     }
@@ -258,16 +277,7 @@ function TokenTransfer({ route }) {
                 </KeyboardAvoidingView>
             }
             <CModal isVisible={showModal} onClose={() => setShowModal(false)}>
-                <View>
-                    <Text>
-                        Your transfer is on its way!
-                    </Text>
-                    <Text>
-                        Your transaction is in progress. Track it by clicking 'View Transfer' below.
-                    </Text>
-                    <CButton onPress={() => { }} >Done</CButton>
-                    <CButton onPress={() => { }}>View Transfer</CButton>
-                </View>
+                <TransferResult onClose={() => setShowModal(false)} amount={amount} value={amountValue} result={result} />
             </CModal>
         </FullScreenContainer >
 
