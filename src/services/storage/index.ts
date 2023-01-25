@@ -7,6 +7,20 @@ export const storeData = async (storage_Key, value) => {
         // saving error
     }
 }
+export const appendData = async (storage_Key, value) => {
+    console.log(storage_Key, value, "storage_Key, value")
+    try {
+        let listStr = await getData(storage_Key)
+        const list = JSON.parse(listStr || "[]")
+        const tar = list.find((v) => v.toLowerCase() === value.toLowerCase())
+        if (!tar) {
+            list.push(value)
+            await storeData(storage_Key, JSON.stringify(list))
+        }
+    } catch (error) {
+
+    }
+}
 
 
 export const getData = async (storage_Key) => {

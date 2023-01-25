@@ -63,14 +63,14 @@ function Menu({ navigation }) {
                 <InterText passedClassName='text-sm' weight='200'>General</InterText>
                 {
                     generalSetting.map(({name, text}) =>
-                        <MenuItem onPress={() => onPress(name)}>{text}</MenuItem>)
+                        <MenuItem key={name} onPress={() => onPress(name)}>{text}</MenuItem>)
                 }
             </View>
             <View className='my-6'>
                 <InterText passedClassName='text-sm mb-4' weight='200'>Follow Us</InterText>
                 <View className='flex-row items-start'>
                     {
-                        socialList.map(({ name, link }) => <SocialItem name={name} link={link} />)
+                        socialList.map(({ name, link }) => <SocialItem key={name} name={name} link={link} />)
                     }
 
                 </View>

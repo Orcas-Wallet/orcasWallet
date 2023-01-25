@@ -6,8 +6,13 @@ export const shortNumber = (num: number, length = 2) => {
         return 0
     }
     if (typeof num === "number") {
-        return num.toFixed(length)        
+        return num.toFixed(length)
     } else {
         return num
+    }
+}
+export const resentStorageKey = (account: string) => {
+    if (account) {
+        return `resent_${shortenAddress(account)}`
     }
 }

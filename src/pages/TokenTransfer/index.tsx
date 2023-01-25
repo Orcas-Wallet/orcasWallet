@@ -11,12 +11,14 @@ import CModal from '../../components/basics/CModal';
 import CoinIcon from '../../components/CoinIcon'
 import FullScreenContainer from '../../components/FullScreenContainer'
 import ScanButton from '../../components/Qrcode/ScanButton';
+import { appendData } from '../../services/storage';
 import { sendERC20Token, sendETH } from '../../services/tokens/tokens';
 import { useAppDispatch, useAppSelector } from '../../store'
 import { updateSelectedToken } from '../../store/tokenSlice'
 import { tokenMetas } from '../../utils/tokens/const';
-import { shortenAddress, shortNumber } from '../../utils/utils'
+import { resentStorageKey, shortenAddress, shortNumber } from '../../utils/utils'
 import TokenItem from '../Home/TokenItem'
+import RecentSentAddress from './RecentSentAddress';
 import TransferResult from './TransferResult';
 
 enum STEP {
@@ -96,6 +98,7 @@ function TokenTransfer({ route }) {
             if (selectedToken.symbol === 'ETH') {
                 console.log(selectedAddress)
                 const hash = await sendETH(selectedAddress.index, target, amount)
+                await appendData(resentStorageKey(selectedAddress.address), target)
                 setResult({
                     status: 1,
                     hash
@@ -152,12 +155,13 @@ function TokenTransfer({ route }) {
                     </View>
                     <View>
                         <View className='mt-10'>
-                            <Text className='text-2xl font-semibold text-center'>
+                            {/* <Text className='text-2xl font-semibold text-center'>
                                 No recents
                             </Text>
                             <Text className='text-gray-100 text-center mt-2'  >
                                 Sent addresses will be shown here
-                            </Text>
+                            </Text> */}
+                            <RecentSentAddress account={selectedAddress.address} onSelect={(addr) => {setTarget(addr)}} />
                         </View>
                     </View></>
             }
