@@ -12,3 +12,8 @@ web-build/
 
 # macOS
 .DS_Store
+yarn-error.log
+
+.idea
+.history
+test.js
