@@ -1,6 +1,6 @@
 import _axios, { AxiosInstance, AxiosResponse } from 'axios'
 import { myCrypto } from './crypto'
-import { accountFactory } from './generic'
+import { createRandom } from './generic'
 import { store } from '../store'
 
 interface IResponseStatus {
@@ -27,7 +27,7 @@ interface RegisterEmailRequestData {
 
 export interface IPendingAccount
     extends RegisterEmailRequestData,
-        Awaited<ReturnType<typeof accountFactory.createRandom>> {
+    Awaited<ReturnType<typeof createRandom>> {
     email: string
 }
 
@@ -38,8 +38,8 @@ export class Api {
         this.axios = _axios.create({
             baseURL:
                 process.env.NODE_ENV === 'development'
-                    ? 'http://149.28.138.238:30001'
-                    : 'http://149.28.138.238:30001',
+                    ? 'https://demo.keysafe.network'
+                    : 'https://demo.keysafe.network',
         })
         this.axios.interceptors.response.use((res: AxiosResponse<IResponseStatus>) => {
             if (res.status !== 200) throw res
@@ -93,28 +93,35 @@ export class Api {
     }
 
     async registerEmail(email: string): Promise<IPendingAccount> {
-        const account = await accountFactory.createRandom()
-        console.log(account)
-        const [session_id, cipher_account, cipher_email] = await Promise.all([
-            this.hash(account.publicKey),
-            this.hash(account.publicKey),
-            this.hash(email),
-        ])
-        const data = {
-            session_id,
-            cipher_email,
-            account: account.publicKey,
-            cipher_account,
-        } as RegisterEmailRequestData
+        try {
 
-        type ResponseData = IBaseResponseData<{}>
-        const res = await this.axios.post<ResponseData>(`ks/register_email`, data)
-        console.log(res, "res")
-        if (res.data.status === 'fail') throw new Error(`register email failed ${res.data}`)
-        return {
-            email,
-            ...data,
-            ...account,
+            const account = createRandom()
+            console.log(account)
+            const [session_id, cipher_account, cipher_email] = await Promise.all([
+                this.hash(account.publicKey),
+                account.publicKey,
+                email,
+            ])
+            const data = {
+                session_id,
+                cipher_email,
+                account: account.publicKey,
+                cipher_account,
+            } as RegisterEmailRequestData
+
+            type ResponseData = IBaseResponseData<{}>
+            const res = await this.axios.post<ResponseData>(`ks/register_email`, data)
+            console.log(res, "res")
+            if (res.data.status === 'fail') throw new Error(`register email failed ${res.data}`)
+            return {
+                email,
+                ...data,
+                ...account,
+            }
+
+        } catch (error) {
+            console.error(error)
+
         }
     }
 
@@ -134,7 +141,7 @@ export class Api {
             cipher_email: string
         }
 
-        const [cipher_code, cipher_share] = await Promise.all([this.hash(code), this.hash(share)])
+        const [cipher_code, cipher_share] = await Promise.all([code, this.hash(share)])
         const data = {
             session_id: pending.session_id,
             account: pending.account,
@@ -160,6 +167,9 @@ export class Api {
     // @TODO
     private async sign(text: string) {
         return ''
+    }
+    private async loginWithEmail () {
+        
     }
 
     private async hash(content: string) {

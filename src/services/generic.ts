@@ -1,8 +1,3 @@
-import 'react-native-get-random-values'
-
-// Import the the ethers shims (**BEFORE** ethers)
-import '@ethersproject/shims'
-
 // Import the ethers library
 import { Wallet } from 'ethers'
 import { getMd5, myCrypto } from './crypto'
@@ -16,20 +11,20 @@ export const createGenericAccount = async () => {
     }
 }
 
-export class AccountFactory {
-    async createRandom() {
+export const createRandom = () => {
+    try {
         const wallet = Wallet.createRandom()
-        return this.wallet2account(wallet)
-    }
+        return wallet2account(wallet)
+    } catch (error) {
+        console.error(error)
 
-    private async wallet2account(wallet: Wallet) {
-        const { publicKey } = wallet
-        return {
-            mnemonic: wallet.mnemonic.phrase,
-            privateKey: wallet.privateKey,
-            publicKey,
-        }
     }
 }
-
-export const accountFactory = new AccountFactory()
+const wallet2account = (wallet: Wallet) => {
+    const { publicKey } = wallet
+    return {
+        mnemonic: wallet.mnemonic.phrase,
+        privateKey: wallet.privateKey,
+        publicKey,
+    }
+}

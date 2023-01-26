@@ -6,6 +6,7 @@ export interface AccountState {
     name: string
     pendingAccount?: IPendingAccount
     currentIndex: number
+    isLogin: boolean
     accounts: Array<{
         email: string
         access_token: string
@@ -19,6 +20,7 @@ const initialState: AccountState = {
     name: 'account',
     currentIndex: -1,
     accounts: [],
+    isLogin: false,
 }
 
 export const accountSlice = createSlice({

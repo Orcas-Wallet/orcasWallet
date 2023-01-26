@@ -75,7 +75,7 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
             await dispatch(confirmRegister(code))
             console.warn(`handle confirm registered`)
             // request email verify code
-            navigation.navigate('FaceId')
+            navigation.navigate('EnablefaceId')
         } catch (e) {
             console.warn(`show warning`)
             console.error(`confirm register failed reason ${e}`)
