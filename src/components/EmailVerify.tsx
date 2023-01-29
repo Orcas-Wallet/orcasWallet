@@ -49,10 +49,9 @@ interface IEmailVerify {
 }
 
 const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
-    const [email, setEmail] = useState('keysafe@gmail.com')
+    const [email, setEmail] = useState('scott001110@gmail.com')
     const [code, setCode] = useState('')
     const [step, setStep] = useState(EStep.FILL_EMAIL)
-    const navigation = useNavigation()
     const dispatch = useAppDispatch()
 
     const onNextPress = async () => {
@@ -74,8 +73,6 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
             console.warn(`send confirm register request ...`)
             await dispatch(confirmRegister(code))
             console.warn(`handle confirm registered`)
-            // request email verify code
-            navigation.navigate('EnablefaceId')
         } catch (e) {
             console.warn(`show warning`)
             console.error(`confirm register failed reason ${e}`)
