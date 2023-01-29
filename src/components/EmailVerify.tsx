@@ -49,7 +49,7 @@ interface IEmailVerify {
 }
 
 const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
-    const [email, setEmail] = useState('scott001110@gmail.com')
+    const [email, setEmail] = useState('')
     const [code, setCode] = useState('')
     const [step, setStep] = useState(EStep.FILL_EMAIL)
     const dispatch = useAppDispatch()

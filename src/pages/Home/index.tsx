@@ -39,7 +39,7 @@ const buttonGroup = [
 const Home = () => {
   const { selectedAddress, tokenBalance } = useAppSelector((state) => state.address)
   const { tokenPrice } = useAppSelector((state) => state.token)
-  // const { isEnableFaceId, access_token, account } = useAppSelector((state) => state.account)
+  const { isEnableFaceId, access_token, account } = useAppSelector((state) => state.account)
   const [showModal, setShowModal] = useState(false)
   const navigation = useNavigation()
 
@@ -77,19 +77,19 @@ const Home = () => {
       ),
     })
   }, [])
-  // useEffect(() => {
-  //   if (!access_token) {
-  //     // need login with email
+  useEffect(() => {
+    if (!access_token) {
+      // need login with email
 
-  //   } else {
-  //     if (!isEnableFaceId) {
-  //       navigation.navigate('EnableFaceId')
-  //     }
-  //     if (!account) {
-  //       // need login with access token
-  //     }
-  //   }
-  // }, [isEnableFaceId, access_token])
+    } else {
+      if (!isEnableFaceId) {
+        navigation.navigate('EnableFaceId')
+      }
+      if (!account) {
+        // need login with access token
+      }
+    }
+  }, [isEnableFaceId, access_token])
 
   return (
     <FullScreenContainer passedClassName='bg-white'>
