@@ -1,26 +1,38 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { combineReducers, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { api, IPendingAccount } from '../services/api'
+import { createEthWallets } from '../services/walletAdapter/ethereum'
+import { CHAIN_TYPE } from '../types'
 import { RootState } from './index'
 
+interface IWallet {
+    name: string,
+    address: string,
+    index: number,
+    chain: CHAIN_TYPE
+}
 export interface AccountState {
     name: string
     pendingAccount?: IPendingAccount
-    currentIndex: number
-    isLogin: boolean
-    accounts: Array<{
+    isLogin: boolean,
+    isEnableFaceId: boolean,
+    access_token: string,
+    account: {
         email: string
-        access_token: string
         mnemonic: string
         privateKey: string
-        publicKey: string
-    }>
+        publicKey: string,
+        wallet_account: number
+    } | null,
+    wallets: Array<IWallet>
 }
 
 const initialState: AccountState = {
     name: 'account',
-    currentIndex: -1,
-    accounts: [],
+    access_token: "",
+    account: null,
     isLogin: false,
+    isEnableFaceId: false,
+    wallets: []
 }
 
 export const accountSlice = createSlice({
@@ -28,8 +40,14 @@ export const accountSlice = createSlice({
     initialState,
     reducers: {
         removePendingAccount: (state) => {
-            state.pendingAccount = null
+            state.pendingAccount = undefined
         },
+        enableFaceId: (state) => {
+            state.isEnableFaceId = true
+        },
+        updateWallets: (state, payload: PayloadAction<IWallet[]>) => {
+            state.wallets = payload.payload
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -37,25 +55,26 @@ export const accountSlice = createSlice({
                 state.pendingAccount = action.payload
             })
             .addCase(registerAccount.rejected, (state) => {
-                state.pendingAccount = null
+                state.pendingAccount = undefined
+                state.access_token = ''
             })
 
         builder.addCase(confirmRegister.fulfilled, (state, action) => {
             const account = {
-                email: state.pendingAccount.email,
-                access_token: action.payload.access_token,
-                mnemonic: state.pendingAccount.mnemonic,
-                privateKey: state.pendingAccount.privateKey,
-                publicKey: state.pendingAccount.publicKey,
+                email: state.pendingAccount!.email,
+                mnemonic: state.pendingAccount!.mnemonic,
+                privateKey: state.pendingAccount!.privateKey,
+                publicKey: state.pendingAccount!.publicKey,
+                wallet_account: 5
             }
-            if (state.currentIndex < 0) {
-                state.currentIndex = 0
-            }
-            state.accounts = [
-                ...state.accounts.slice(0, state.currentIndex),
-                account,
-                ...state.accounts.slice(state.currentIndex),
-            ]
+            state.account = account
+            state.access_token = action.payload.access_token
+            state.isLogin = true
+            state.pendingAccount = undefined
+            // state.wallets = createEthWallets(account.mnemonic, account.wallet_account)
+        }).addCase(confirmRegister.rejected, (state) => {
+            state.access_token = ''
+            state.pendingAccount = undefined
         })
     },
 })
@@ -68,8 +87,8 @@ export const confirmRegister = createAsyncThunk('account/confirmRegister', async
     return api.confirmRegister(code)
 })
 
-export const selectCurrentAccount = (state: RootState) => state.account.accounts[state.account.currentIndex]
+export const selectCurrentAccount = (state: RootState) => state.account.account
 
-export const {} = accountSlice.actions
+export const { enableFaceId } = accountSlice.actions
 
 export const accountReducer = accountSlice.reducer

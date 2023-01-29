@@ -12,13 +12,8 @@ export const createGenericAccount = async () => {
 }
 
 export const createRandom = () => {
-    try {
-        const wallet = Wallet.createRandom()
-        return wallet2account(wallet)
-    } catch (error) {
-        console.error(error)
-
-    }
+    const wallet = Wallet.createRandom()
+    return wallet2account(wallet)
 }
 const wallet2account = (wallet: Wallet) => {
     const { publicKey } = wallet

@@ -4,10 +4,19 @@ import CButton from '../../components/basics/Button'
 import InterText from '../../components/basics/Button/InterText'
 import FullScreenContainer from '../../components/FullScreenContainer'
 import * as LocalAuthentication from 'expo-local-authentication';
+import { useAppDispatch } from '../../store'
+import { enableFaceId } from '../../store/accountSlice'
 
-function EnablefaceId() {
+function EnablefaceId({navigation}) {
+    const dispatch = useAppDispatch()
     const onPress = async () => {
-        await LocalAuthentication.authenticateAsync({})
+        const res = await LocalAuthentication.authenticateAsync({
+        
+        })
+        if (res.success) {
+            dispatch(enableFaceId())
+            navigation.navigate("Home")
+        }
     }
     return (
         <FullScreenContainer passedClassName='flex-1  justify-between'>

@@ -20,6 +20,8 @@ import HelpCenter from './src/pages/Menu/MenuNav/HelpCenter';
 import ContactUs from './src/pages/Menu/MenuNav/ContactUs';
 import TxDetail from './src/pages/TxDetail';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useSelector } from 'react-redux';
+import { useAppSelector } from './src/store';
 const Stack = createNativeStackNavigator();
 const MyTheme = {
     ...DefaultTheme,
@@ -29,7 +31,7 @@ const MyTheme = {
     },
 };
 const Routes = () => {
-    const isLoggedIn = false
+    const isLoggedIn = useAppSelector((state) => state.account.isLogin)
     return (
         <NavigationContainer theme={MyTheme}>
             <Stack.Navigator screenOptions={{ headerShadowVisible: false, title: "", headerStyle: { backgroundColor: 'white' }, headerShown: true, }}>
@@ -56,6 +58,7 @@ const Routes = () => {
                         <Stack.Screen name="HelpCenter" component={HelpCenter} />
                         <Stack.Screen name="ContactUs" component={ContactUs} />
                         <Stack.Screen name="TxDetail" component={TxDetail} />
+                        <Stack.Screen name="EnableFaceId" component={EnablefaceId} />
                     </Stack.Group>
                 ) : (
                     <Stack.Group >
@@ -63,7 +66,6 @@ const Routes = () => {
                         <Stack.Screen name="Login" component={Login} />
                         <Stack.Screen name="Register" component={Login} />
                         <Stack.Screen name="Aboard" component={onAboard} />
-                        <Stack.Screen name="EnablefaceId" component={EnablefaceId} />
                         {/* <Stack.Screen name="keyChain" component={Keychain}></Stack.Screen> */}
                     </Stack.Group>
                 )}
@@ -77,6 +79,6 @@ export default Routes
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: 'black',
+        backgroundColor: 'black',
     },
-  });
+});

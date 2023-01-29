@@ -93,35 +93,30 @@ export class Api {
     }
 
     async registerEmail(email: string): Promise<IPendingAccount> {
-        try {
 
-            const account = createRandom()
-            console.log(account)
-            const [session_id, cipher_account, cipher_email] = await Promise.all([
-                this.hash(account.publicKey),
-                account.publicKey,
-                email,
-            ])
-            const data = {
-                session_id,
-                cipher_email,
-                account: account.publicKey,
-                cipher_account,
-            } as RegisterEmailRequestData
 
-            type ResponseData = IBaseResponseData<{}>
-            const res = await this.axios.post<ResponseData>(`ks/register_email`, data)
-            console.log(res, "res")
-            if (res.data.status === 'fail') throw new Error(`register email failed ${res.data}`)
-            return {
-                email,
-                ...data,
-                ...account,
-            }
+        const account = createRandom()
+        console.log(account)
+        const [session_id, cipher_account, cipher_email] = await Promise.all([
+            this.hash(account.publicKey),
+            account.publicKey,
+            email,
+        ])
+        const data = {
+            session_id,
+            cipher_email,
+            account: account.publicKey,
+            cipher_account,
+        } as RegisterEmailRequestData
 
-        } catch (error) {
-            console.error(error)
-
+        type ResponseData = IBaseResponseData<{}>
+        const res = await this.axios.post<ResponseData>(`ks/register_email`, data)
+        console.log(res, "res")
+        if (res.data.status === 'fail') throw new Error(`register email failed ${res.data}`)
+        return {
+            email,
+            ...data,
+            ...account,
         }
     }
 
@@ -141,14 +136,14 @@ export class Api {
             cipher_email: string
         }
 
-        const [cipher_code, cipher_share] = await Promise.all([code, this.hash(share)])
+        const [cipher_code, cipher_share, hashed_email] = await Promise.all([code, this.hash(share), this.hash(pending.email)])
         const data = {
             session_id: pending.session_id,
             account: pending.account,
             cipher_code,
             cipher_share,
             cipher_email: pending.cipher_email,
-            hashed_email: pending.cipher_email,
+            hashed_email: hashed_email,
         } as RequestData
 
         type ResponseData = IBaseResponseData<{
@@ -168,8 +163,8 @@ export class Api {
     private async sign(text: string) {
         return ''
     }
-    private async loginWithEmail () {
-        
+    private async loginWithEmail() {
+
     }
 
     private async hash(content: string) {
