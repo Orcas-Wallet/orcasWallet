@@ -1,6 +1,6 @@
 import _axios, { AxiosInstance, AxiosResponse } from 'axios'
 import { myCrypto } from './crypto'
-import { accountFactory } from './generic'
+import { createRandom } from './generic'
 import { store } from '../store'
 
 interface IResponseStatus {
@@ -27,7 +27,7 @@ interface RegisterEmailRequestData {
 
 export interface IPendingAccount
     extends RegisterEmailRequestData,
-        Awaited<ReturnType<typeof accountFactory.createRandom>> {
+    Awaited<ReturnType<typeof createRandom>> {
     email: string
 }
 
@@ -38,8 +38,8 @@ export class Api {
         this.axios = _axios.create({
             baseURL:
                 process.env.NODE_ENV === 'development'
-                    ? 'http://149.28.138.238:30001'
-                    : 'http://149.28.138.238:30001',
+                    ? 'https://demo.keysafe.network'
+                    : 'https://demo.keysafe.network',
         })
         this.axios.interceptors.response.use((res: AxiosResponse<IResponseStatus>) => {
             if (res.status !== 200) throw res
@@ -93,12 +93,14 @@ export class Api {
     }
 
     async registerEmail(email: string): Promise<IPendingAccount> {
-        const account = await accountFactory.createRandom()
+
+
+        const account = createRandom()
         console.log(account)
         const [session_id, cipher_account, cipher_email] = await Promise.all([
             this.hash(account.publicKey),
-            this.hash(account.publicKey),
-            this.hash(email),
+            account.publicKey,
+            email,
         ])
         const data = {
             session_id,
@@ -134,14 +136,14 @@ export class Api {
             cipher_email: string
         }
 
-        const [cipher_code, cipher_share] = await Promise.all([this.hash(code), this.hash(share)])
+        const [cipher_code, cipher_share, hashed_email] = await Promise.all([code, this.hash(share), this.hash(pending.email)])
         const data = {
             session_id: pending.session_id,
             account: pending.account,
             cipher_code,
             cipher_share,
             cipher_email: pending.cipher_email,
-            hashed_email: pending.cipher_email,
+            hashed_email: hashed_email,
         } as RequestData
 
         type ResponseData = IBaseResponseData<{
@@ -160,6 +162,9 @@ export class Api {
     // @TODO
     private async sign(text: string) {
         return ''
+    }
+    private async loginWithEmail() {
+
     }
 
     private async hash(content: string) {

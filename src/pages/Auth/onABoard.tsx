@@ -42,7 +42,7 @@ const OnAboard = ({ navigation }) => {
       
       <View className='items-center flex-auto justify-between'>
           <View>
-            <Text>asds</Text>
+            <Text></Text>
           </View>
 
         </View>
@@ -68,7 +68,7 @@ const OnAboard = ({ navigation }) => {
               step === 1 && <CButton passedClassName='flex-initial w-20 mr-4' onPress={onBack}><MCIcons name={"arrow-back"} size={24}></MCIcons></CButton>
             }
             {
-              step === 2 && <CButton passedClassName='w-full mr-4' onPress={handleRegister}>Slide to go private</CButton>
+              step === 2 && <CButton passedClassName='w-full' onPress={handleRegister}>Slide to go private</CButton>
             }
             {
               step < 2 && <CButton theme='dark' passedClassName='w-full  flex-initial' onPress={onNext}>Next</CButton>

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "keysafeWalletApp",
-    "slug": "keysafeWalletApp",
+    "name": "Orcas",
+    "slug": "orcas",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,7 +21,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSFaceIDUsageDescription ": "This app uses the camera to scan barcodes on event tickets."
-      }
+      },
+      "bundleIdentifier": "Orcas"
     },
     "android": {
       "adaptiveIcon": {
@@ -34,8 +35,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "83ec9b8d-39f1-4419-98e6-a7e9c5da2719"
+        "projectId": "32426c89-739e-4fba-9037-db862162eee5"
       }
-    }
+    },
+    "owner": "0xkeykey"
   }
 }
