@@ -126,7 +126,7 @@ export class Api {
         if (!pending) throw new Error(`register email first.`)
 
         // split pending.mnemonic
-        const [s1, s2, s3] = await this.splitM(pending.mnemonic)
+        const s3 = ''
         interface RequestData {
             session_id: string
             account: string
