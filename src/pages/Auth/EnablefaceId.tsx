@@ -6,14 +6,14 @@ import FullScreenContainer from '../../components/FullScreenContainer'
 import * as LocalAuthentication from 'expo-local-authentication';
 import { useAppDispatch } from '../../store'
 import { enableFaceId } from '../../store/accountSlice'
+import { storeData } from '../../services/storage'
 
-function EnablefaceId({navigation}) {
+function EnablefaceId({ navigation }) {
     const dispatch = useAppDispatch()
     const onPress = async () => {
-        const res = await LocalAuthentication.authenticateAsync({
-        
-        })
+        const res = await LocalAuthentication.authenticateAsync({})
         if (res.success) {
+            await storeData("isEnableFaceId", "true")
             dispatch(enableFaceId())
             navigation.navigate("Home")
         }

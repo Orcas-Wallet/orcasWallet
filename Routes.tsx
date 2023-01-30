@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Welcome from './src/pages/Auth/Welcome';
 import Home from './src/pages/Home';
 import Login from './src/pages/Auth/Regsiter';
@@ -20,8 +20,9 @@ import HelpCenter from './src/pages/Menu/MenuNav/HelpCenter';
 import ContactUs from './src/pages/Menu/MenuNav/ContactUs';
 import TxDetail from './src/pages/TxDetail';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useSelector } from 'react-redux';
-import { useAppSelector } from './src/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from './src/store';
+import { asyncStoredData, loginWithToken } from './src/store/accountSlice';
 const Stack = createNativeStackNavigator();
 const MyTheme = {
     ...DefaultTheme,
@@ -31,11 +32,20 @@ const MyTheme = {
     },
 };
 const Routes = () => {
-    const isLoggedIn = useAppSelector((state) => state.account.isLogin)
+    const { access_token } = useAppSelector((state) => state.account)
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(asyncStoredData())
+    }, [])
+    useEffect(() => {
+        if (access_token) {
+            dispatch(loginWithToken(access_token))
+        }
+    }, [access_token])
     return (
         <NavigationContainer theme={MyTheme}>
             <Stack.Navigator screenOptions={{ headerShadowVisible: false, title: "", headerStyle: { backgroundColor: 'white' }, headerShown: true, }}>
-                {isLoggedIn ? (
+                {access_token ? (
                     <Stack.Group screenOptions={{
                         headerTintColor: '#0F6EFF',
                         headerTitleStyle: {

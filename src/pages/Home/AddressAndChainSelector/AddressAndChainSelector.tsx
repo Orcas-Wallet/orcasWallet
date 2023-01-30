@@ -11,7 +11,6 @@ import { CHAIN_TYPE } from '../../../types';
 import CModal from '../../../components/basics/CModal';
 import CoinIcon from '../../../components/CoinIcon';
 import { getData, storeData } from '../../../services/storage';
-import { ethAddressList } from '../../../mock/mock';
 import ListItem from '../../../components/Token/ListItem';
 import CButton from '../../../components/basics/Button';
 
@@ -63,10 +62,6 @@ const btcAddressList = [
         chain: CHAIN_TYPE.BITCOIN
     },
 ]
-const addressList = {
-    [CHAIN_TYPE.BITCOIN]: btcAddressList,
-    [CHAIN_TYPE.ETHEREUM]: ethAddressList
-}
 enum STEP {
     SELECT_CHAIN,
     SELECT_ADDRESS,
@@ -76,20 +71,18 @@ function AddressAndChainSelector() {
     const [selectChain, setSelectChain] = useState(chainList[0])
     const [step, setStep] = useState(STEP.SELECT_CHAIN)
     const { selectedAddress } = useAppSelector((state) => state.address)
+    const { wallets } = useAppSelector((state) => state.account)
     const chainAddressSelectorVisiable = useAppSelector((state) => state.address.chainAddressSelectorVisiable)
     const [walletName, setWalletName] = useState('')
 
+    const addressList = {
+        [CHAIN_TYPE.BITCOIN]: btcAddressList,
+        [CHAIN_TYPE.ETHEREUM]: wallets
+    }
+
     useEffect(() => {
-        getData('selectedAccount').then(async (data) => {
-            const addressInfo = JSON.parse(data)
-            saveAddressInfo(addressInfo)
-        }).catch(async (e) => {
-            console.log(e)
-            // no storaged data
-            const addressInfo = addressList[CHAIN_TYPE.ETHEREUM][0]
-            await saveAddressInfo(addressInfo)
-        })
-    }, [])
+        wallets.length > 0 && saveAddressInfo(wallets[0])
+    }, [wallets])
 
     const dispatch = useDispatch()
     const closeModal = () => {
@@ -105,10 +98,10 @@ function AddressAndChainSelector() {
         closeModal()
     }
     const saveAddressInfo = async (addressInfo) => {
-        await storeData('selectedAccount', JSON.stringify(addressInfo))
+        // await storeData('selectedAccount', JSON.stringify(addressInfo))
         dispatch(updateSelectedAddress(addressInfo))
     }
-    const onCreate = () => {}
+    const onCreate = () => { }
 
 
     return (

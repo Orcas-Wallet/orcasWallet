@@ -13,7 +13,7 @@ import { useAppSelector } from '../../store'
 import { useNavigation } from '@react-navigation/native'
 import { getTokenPrice } from '../../services/coingecko'
 import { useDispatch } from 'react-redux'
-import { fetchTokenBalance, updateTokenBalance } from '../../store/addressSlice'
+import { fetchTokenBalance } from '../../store/addressSlice'
 import { tokenMetas } from '../../utils/tokens/const'
 import { shortenAddress, shortNumber } from '../../utils/utils'
 import InterText from '../../components/basics/Button/InterText'
@@ -62,6 +62,7 @@ const Home = () => {
     const price = tokenPrice[token.name].usd
     return Number(balance) * Number(price) + pre
   }, 0), [tokenPrice, tokenBalance])
+
   useEffect(() => {
     getTokenPrice().then(res => {
       dispatch(updateTokenPrice(res))

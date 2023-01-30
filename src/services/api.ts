@@ -2,6 +2,8 @@ import _axios, { AxiosInstance, AxiosResponse } from 'axios'
 import { myCrypto } from './crypto'
 import { createRandom } from './generic'
 import { store } from '../store'
+import { getData, storeData } from './storage'
+import { createEthWallets } from './walletAdapter/ethereum'
 
 interface IResponseStatus {
     status: 'success' | 'fail'
@@ -96,7 +98,6 @@ export class Api {
 
 
         const account = createRandom()
-        console.log(account)
         const [session_id, cipher_account, cipher_email] = await Promise.all([
             this.hash(account.publicKey),
             account.publicKey,
@@ -125,8 +126,7 @@ export class Api {
         if (!pending) throw new Error(`register email first.`)
 
         // split pending.mnemonic
-        const share = ''
-
+        const [s1, s2, s3] = await this.splitM(pending.mnemonic)
         interface RequestData {
             session_id: string
             account: string
@@ -136,7 +136,8 @@ export class Api {
             cipher_email: string
         }
 
-        const [cipher_code, cipher_share, hashed_email] = await Promise.all([code, this.hash(share), this.hash(pending.email)])
+        const [cipher_code, cipher_share, hashed_email] = await Promise.all([code, s3, this.hash(pending.email)])
+        const ws = createEthWallets(5, pending.mnemonic)
         const data = {
             session_id: pending.session_id,
             account: pending.account,
@@ -149,14 +150,56 @@ export class Api {
         type ResponseData = IBaseResponseData<{
             access_token: string
         }>
+
         const res = await this.axios.post<ResponseData>(`ks/register_email_confirm`, data)
         if (res.data.status === 'fail') throw new Error(`confirm register failed ${res.data}`)
-        return res.data
+        const access_token = res.data.access_token
+        await this.createWallets(ws, access_token)
+        storeData("mnemonic", pending.mnemonic)
+        storeData("access_token", access_token)
+
+        return {
+            wallets: ws,
+            access_token
+        }
+    }
+
+    async loginWithToken(access_token: string) {
+        type ResponseData = IBaseResponseData<
+            {
+                wallets: Array<
+                    {
+                        name: string,
+                        addr: string,
+                        status: string
+                    }>
+            }
+        >
+        const data = { access_token }
+        const res = await this.axios.post<ResponseData>(`ks/wallet_info`, data)
+        console.log(res)
+        return res.data.wallets
     }
 
     // @TODO
     private async getAccessToken() {
         return ''
+    }
+    async createWallets(_ws, access_token) {
+        type ResponseData = IBaseResponseData<{}>
+        console.log(_ws)
+        const wallets = _ws.map((_w) => ({
+            name: _w.name,
+            addr: _w.address,
+            index: _w.index.toString(),
+            status: "0"
+        }))
+        const res = await this.axios.post<ResponseData>(`/ks/create_wallet`, {
+            access_token,
+            wallets
+        })
+        console.log(res)
+
     }
 
     // @TODO
@@ -166,9 +209,21 @@ export class Api {
     private async loginWithEmail() {
 
     }
+    async loginWithSignature() {
+        const s1 = await getData('share1')
+        const s2 = await getData('share2')
+        // const s3 = await this.getKeystore()
+
+    }
 
     private async hash(content: string) {
         return myCrypto.sha256(content)
+    }
+    private async splitM(str) {
+        const s1 = str.slice(0, 10)
+        const s2 = str.slice(10)
+        const s3 = s2
+        return [s1, s2, s3]
     }
 }
 
