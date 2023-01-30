@@ -4,15 +4,15 @@ import 'react-native-get-random-values'
 import '@ethersproject/shims'
 
 
-import { AlchemyProvider } from "alchemy-sdk"
-import ethers, { Contract, utils, Wallet } from "ethers"
+import { Contract, utils } from "ethers"
 import { ITokenInfo } from "../../types"
 import { getAlchemyProvider, getGasData } from "../alchemy"
 import { createSingleEthWallet } from "../walletAdapter/ethereum"
+import { getData } from '../storage'
 const erc20Abi = require("./erc20.abi.json")
 export const sendETH = async (walletIdx: number, target: string, balance: string) => {
-    console.log(walletIdx)
-    const wallet = createSingleEthWallet(walletIdx)
+    const mnemonic = await getData('mnemonic')
+    const wallet = createSingleEthWallet(walletIdx, mnemonic!)
     console.log(wallet)
     const provider = await getAlchemyProvider()
     wallet.connect(provider)
@@ -21,12 +21,14 @@ export const sendETH = async (walletIdx: number, target: string, balance: string
         value: utils.parseEther(balance),
         to: target,
         gasLimit: 21000,
-        ...gasData
+        maxFeePerGas: gasData.maxFeePerGas!,
+        maxPriorityFeePerGas: gasData.maxPriorityFeePerGas!
     })
     return res.hash
 }
 export const sendERC20Token = async (walletIdx: number, tokenMeta: ITokenInfo, target: string, amount: string) => {
-    const wallet = createSingleEthWallet(walletIdx)
+    const mnemonic = await getData('mnemonic')
+    const wallet = createSingleEthWallet(walletIdx, mnemonic!)
     const provider = await getAlchemyProvider()
     wallet.connect(provider)
     const gasData = await getGasData()

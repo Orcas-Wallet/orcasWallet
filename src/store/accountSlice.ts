@@ -1,5 +1,7 @@
 import { combineReducers, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { ethers, utils } from 'ethers'
 import { api, IPendingAccount } from '../services/api'
+import { getData, storeData } from '../services/storage'
 import { createEthWallets } from '../services/walletAdapter/ethereum'
 import { CHAIN_TYPE } from '../types'
 import { RootState } from './index'
@@ -69,14 +71,37 @@ export const accountSlice = createSlice({
             }
             state.account = account
             state.access_token = action.payload.access_token
+            state.wallets = action.payload.wallets
+            state.isEnableFaceId = false
             state.isLogin = true
             state.pendingAccount = undefined
-            // state.wallets = createEthWallets(account.mnemonic, account.wallet_account)
         }).addCase(confirmRegister.rejected, (state) => {
             state.access_token = ''
             state.pendingAccount = undefined
+
+        })
+
+        builder.addCase(asyncStoredData.fulfilled, (state, action) => {
+            state.access_token = action.payload.access_token!
+            state.isEnableFaceId = Boolean(action.payload.isEnableFaceId)
+        })
+        builder.addCase(loginWithToken.fulfilled, (state, action) => {
+            state.wallets = action.payload
+            state.isLogin = true
+        })
+        builder.addCase(loginWithToken.rejected, (state) => {
+            state.wallets = []
+        })
+        builder.addCase(logoutThunk.fulfilled, (state) => {
+            state.isLogin = false
         })
     },
+})
+
+export const asyncStoredData = createAsyncThunk("account/asyncStoredData", async () => {
+    const access_token = await getData("access_token")
+    const isEnableFaceId = await getData("isEnableFaceId")
+    return { access_token, isEnableFaceId }
 })
 
 export const registerAccount = createAsyncThunk('account/registerAccount', async (email: string) => {
@@ -85,6 +110,23 @@ export const registerAccount = createAsyncThunk('account/registerAccount', async
 
 export const confirmRegister = createAsyncThunk('account/confirmRegister', async (code: string) => {
     return api.confirmRegister(code)
+})
+export const walletSync = createAsyncThunk('account/walletSync', async (code: string) => {
+    const res = await api.confirmRegister(code)
+    const mnemonic = await getData('mnemonic')
+    if (mnemonic) {
+        const [wallet] = createEthWallets(1, mnemonic)
+    }
+})
+export const loginWithToken = createAsyncThunk('account/loginWithToken', async (access_token: string) => {
+    const _w = await api.loginWithToken(access_token)
+    const mnemonic = await getData("mnemonic")
+    const wallets = createEthWallets(_w.length, mnemonic!)
+    return wallets
+
+})
+export const logoutThunk = createAsyncThunk('account/logout', () => {
+    return
 })
 
 export const selectCurrentAccount = (state: RootState) => state.account.account

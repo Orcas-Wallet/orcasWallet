@@ -2,7 +2,7 @@ import { Text, View } from 'react-native'
 import React from 'react'
 import EmailVerify from '../../components/EmailVerify';
 
-const Login = () => {
+const Register = () => {
 
     return (
         <View>
@@ -11,4 +11,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Register

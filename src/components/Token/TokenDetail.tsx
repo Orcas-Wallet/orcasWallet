@@ -7,7 +7,6 @@ import HistoryItem from './HistoryItem';
 import { HISTORY_TYPE } from '../../types';
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../../store';
-import { historyList } from '../../mock/mock';
 import { useMemo } from 'react';
 import InterText from '../basics/Button/InterText';
 import { getETHTransferTx, getTokenReceiveTx, getTokenTransferTx } from '../../services/alchemy';
