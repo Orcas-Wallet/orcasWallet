@@ -87,9 +87,13 @@ export const accountSlice = createSlice({
         })
         builder.addCase(loginWithToken.fulfilled, (state, action) => {
             state.wallets = action.payload
+            state.isLogin = true
         })
         builder.addCase(loginWithToken.rejected, (state) => {
             state.wallets = []
+        })
+        builder.addCase(logoutThunk.fulfilled, (state) => {
+            state.isLogin = false
         })
     },
 })
@@ -120,6 +124,9 @@ export const loginWithToken = createAsyncThunk('account/loginWithToken', async (
     const wallets = createEthWallets(_w.length, mnemonic!)
     return wallets
 
+})
+export const logoutThunk = createAsyncThunk('account/logout', () => {
+    return
 })
 
 export const selectCurrentAccount = (state: RootState) => state.account.account

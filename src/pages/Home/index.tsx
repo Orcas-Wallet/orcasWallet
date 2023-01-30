@@ -9,15 +9,15 @@ import { updateTokenPrice } from '../../store/tokenSlice'
 import CButton from '../../components/basics/Button'
 import TokenRecieve from './TokenRecieve'
 import CModal from '../../components/basics/CModal'
-import { useAppSelector } from '../../store'
+import { useAppDispatch, useAppSelector } from '../../store'
 import { useNavigation } from '@react-navigation/native'
 import { getTokenPrice } from '../../services/coingecko'
-import { useDispatch } from 'react-redux'
 import { fetchTokenBalance } from '../../store/addressSlice'
 import { tokenMetas } from '../../utils/tokens/const'
 import { shortenAddress, shortNumber } from '../../utils/utils'
 import InterText from '../../components/basics/Button/InterText'
 import MenuButton from './MenuButton'
+import { loginWithToken } from '../../store/accountSlice'
 const buttonGroup = [
   {
     icon: "arrow-top-right",
@@ -43,7 +43,7 @@ const Home = () => {
   const [showModal, setShowModal] = useState(false)
   const navigation = useNavigation()
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const handleButtonPress = (btnType: string) => {
     switch (btnType) {
       case "Send":

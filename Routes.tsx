@@ -4,7 +4,8 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import React, { useEffect } from 'react'
 import Welcome from './src/pages/Auth/Welcome';
 import Home from './src/pages/Home';
-import Login from './src/pages/Auth/Regsiter';
+import Register from './src/pages/Auth/Register';
+import Login from './src/pages/Auth/Login';
 
 import EnablefaceId from './src/pages/Auth/EnablefaceId';
 import AddressSelector from './src/components/accountSelector';
@@ -32,20 +33,20 @@ const MyTheme = {
     },
 };
 const Routes = () => {
-    const { access_token } = useAppSelector((state) => state.account)
+    const { access_token, isLogin } = useAppSelector((state) => state.account)
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(asyncStoredData())
     }, [])
     useEffect(() => {
         if (access_token) {
-            dispatch(loginWithToken(access_token))
+          dispatch(loginWithToken(access_token))
         }
-    }, [access_token])
+      }, [access_token])
     return (
         <NavigationContainer theme={MyTheme}>
             <Stack.Navigator screenOptions={{ headerShadowVisible: false, title: "", headerStyle: { backgroundColor: 'white' }, headerShown: true, }}>
-                {access_token ? (
+                {access_token && isLogin ? (
                     <Stack.Group screenOptions={{
                         headerTintColor: '#0F6EFF',
                         headerTitleStyle: {
@@ -74,7 +75,7 @@ const Routes = () => {
                     <Stack.Group >
                         <Stack.Screen name="Welcome" component={Welcome} />
                         <Stack.Screen name="Login" component={Login} />
-                        <Stack.Screen name="Register" component={Login} />
+                        <Stack.Screen name="Register" component={Register} />
                         <Stack.Screen name="Aboard" component={onAboard} />
                         {/* <Stack.Screen name="keyChain" component={Keychain}></Stack.Screen> */}
                     </Stack.Group>
