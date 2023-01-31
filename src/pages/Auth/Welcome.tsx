@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import CButton from '../../components/basics/Button'
 import FullScreenContainer from '../../components/FullScreenContainer'
 import InterText from '../../components/basics/Button/InterText'
+import { createEthWallets } from '../../services/walletAdapter/ethereum'
 const stepText = [
     {
         title: "",
@@ -20,10 +21,18 @@ const stepText = [
 const Welcome = ({ navigation }) => {
     const [step, setStep] = useState(0)
     const handleLogin = () => {
-        navigation.navigate('Login')
+        // navigation.navigate('Login')
+        const start = performance.now()
+        createEthWallets(2, "pear nurse danger height member demand seminar sphere square tragic decrease odor")
+        const end = performance.now()
+        console.log(`Creating a Wallet took ${end - start} ms.`)
     }
     const handleRegister = () => {
-        navigation.navigate('Aboard')
+        // navigation.navigate('Aboard')
+        const start = performance.now()
+        createEthWallets(5, "pear nurse danger height member demand seminar sphere square tragic decrease odor")
+        const end = performance.now()
+        console.log(`Creating a Wallet took ${end - start} ms.`)
         // navigation.navigate('keyChain')
     }
     return (
