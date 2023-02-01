@@ -10,18 +10,21 @@
       "ios": {
         "resourceClass": "m1-medium",
         "simulator": true
-      }
+      },
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
       "ios": {
         "resourceClass": "m1-medium"
-      }
+      },
+      "channel": "preview"
     },
     "production": {
       "ios": {
         "resourceClass": "m1-medium"
-      }
+      },
+      "channel": "production"
     }
   },
   "submit": {
