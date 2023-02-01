@@ -21,19 +21,12 @@ const stepText = [
 const Welcome = ({ navigation }) => {
     const [step, setStep] = useState(0)
     const handleLogin = () => {
-        // navigation.navigate('Login')
-        const start = performance.now()
-        createEthWallets(10, "pear nurse danger height member demand seminar sphere square tragic decrease odor")
-        const end = performance.now()
-        console.log(`Creating 10 Wallets took ${end - start} ms.`)
+        navigation.navigate('Login')
+
     }
     const handleRegister = () => {
-        // navigation.navigate('Aboard')
-        const start = performance.now()
-        createEthWallets(100, "pear nurse danger height member demand seminar sphere square tragic decrease odor")
-        const end = performance.now()
-        console.log(`Creating 100 Wallets took ${end - start} ms.`)
-        // navigation.navigate('keyChain')
+        navigation.navigate('Aboard')
+
     }
     return (
         <FullScreenContainer passedClassName='flex-1  justify-between'>
@@ -41,7 +34,7 @@ const Welcome = ({ navigation }) => {
                 <View className='h-64 justify-center'>
                     <Image
                         className=' w-12 '
-                        style={{resizeMode: "center"}}
+                        style={{ resizeMode: "center" }}
                         source={require('../../../assets/logo.png')}
                     />
                 </View>

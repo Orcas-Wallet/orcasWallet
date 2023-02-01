@@ -153,7 +153,7 @@ export class Api {
         const res = await this.axios.post<ResponseData>(`ks/register_email_confirm`, data)
         if (res.data.status === 'fail') throw new Error(`confirm register failed ${res.data}`)
         const access_token = res.data.access_token
-        const ws = createEthWallets(2, pending.mnemonic)
+        const ws = await createEthWallets(2, pending.mnemonic)
         await this.createWallets(ws, access_token)
         storeData("mnemonic", pending.mnemonic)
         storeData("access_token", access_token)
