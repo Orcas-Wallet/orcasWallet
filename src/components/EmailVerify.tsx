@@ -10,7 +10,7 @@ import VerifyCodeInput from './VerifyCodeInput'
 import TextButton from './basics/Button/TextButton'
 import { useAppDispatch } from '../store'
 import { confirmRegister, registerAccount } from '../store/accountSlice'
-import { createEthWallets } from '../services/walletAdapter/ethereum'
+
 
 enum EStep {
     FILL_EMAIL,

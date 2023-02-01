@@ -23,16 +23,16 @@ const Welcome = ({ navigation }) => {
     const handleLogin = () => {
         // navigation.navigate('Login')
         const start = performance.now()
-        createEthWallets(2, "pear nurse danger height member demand seminar sphere square tragic decrease odor")
+        createEthWallets(10, "pear nurse danger height member demand seminar sphere square tragic decrease odor")
         const end = performance.now()
-        console.log(`Creating a Wallet took ${end - start} ms.`)
+        console.log(`Creating 10 Wallets took ${end - start} ms.`)
     }
     const handleRegister = () => {
         // navigation.navigate('Aboard')
         const start = performance.now()
-        createEthWallets(5, "pear nurse danger height member demand seminar sphere square tragic decrease odor")
+        createEthWallets(100, "pear nurse danger height member demand seminar sphere square tragic decrease odor")
         const end = performance.now()
-        console.log(`Creating a Wallet took ${end - start} ms.`)
+        console.log(`Creating 100 Wallets took ${end - start} ms.`)
         // navigation.navigate('keyChain')
     }
     return (
@@ -47,7 +47,7 @@ const Welcome = ({ navigation }) => {
                 </View>
                 <View className=''>
                     <InterText passedClassName='text-4xl mt-6 font-semibold' weight='600'>
-                        An anonymous wallet with institutional level security.
+                        An anonymous sdsds wallet with institutional level security.
                     </InterText>
                 </View>
             </ScrollView>

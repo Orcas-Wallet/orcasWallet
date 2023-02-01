@@ -12,6 +12,7 @@ import { Provider } from "react-redux";
 import Routes from './Routes';
 import { useFonts } from "expo-font";
 import * as SplashScreen from 'expo-splash-screen';
+window.Buffer = window.Buffer || require("buffer").Buffer;
 
 
 export default function App() {

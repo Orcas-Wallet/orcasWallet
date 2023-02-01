@@ -7,9 +7,8 @@ module.exports = function (api) {
         'module-resolver',
         {
           alias: {
-            'crypto': 'react-native-quick-crypto',
+            'crypto': 'react-native-fast-crypto',
             'stream': 'stream-browserify',
-            'buffer': '@craftzdog/react-native-buffer',
           },
         },
       ],
