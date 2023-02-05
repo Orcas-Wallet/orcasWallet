@@ -8,6 +8,8 @@ import { StyleSheet, View } from 'react-native';
 import React, { useCallback } from 'react';
 import { store } from "./src/store";
 import { Provider } from "react-redux";
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 import Routes from './Routes';
 import { useFonts } from "expo-font";
@@ -40,8 +42,13 @@ export default function App() {
   return (
     <View className='h-screen' onLayout={onLayoutRootView}>
       <Provider store={store}>
+        {/* <Spinner
+          color="#2451b8"
+          visible={true}
+          overlayColor={"red"}
+          textContent={'Loading...'}
+        /> */}
         <Routes />
-
       </Provider>
     </View >
 

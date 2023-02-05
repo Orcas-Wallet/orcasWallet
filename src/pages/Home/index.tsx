@@ -1,5 +1,5 @@
-import { View, Text, Button } from 'react-native'
-import React, { useEffect, useMemo, useState } from 'react'
+import { View, Text, Button, ScrollView, RefreshControl } from 'react-native'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import FullScreenContainer from '../../components/FullScreenContainer'
 import TokenAssets from './TokenAssets'
 import AddressAndChainSelector from './AddressAndChainSelector/AddressAndChainSelector'
@@ -14,7 +14,7 @@ import { useNavigation } from '@react-navigation/native'
 import { getTokenPrice } from '../../services/coingecko'
 import { fetchTokenBalance } from '../../store/addressSlice'
 import { tokenMetas } from '../../utils/tokens/const'
-import { shortenAddress, shortNumber } from '../../utils/utils'
+import { shortenAddress, shortNumber, wait } from '../../utils/utils'
 import InterText from '../../components/basics/Button/InterText'
 import MenuButton from './MenuButton'
 import { loginWithToken } from '../../store/accountSlice'
@@ -42,6 +42,12 @@ const Home = () => {
   const { isEnableFaceId, access_token, account } = useAppSelector((state) => state.account)
   const [showModal, setShowModal] = useState(false)
   const navigation = useNavigation()
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   const dispatch = useAppDispatch()
   const handleButtonPress = (btnType: string) => {
@@ -94,14 +100,19 @@ const Home = () => {
 
   return (
     <FullScreenContainer passedClassName='bg-white'>
-      <View className='mt-6 mb-32'>
-        <InterText weight='400'>
-          {shortenAddress(selectedAddress.address)}
-        </InterText>
-        <InterText weight='500' passedClassName='text-2xl py-2'>
-          ${shortNumber(totalValue)}
-        </InterText>
-        {/* <Text className='flex justify-center'>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View className='mt-6 mb-32'>
+          <InterText weight='400'>
+            {shortenAddress(selectedAddress.address)}
+          </InterText>
+          <InterText weight='500' passedClassName='text-2xl py-2'>
+            ${shortNumber(totalValue)}
+          </InterText>
+          {/* <Text className='flex justify-center'>
           <View><Text className=''>+$2,150.92</Text></View>
           <View className='px-2 py-1 rounded-full'>
             <Text className='text-[#25985C]'>
@@ -109,21 +120,23 @@ const Home = () => {
             </Text>
           </View>
         </Text> */}
-        <View className='flex-row justify-between pt-10'>
-          {
-            buttonGroup.map((btn) => (<View>
-              <CButton key={btn.name} theme='dark' circle passedClassName='' onPress={() => handleButtonPress(btn.name)}>
-                <MCIcons name={btn.icon} color={'white'} size="26" />
-              </CButton>
-              <InterText passedClassName='text-center pt-2' weight='400'>{btn.name}</InterText>
-            </View>))
-          }
-        </View>
+          <View className='flex-row justify-between pt-10'>
+            {
+              buttonGroup.map((btn) => (<View>
+                <CButton key={btn.name} theme='dark' circle passedClassName='' onPress={() => handleButtonPress(btn.name)}>
+                  <MCIcons name={btn.icon} color={'white'} size="26" />
+                </CButton>
+                <InterText passedClassName='text-center pt-2' weight='400'>{btn.name}</InterText>
+              </View>))
+            }
+          </View>
 
-      </View>
-      <TokenAssets onRecieveBtnPress={() => { setShowModal(true) }} />
-      <AddressAndChainSelector />
-      <CModal isVisible={showModal} onClose={() => { setShowModal(false) }}><TokenRecieve /></CModal>
+        </View>
+        <TokenAssets onRecieveBtnPress={() => { setShowModal(true) }} />
+        <AddressAndChainSelector />
+        <CModal isVisible={showModal} onClose={() => { setShowModal(false) }}><TokenRecieve /></CModal>
+      </ScrollView>
+
 
 
     </FullScreenContainer>
