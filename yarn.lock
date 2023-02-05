@@ -5769,6 +5769,11 @@ expo-image-loader@~4.0.0:
   resolved "https://registry.npmmirror.com/expo-image-loader/-/expo-image-loader-4.0.0.tgz#a17e5f95a4c1671791168dd5dfc221bf2f88480c"
   integrity sha512-hVMhXagsO1cSng5s70IEjuJAuHy2hX/inu5MM3T0ecJMf7L/7detKf22molQBRymerbk6Tzu+20h11eU0n/3jQ==
 
+expo-image@^1.0.0-beta.4:
+  version "1.0.0-beta.4"
+  resolved "https://registry.npmmirror.com/expo-image/-/expo-image-1.0.0-beta.4.tgz#c8ff70667a3bd05f5578fab63f459f63ac49e1a7"
+  integrity sha512-ae5iWZ8haMIG7f9ZEd3h9Hr+MkpZKr9tgzvMttI2pG1aefcLYwL56FnK1Fz/6vr7nZ022uwxFHDf7M3xdBe8BA==
+
 expo-json-utils@~0.4.0:
   version "0.4.0"
   resolved "https://registry.npmmirror.com/expo-json-utils/-/expo-json-utils-0.4.0.tgz#47ae83a1cc973101d62371f94790e9ad39491751"

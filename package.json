@@ -37,6 +37,7 @@
     "expo-dev-client": "~2.0.1",
     "expo-face-detector": "~12.0.0",
     "expo-font": "~11.0.1",
+    "expo-image": "^1.0.0-beta.4",
     "expo-local-authentication": "~13.0.2",
     "expo-secure-store": "~12.0.0",
     "expo-splash-screen": "^0.17.5",

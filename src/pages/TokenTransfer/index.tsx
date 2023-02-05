@@ -7,6 +7,7 @@ import MCIcons from 'react-native-vector-icons/Ionicons';
 
 import CButton from '../../components/basics/Button'
 import BackButton from '../../components/basics/Button/BackButton';
+import DelayButton from '../../components/basics/Button/DelayButton';
 import CModal from '../../components/basics/CModal';
 import CoinIcon from '../../components/CoinIcon'
 import FullScreenContainer from '../../components/FullScreenContainer'
@@ -161,7 +162,7 @@ function TokenTransfer({ route }) {
                             <Text className='text-gray-100 text-center mt-2'  >
                                 Sent addresses will be shown here
                             </Text> */}
-                            <RecentSentAddress account={selectedAddress.address} onSelect={(addr) => {setTarget(addr)}} />
+                            <RecentSentAddress account={selectedAddress.address} onSelect={(addr) => { setTarget(addr) }} />
                         </View>
                     </View></>
             }
@@ -266,17 +267,21 @@ function TokenTransfer({ route }) {
                     style={styles.container}
                 >
                     <View style={styles.inner}>
-                        <CButton disabled={!isValid} onPress={onPress} passedClassName={"w-full"} theme={"dark"}>
-                            {
-                                step <= STEP.SELECT_ASSET && "Continue"
-                            }
-                            {
-                                step === STEP.INPUT_AMOUNT && "Review"
-                            }
-                            {
-                                step === STEP.REVIEWING && "Hold To Send"
-                            }
-                        </CButton>
+                        {
+                            step !== STEP.REVIEWING && <CButton disabled={!isValid} onPress={onPress} passedClassName={"w-full"} theme={"dark"}>
+                                {
+                                    step <= STEP.SELECT_ASSET && "Continue"
+                                }
+                                {
+                                    step === STEP.INPUT_AMOUNT && "Review"
+                                }
+
+                            </CButton>
+                        }
+                        {
+                            step === STEP.REVIEWING &&
+                            <DelayButton passedClassName='w-full mt-6' onLongPress={onPress}>Hold to send</DelayButton>
+                        }
                     </View>
                 </KeyboardAvoidingView>
             }
