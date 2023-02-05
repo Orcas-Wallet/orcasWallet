@@ -8,11 +8,6 @@ import { loginWithToken } from '../../store/accountSlice';
 const Login = () => {
     const { access_token } = useAppSelector((state) => state.account)
     const dispatch = useAppDispatch()
-    console.log("access_token", access_token)
-    useEffect(() => {
-        if (access_token) {
-        }
-    }, [access_token])
     useEffect(() => {
         if (access_token) {
 
@@ -23,6 +18,7 @@ const Login = () => {
             })
         }
     }, [access_token])
+   
 
     return (
         <View>
