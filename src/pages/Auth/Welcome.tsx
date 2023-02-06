@@ -40,7 +40,7 @@ const Welcome = ({ navigation }) => {
                 </View>
                 <View className=''>
                     <InterText passedClassName='text-4xl mt-6 font-semibold' weight='600'>
-                        An anonymous sdsds wallet with institutional level security.
+                        An anonymous wallet with institutional level security.
                     </InterText>
                 </View>
             </ScrollView>

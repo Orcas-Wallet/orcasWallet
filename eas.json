@@ -20,6 +20,12 @@
       },
       "channel": "preview"
     },
+    "testFlight": {
+      "ios": {
+        "resourceClass": "m1-medium"
+      },
+      "channel": "preview"
+    },
     "production": {
       "ios": {
         "resourceClass": "m1-medium"

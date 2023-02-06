@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Orcas",
+    "name": "Orcas Wallet",
     "slug": "orcas",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -36,10 +36,10 @@
     },
     "extra": {
       "eas": {
-        "projectId": "32426c89-739e-4fba-9037-db862162eee5"
+        "projectId": "2aa5c841-cd35-416f-a611-d2a17af79af5"
       }
     },
-    "owner": "0xkeykey",
+    "owner": "orcasdev",
     "runtimeVersion": {
       "policy": "sdkVersion"
     }
