@@ -29,7 +29,7 @@ export const createEthWallets = async(amount: number, _MNEMONIC: string) => {
  * @param index  = Account index
  * @returns wallet
  */
-const createSingleWallet = async (mnemonic: string, index: number): Promise<Wallet> => {
+export const createSingleWallet = async (mnemonic: string, index: number): Promise<Wallet> => {
     const seed = await Bip39.mnemonicToSeedSync(mnemonic);
     const hdNode = hdkey.fromMasterSeed(seed);
     const node = hdNode.derivePath(`m/44'/60'/0'`)
@@ -39,6 +39,5 @@ const createSingleWallet = async (mnemonic: string, index: number): Promise<Wall
     const childNode = change.deriveChild(index);
     const childWallet = childNode.getWallet();
     const wallet = new Wallet(childWallet.getPrivateKey().toString('hex'));
-    console.log(wallet)
     return wallet
 }

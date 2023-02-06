@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import CButton from '../../components/basics/Button'
 import FullScreenContainer from '../../components/FullScreenContainer'
 import InterText from '../../components/basics/Button/InterText'
-import { createEthWallets } from '../../services/walletAdapter/ethereum'
 const stepText = [
     {
         title: "",

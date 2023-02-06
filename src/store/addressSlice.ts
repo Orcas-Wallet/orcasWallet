@@ -56,6 +56,7 @@ export const fetchTokenBalance = createAsyncThunk(
     'address/coinBalance',
     async (address: string, thunkAPI) => {
         const balance = await getTokenListByAddress(address)
+        console.log(balance)
         return balance
     }
 )
