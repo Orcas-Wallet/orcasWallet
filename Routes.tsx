@@ -38,11 +38,6 @@ const Routes = () => {
     useEffect(() => {
         dispatch(asyncStoredData())
     }, [])
-    useEffect(() => {
-        if (access_token) {
-          dispatch(loginWithToken(access_token))
-        }
-      }, [access_token])
     return (
         <NavigationContainer theme={MyTheme}>
             <Stack.Navigator screenOptions={{ headerShadowVisible: false, title: "", headerStyle: { backgroundColor: 'white' }, headerShown: true, }}>

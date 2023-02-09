@@ -1,0 +1,58 @@
+diff --git a/node_modules/bip39/src/index.js b/node_modules/bip39/src/index.js
+index 91d1a72..0cf00bb 100644
+--- a/node_modules/bip39/src/index.js
++++ b/node_modules/bip39/src/index.js
+@@ -2,7 +2,8 @@
+ Object.defineProperty(exports, "__esModule", { value: true });
+ const createHash = require("create-hash");
+ const pbkdf2_1 = require("pbkdf2");
+-const randomBytes = require("randombytes");
++const { randomBytes, pbkdf2 } = require("react-native-fast-crypto");
++
+ const _wordlists_1 = require("./_wordlists");
+ let DEFAULT_WORDLIST = _wordlists_1._default;
+ const INVALID_MNEMONIC = 'Invalid mnemonic';
+@@ -53,13 +54,22 @@ function mnemonicToSeedSync(mnemonic, password) {
+     const mnemonicBuffer = Buffer.from(normalize(mnemonic), 'utf8');
+     const saltBuffer = Buffer.from(salt(normalize(password)), 'utf8');
+     return pbkdf2_1.pbkdf2Sync(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512');
++
+ }
+ exports.mnemonicToSeedSync = mnemonicToSeedSync;
+ function mnemonicToSeed(mnemonic, password) {
+-    return Promise.resolve().then(() => {
++    return Promise.resolve().then(async () => {
+         const mnemonicBuffer = Buffer.from(normalize(mnemonic), 'utf8');
+         const saltBuffer = Buffer.from(salt(normalize(password)), 'utf8');
+-        return pbkdf2Promise(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512');
++        // return pbkdf2Promise(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512');
++        if (__DEV__ && (!!global.__REMOTEDEV__ || (global.location && global.location.pathname.includes('/debugger-ui'))))
++            return pbkdf2Promise(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512');
++        const seed = await pbkdf2.deriveAsync(mnemonicBuffer.toString('utf8'),
++            saltBuffer.toString('utf8'), 2048,
++            64,
++            'sha512');
++        const seedBuffer = global.Buffer.from(seed, "hex")
++        return seedBuffer
+     });
+ }
+ exports.mnemonicToSeed = mnemonicToSeed;
+@@ -75,12 +85,12 @@ function mnemonicToEntropy(mnemonic, wordlist) {
+     // convert word indices to 11 bit binary strings
+     const bits = words
+         .map((word) => {
+-        const index = wordlist.indexOf(word);
+-        if (index === -1) {
+-            throw new Error(INVALID_MNEMONIC);
+-        }
+-        return lpad(index.toString(2), '0', 11);
+-    })
++            const index = wordlist.indexOf(word);
++            if (index === -1) {
++                throw new Error(INVALID_MNEMONIC);
++            }
++            return lpad(index.toString(2), '0', 11);
++        })
+         .join('');
+     // split the binary string into ENT/CS
+     const dividerIndex = Math.floor(bits.length / 33) * 32;

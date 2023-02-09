@@ -21,10 +21,11 @@ const Welcome = ({ navigation }) => {
     const [step, setStep] = useState(0)
     const handleLogin = () => {
         navigation.navigate('Login')
+
     }
     const handleRegister = () => {
         navigation.navigate('Aboard')
-        // navigation.navigate('keyChain')
+
     }
     return (
         <FullScreenContainer passedClassName='flex-1  justify-between'>
@@ -32,7 +33,7 @@ const Welcome = ({ navigation }) => {
                 <View className='h-64 justify-center'>
                     <Image
                         className=' w-12 '
-                        style={{resizeMode: "center"}}
+                        style={{ resizeMode: "center" }}
                         source={require('../../../assets/logo.png')}
                     />
                 </View>

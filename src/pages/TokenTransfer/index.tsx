@@ -7,6 +7,7 @@ import MCIcons from 'react-native-vector-icons/Ionicons';
 
 import CButton from '../../components/basics/Button'
 import BackButton from '../../components/basics/Button/BackButton';
+import DelayButton from '../../components/basics/Button/DelayButton';
 import CModal from '../../components/basics/CModal';
 import CoinIcon from '../../components/CoinIcon'
 import FullScreenContainer from '../../components/FullScreenContainer'
@@ -14,6 +15,7 @@ import ScanButton from '../../components/Qrcode/ScanButton';
 import { appendData } from '../../services/storage';
 import { sendERC20Token, sendETH } from '../../services/tokens/tokens';
 import { useAppDispatch, useAppSelector } from '../../store'
+import { updateLoading } from '../../store/appSlice';
 import { updateSelectedToken } from '../../store/tokenSlice'
 import { tokenMetas } from '../../utils/tokens/const';
 import { resentStorageKey, shortenAddress, shortNumber } from '../../utils/utils'
@@ -95,6 +97,7 @@ function TokenTransfer({ route }) {
     }
     const sendToken = async () => {
         try {
+            dispatch(updateLoading(true))
             if (selectedToken.symbol === 'ETH') {
                 console.log(selectedAddress)
                 const hash = await sendETH(selectedAddress.index, target, amount)
@@ -117,6 +120,8 @@ function TokenTransfer({ route }) {
                 hash: ""
             })
             console.error(error)
+        } finally {
+            dispatch(updateLoading(false))
         }
     }
     const selectToken = (_tokeInfo) => {
@@ -161,7 +166,7 @@ function TokenTransfer({ route }) {
                             <Text className='text-gray-100 text-center mt-2'  >
                                 Sent addresses will be shown here
                             </Text> */}
-                            <RecentSentAddress account={selectedAddress.address} onSelect={(addr) => {setTarget(addr)}} />
+                            <RecentSentAddress account={selectedAddress.address} onSelect={(addr) => { setTarget(addr) }} />
                         </View>
                     </View></>
             }
@@ -266,17 +271,21 @@ function TokenTransfer({ route }) {
                     style={styles.container}
                 >
                     <View style={styles.inner}>
-                        <CButton disabled={!isValid} onPress={onPress} passedClassName={"w-full"} theme={"dark"}>
-                            {
-                                step <= STEP.SELECT_ASSET && "Continue"
-                            }
-                            {
-                                step === STEP.INPUT_AMOUNT && "Review"
-                            }
-                            {
-                                step === STEP.REVIEWING && "Hold To Send"
-                            }
-                        </CButton>
+                        {
+                            step !== STEP.REVIEWING && <CButton disabled={!isValid} onPress={onPress} passedClassName={"w-full"} theme={"dark"}>
+                                {
+                                    step <= STEP.SELECT_ASSET && "Continue"
+                                }
+                                {
+                                    step === STEP.INPUT_AMOUNT && "Review"
+                                }
+
+                            </CButton>
+                        }
+                        {
+                            step === STEP.REVIEWING &&
+                            <DelayButton passedClassName='w-full mt-6' onLongPress={onPress}>Hold to send</DelayButton>
+                        }
                     </View>
                 </KeyboardAvoidingView>
             }

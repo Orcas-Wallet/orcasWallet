@@ -8,10 +8,14 @@ import { StyleSheet, View } from 'react-native';
 import React, { useCallback } from 'react';
 import { store } from "./src/store";
 import { Provider } from "react-redux";
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 import Routes from './Routes';
 import { useFonts } from "expo-font";
 import * as SplashScreen from 'expo-splash-screen';
+import SpinnerContainer from "./src/components/spiner";
+window.Buffer = window.Buffer || require("buffer").Buffer;
 
 
 export default function App() {
@@ -39,8 +43,9 @@ export default function App() {
   return (
     <View className='h-screen' onLayout={onLayoutRootView}>
       <Provider store={store}>
+        <SpinnerContainer
+        />
         <Routes />
-
       </Provider>
     </View >
 

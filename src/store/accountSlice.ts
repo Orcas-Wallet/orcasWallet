@@ -115,13 +115,13 @@ export const walletSync = createAsyncThunk('account/walletSync', async (code: st
     const res = await api.confirmRegister(code)
     const mnemonic = await getData('mnemonic')
     if (mnemonic) {
-        const [wallet] = createEthWallets(1, mnemonic)
+        const [wallet] = await createEthWallets(1, mnemonic)
     }
 })
 export const loginWithToken = createAsyncThunk('account/loginWithToken', async (access_token: string) => {
     const _w = await api.loginWithToken(access_token)
     const mnemonic = await getData("mnemonic")
-    const wallets = createEthWallets(_w.length, mnemonic!)
+    const wallets = await createEthWallets(_w.length, mnemonic!)
     return wallets
 
 })

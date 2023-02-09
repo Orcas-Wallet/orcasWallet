@@ -11,6 +11,7 @@ import TextButton from './basics/Button/TextButton'
 import { useAppDispatch } from '../store'
 import { confirmRegister, registerAccount } from '../store/accountSlice'
 
+
 enum EStep {
     FILL_EMAIL,
     FILL_CODE,
@@ -53,8 +54,10 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
     const [code, setCode] = useState('')
     const [step, setStep] = useState(EStep.FILL_EMAIL)
     const dispatch = useAppDispatch()
-
     const onNextPress = async () => {
+       
+
+
         if (step === EStep.FILL_EMAIL) {
             try {
                 console.warn(`send register request ...`)

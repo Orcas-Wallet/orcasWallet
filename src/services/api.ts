@@ -1,9 +1,10 @@
-import _axios, { AxiosInstance, AxiosResponse } from 'axios'
+import _axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { myCrypto } from './crypto'
 import { createRandom } from './generic'
 import { store } from '../store'
 import { getData, storeData } from './storage'
 import { createEthWallets } from './walletAdapter/ethereum'
+import { updateLoading } from '../store/appSlice'
 
 interface IResponseStatus {
     status: 'success' | 'fail'
@@ -43,7 +44,12 @@ export class Api {
                     ? 'https://demo.keysafe.network'
                     : 'https://demo.keysafe.network',
         })
+        this.axios.interceptors.request.use((config: AxiosRequestConfig) => {
+            store.dispatch(updateLoading(true))
+            return config
+        })
         this.axios.interceptors.response.use((res: AxiosResponse<IResponseStatus>) => {
+            store.dispatch(updateLoading(false))
             if (res.status !== 200) throw res
             if (res.data.status === 'fail') throw res.data
             return res
@@ -137,7 +143,6 @@ export class Api {
         }
 
         const [cipher_code, cipher_share, hashed_email] = await Promise.all([code, s3, this.hash(pending.email)])
-        const ws = createEthWallets(5, pending.mnemonic)
         const data = {
             session_id: pending.session_id,
             account: pending.account,
@@ -154,6 +159,7 @@ export class Api {
         const res = await this.axios.post<ResponseData>(`ks/register_email_confirm`, data)
         if (res.data.status === 'fail') throw new Error(`confirm register failed ${res.data}`)
         const access_token = res.data.access_token
+        const ws = await createEthWallets(2, pending.mnemonic)
         await this.createWallets(ws, access_token)
         storeData("mnemonic", pending.mnemonic)
         storeData("access_token", access_token)
