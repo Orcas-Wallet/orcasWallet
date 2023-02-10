@@ -30,7 +30,7 @@ function TokenRecieve() {
                     <View className={"p-10 rounded-3xl bg-white border-4 border-gray-200"}>
                         <QRCode
                             size={150}
-                            value="http://awesome.link.qr"
+                            value={`Ethereum: ${selectedAddress.address}`}
                         />
                     </View>
                 </View>

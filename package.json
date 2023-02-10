@@ -27,6 +27,7 @@
     "@types/base-64": "^1.0.0",
     "@types/react": "~18.0.24",
     "@types/react-native": "~0.70.6",
+    "ahooks": "^3.7.4",
     "alchemy-sdk": "^2.2.5",
     "axios": "^1.2.1",
     "base-64": "^1.0.0",

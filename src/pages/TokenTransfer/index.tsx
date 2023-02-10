@@ -15,6 +15,7 @@ import ScanButton from '../../components/Qrcode/ScanButton';
 import { appendData } from '../../services/storage';
 import { sendERC20Token, sendETH } from '../../services/tokens/tokens';
 import { useAppDispatch, useAppSelector } from '../../store'
+import { fetchTokenBalance } from '../../store/addressSlice';
 import { updateLoading } from '../../store/appSlice';
 import { updateSelectedToken } from '../../store/tokenSlice'
 import { tokenMetas } from '../../utils/tokens/const';
@@ -102,6 +103,7 @@ function TokenTransfer({ route }) {
                 console.log(selectedAddress)
                 const hash = await sendETH(selectedAddress.index, target, amount)
                 await appendData(resentStorageKey(selectedAddress.address), target)
+                dispatch(fetchTokenBalance(selectedAddress.address) as any)
                 setResult({
                     status: 1,
                     hash
@@ -112,6 +114,7 @@ function TokenTransfer({ route }) {
                     status: 1,
                     hash
                 })
+                
             }
             setShowModal(true)
         } catch (error) {

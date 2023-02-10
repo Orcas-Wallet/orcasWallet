@@ -108,7 +108,7 @@ const Home = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View className='mt-6 mb-32'>
+        <View className='mt-6 mb-10'>
           <InterText weight='400'>
             {shortenAddress(selectedAddress.address)}
           </InterText>
@@ -123,7 +123,7 @@ const Home = () => {
             </Text>
           </View>
         </Text> */}
-          <View className='flex-row justify-between pt-10'>
+          <View className='flex-row justify-between pt-6'>
             {
               buttonGroup.map((btn) => (<View>
                 <CButton key={btn.name} theme='dark' circle passedClassName='' onPress={() => handleButtonPress(btn.name)}>
