@@ -2,24 +2,24 @@ import { StyleSheet, Text, View } from 'react-native'
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 
 import React, { useEffect } from 'react'
-import Welcome from './src/pages/Auth/Welcome';
-import Home from './src/pages/Home';
-import Register from './src/pages/Auth/Register';
-import Login from './src/pages/Auth/Login';
+import Welcome from './src/screens/Auth/Welcome';
+import Home from './src/screens/Home';
+import Register from './src/screens/Auth/Register';
+import Login from './src/screens/Auth/Login';
 
-import EnablefaceId from './src/pages/Auth/EnablefaceId';
+import EnablefaceId from './src/screens/Auth/EnablefaceId';
 import AddressSelector from './src/components/accountSelector';
-import TokenTransfer from './src/pages/TokenTransfer';
-import TokenRecieve from './src/pages/Home/TokenRecieve';
+import TokenTransfer from './src/screens/TokenTransfer';
+import TokenRecieve from './src/screens/Home/TokenRecieve';
 import QrcodeScanner from './src/components/Qrcode/Scanner';
-import onAboard from './src/pages/Auth/onABoard';
+import onAboard from './src/screens/Auth/onABoard';
 import Keychain from './src/components/Keychain';
-import Menu from './src/pages/Menu';
-import UserAgreement from './src/pages/Menu/MenuNav/UserAgreement';
-import PrivacyPolicy from './src/pages/Menu/MenuNav/PrivacyPolicy';
-import HelpCenter from './src/pages/Menu/MenuNav/HelpCenter';
-import ContactUs from './src/pages/Menu/MenuNav/ContactUs';
-import TxDetail from './src/pages/TxDetail';
+import Menu from './src/screens/Menu';
+import UserAgreement from './src/screens/Menu/MenuNav/UserAgreement';
+import PrivacyPolicy from './src/screens/Menu/MenuNav/PrivacyPolicy';
+import HelpCenter from './src/screens/Menu/MenuNav/HelpCenter';
+import ContactUs from './src/screens/Menu/MenuNav/ContactUs';
+import TxDetail from './src/screens/TxDetail';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { useAppDispatch, useAppSelector } from './src/store';
