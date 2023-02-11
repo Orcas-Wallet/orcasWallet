@@ -1,5 +1,5 @@
 import * as LocalAuthentication from 'expo-local-authentication'
-import SSSA from 'react-native-sssa';
+import sss from 'shamirs-secret-sharing';
 export const shortenAddress = (address: string, length = 5) => {
     return address.slice(0, length) + "..." + address.slice(-length)
 }
@@ -31,9 +31,11 @@ export const localAuth = async () => {
     }
 }
 
-export const getShares = async () => {
-    //This does secret sharing with 3 bit coefficients in the field GF(2^3).
-    let sssa = new SSSA(3);
-    let shares = await sssa.generateShares(btoa("123"), 3, 2);
-    console.log("shares")
+export const getShares = async (key: string) => {
+    const secret = Buffer.from('secret key')
+    const shares = sss.split(secret, { shares: 3, threshold: 2 })
+    return shares.map((s) => s.toString('base64'))
+}
+export const recoverShare = (shares: string[]) => {
+    return sss.combine(shares.map((s) => Buffer.from(s, 'base64')))
 }
