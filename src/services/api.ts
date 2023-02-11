@@ -23,10 +23,10 @@ interface IWallet {
 interface RegisterEmailRequestData {
     session_id: string
     // sha256
-    cipher_email: string
-    account: string
+    cipher_email?: string
+    account?: string
     // sha256
-    cipher_account: string
+    cipher_account?: string
 }
 
 export interface IPendingAccount
@@ -238,14 +238,19 @@ export class Api {
     private async hash(content: string) {
         return myCrypto.sha256(content)
     }
-    async revoverEmail() {
+    async recoverEmail(code: string) {
         type ResponseData = IBaseResponseData<{}>
+        const pending = store.getState().account.pendingAccount
 
+        const [cipher_code, hashed_email] = await Promise.all([
+            this.hash(code),
+            pending.email,
+        ])
         await this.axios.post<ResponseData>(`/ks/recover_email`, {
-            "session_id": "",
-            hashed_email: "",
-            "cipher_email": "",
-            cipher_code: ""
+            "session_id": pending.session_id,
+            hashed_email,
+            "cipher_email": pending.email,
+            cipher_code
         })
     }
     async getRecoverEmailCode(email: string) {
@@ -253,12 +258,21 @@ export class Api {
         const s2 = await getICloudData(STORAGEKEYS.SHARE2)
         const mnemonic = await recoverShare([s1, s2])
         const wallet = await createSingleWallet(mnemonic)
-        const sessionId = this.hash(wallet.publicKey)
+        const sessionId = await this.hash(wallet.publicKey)
         type ResponseData = IBaseResponseData<{}>
+        const [session_id, cipher_email] = await Promise.all([
+            this.hash(wallet.publicKey),
+            wallet.publicKey,
+        ])
         await this.axios.post<ResponseData>(`/ks/recover_email_confirm`, {
-            session_id: sessionId,
-            cipher_email: email,
+            session_id,
+            cipher_email: cipher_email,
         })
+        return {
+            cipher_email,
+            email,
+            sessionId,
+        }
     }
 }
 

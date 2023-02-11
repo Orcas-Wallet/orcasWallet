@@ -55,8 +55,6 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
     const [step, setStep] = useState(EStep.FILL_EMAIL)
     const dispatch = useAppDispatch()
     const onNextPress = async () => {
-       
-
 
         if (step === EStep.FILL_EMAIL) {
             try {
@@ -73,11 +71,8 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
     }
     const onVerify = async () => {
         try {
-            console.warn(`send confirm register request ...`)
             await dispatch(confirmRegister(code)).unwrap()
-            console.warn(`handle confirm registered`)
         } catch (e) {
-            console.warn(`show warning`)
             console.error(`confirm register failed reason ${e}`)
         }
     }
@@ -111,12 +106,12 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
                         By creating an account, you agree to our
                     </InterText>
                     <View className="flex-row items-center justify-center">
-                        <TextButton onPress={() => {}}>Terms</TextButton>
+                        <TextButton onPress={() => { }}>Terms</TextButton>
                         <InterText passedClassName="text-sm text-gray-100 text-center" weight="300">
                             {' '}
                             and{' '}
                         </InterText>
-                        <TextButton onPress={() => {}}>Conditions</TextButton>
+                        <TextButton onPress={() => { }}>Conditions</TextButton>
                     </View>
                 </View>
             </View>

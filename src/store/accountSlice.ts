@@ -61,6 +61,17 @@ export const accountSlice = createSlice({
                 state.access_token = ''
             })
 
+
+        builder
+            .addCase(recoverEmail.fulfilled, (state, action) => {
+                // state.pendingAccount = action.payload
+            })
+            .addCase(recoverEmail.rejected, (state) => {
+                state.pendingAccount = undefined
+                state.access_token = ''
+            })
+
+
         builder.addCase(confirmRegister.fulfilled, (state, action) => {
             const account = {
                 email: state.pendingAccount!.email,
@@ -110,6 +121,13 @@ export const registerAccount = createAsyncThunk('account/registerAccount', async
 
 export const confirmRegister = createAsyncThunk('account/confirmRegister', async (code: string) => {
     return api.confirmRegister(code)
+})
+
+export const recoverEmail = createAsyncThunk('account/recoverEmail', async (email: string) => {
+    return api.getRecoverEmailCode(email)
+})
+export const confirmRecoverEmail = createAsyncThunk('account/confirmRegister', async (code: string) => {
+    return api.recoverEmail(code)
 })
 export const walletSync = createAsyncThunk('account/walletSync', async (code: string) => {
     const res = await api.confirmRegister(code)
