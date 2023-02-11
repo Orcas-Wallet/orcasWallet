@@ -125,7 +125,7 @@ const Home = () => {
         </Text> */}
           <View className='flex-row justify-between pt-6'>
             {
-              buttonGroup.map((btn) => (<View>
+              buttonGroup.map((btn) => (<View key={btn.name}>
                 <CButton key={btn.name} theme='dark' circle passedClassName='' onPress={() => handleButtonPress(btn.name)}>
                   <MCIcons name={btn.icon} color={'white'} size="26" />
                 </CButton>

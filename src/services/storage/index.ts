@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import iCloudStorage from 'react-native-icloudstore';
 
 export const storeData = async (storage_Key, value) => {
     try {
@@ -23,6 +24,7 @@ export const appendData = async (storage_Key, value) => {
 }
 
 
+
 export const getData = async (storage_Key) => {
     try {
         const value = await AsyncStorage.getItem(storage_Key)
@@ -33,5 +35,17 @@ export const getData = async (storage_Key) => {
         }
     } catch (e) {
         console.log(e)
+    }
+}
+
+export const storeICloudData = async (storage_Key, value) => {
+    return AsyncStorage.setItem(storage_Key, value)
+}
+export const getICloudData = async (storage_Key) => {
+    const value = await AsyncStorage.getItem(storage_Key)
+    if (value !== null) {
+        return value
+    } else {
+        throw new Error('Not existed')
     }
 }

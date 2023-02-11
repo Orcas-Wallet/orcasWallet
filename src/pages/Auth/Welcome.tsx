@@ -6,6 +6,7 @@ import FullScreenContainer from '../../components/FullScreenContainer'
 import InterText from '../../components/basics/Button/InterText'
 import { Box, Text } from "native-base";
 import { getShares } from '../../utils/utils'
+import { getICloudData, storeICloudData } from '../../services/storage'
 
 
 const stepText = [
@@ -24,10 +25,8 @@ const stepText = [
 ]
 const Welcome = ({ navigation }) => {
     const [step, setStep] = useState(0)
-    const handleLogin =async () => {
-        // navigation.navigate('Login')
-        await getShares()
-
+    const handleLogin = async () => {
+        navigation.navigate('Login')
     }
     const handleRegister = () => {
         navigation.navigate('Aboard')
@@ -45,7 +44,7 @@ const Welcome = ({ navigation }) => {
                     />
                 </View>
                 <Box >
-                    <Text fontSize={'30'}  lineHeight={'xs'} fontWeight={600}>
+                    <Text fontSize={'30'} lineHeight={'xs'} fontWeight={600}>
                         An anonymous wallet with institutional level security.
                     </Text>
                 </Box>

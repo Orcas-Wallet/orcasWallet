@@ -1,8 +1,7 @@
-import { combineReducers, createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ethers, utils } from 'ethers'
+import {  createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { api, IPendingAccount } from '../services/api'
-import { getData, storeData } from '../services/storage'
-import { createEthWallets } from '../services/walletAdapter/ethereum'
+import { getData } from '../services/storage'
+import { generateEthWallets } from '../services/walletAdapter/ethereum'
 import { CHAIN_TYPE } from '../types'
 import { RootState } from './index'
 
@@ -115,13 +114,13 @@ export const walletSync = createAsyncThunk('account/walletSync', async (code: st
     const res = await api.confirmRegister(code)
     const mnemonic = await getData('mnemonic')
     if (mnemonic) {
-        const [wallet] = await createEthWallets(1, mnemonic)
+        const [wallet] = await generateEthWallets(1, mnemonic)
     }
 })
 export const loginWithToken = createAsyncThunk('account/loginWithToken', async (access_token: string) => {
     const _w = await api.loginWithToken(access_token)
     const mnemonic = await getData("mnemonic")
-    const wallets = await createEthWallets(_w.length, mnemonic!)
+    const wallets = await generateEthWallets(_w.length, mnemonic!)
     return wallets
 
 })

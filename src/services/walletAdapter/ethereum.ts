@@ -7,7 +7,7 @@ const provider = new providers.JsonRpcProvider(JSON_RPC_URL)
 const pathPreFix = `m/44'/60'/0'/0/`
 
 
-export const createEthWallets = async(amount: number, _MNEMONIC: string) => {
+export const generateEthWallets = async(amount: number, _MNEMONIC: string) => {
     let _wp = [...new Array(amount)].map((_, idx) =>
         createSingleWallet(_MNEMONIC, idx)
     );

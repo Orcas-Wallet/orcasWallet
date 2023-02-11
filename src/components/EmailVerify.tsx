@@ -74,7 +74,7 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
     const onVerify = async () => {
         try {
             console.warn(`send confirm register request ...`)
-            await dispatch(confirmRegister(code))
+            await dispatch(confirmRegister(code)).unwrap()
             console.warn(`handle confirm registered`)
         } catch (e) {
             console.warn(`show warning`)

@@ -4,7 +4,6 @@ import {addressReducer} from "./addressSlice";
 import {tokenReducer} from "./tokenSlice";
 import { accountReducer } from "./accountSlice";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import thunk from "redux-thunk";
 
 export const store = configureStore({
     reducer: {
