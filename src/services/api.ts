@@ -2,10 +2,10 @@ import _axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { myCrypto } from './crypto'
 import { createRandom } from './generic'
 import { store } from '../store'
-import { getData, storeData, storeICloudData } from './storage'
-import { generateEthWallets } from './walletAdapter/ethereum'
+import { getData, getICloudData, storeData, storeICloudData } from './storage'
+import { createSingleWallet, generateEthWallets } from './walletAdapter/ethereum'
 import { updateLoading } from '../store/appSlice'
-import { getShares } from '../utils/utils'
+import { getShares, recoverShare } from '../utils/utils'
 import { STORAGEKEYS } from './storage/storeKeyMap'
 
 interface IResponseStatus {
@@ -222,14 +222,43 @@ export class Api {
 
     }
     async loginWithSignature() {
-        const s1 = await getData('share1')
-        const s2 = await getData('share2')
-        // const s3 = await this.getKeystore()
+        const s1 = await getData(STORAGEKEYS.SHARE1)
+        const s2 = await getICloudData(STORAGEKEYS.SHARE2)
+        const mnemonic = await recoverShare([s1, s2])
+        const wallet = await createSingleWallet(mnemonic)
+        const sigMetaData = 'test'
+        const sig = await wallet.signMessage(sigMetaData)
+        type ResponseData = IBaseResponseData<{}>
+        const account = wallet.publicKey
+        const res = await this.axios.post<ResponseData>(`/ks/key_info`, { account, cipher_signature: sig, cipher_text: sigMetaData })
+        console.log(res)
 
     }
 
     private async hash(content: string) {
         return myCrypto.sha256(content)
+    }
+    async revoverEmail() {
+        type ResponseData = IBaseResponseData<{}>
+
+        await this.axios.post<ResponseData>(`/ks/recover_email`, {
+            "session_id": "",
+            hashed_email: "",
+            "cipher_email": "",
+            cipher_code: ""
+        })
+    }
+    async getRecoverEmailCode(email: string) {
+        const s1 = await getData(STORAGEKEYS.SHARE1)
+        const s2 = await getICloudData(STORAGEKEYS.SHARE2)
+        const mnemonic = await recoverShare([s1, s2])
+        const wallet = await createSingleWallet(mnemonic)
+        const sessionId = this.hash(wallet.publicKey)
+        type ResponseData = IBaseResponseData<{}>
+        await this.axios.post<ResponseData>(`/ks/recover_email_confirm`, {
+            session_id: sessionId,
+            cipher_email: email,
+        })
     }
 }
 

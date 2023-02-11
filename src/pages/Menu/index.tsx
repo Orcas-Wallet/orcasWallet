@@ -49,7 +49,6 @@ const socialList = [
 function Menu({ navigation }) {
     const dispatch = useAppDispatch()
     const onPress = (name) => {
-        console.log(name)
         navigation.navigate(name)
     }
     const handleLogout = () => {

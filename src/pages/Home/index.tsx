@@ -127,7 +127,7 @@ const Home = () => {
             {
               buttonGroup.map((btn) => (<View key={btn.name}>
                 <CButton key={btn.name} theme='dark' circle passedClassName='' onPress={() => handleButtonPress(btn.name)}>
-                  <MCIcons name={btn.icon} color={'white'} size="26" />
+                  <MCIcons name={btn.icon} color={'white'} size={26} />
                 </CButton>
                 <InterText passedClassName='text-center pt-2' weight='400'>{btn.name}</InterText>
               </View>))

@@ -32,10 +32,10 @@ export const localAuth = async () => {
 }
 
 export const getShares = async (key: string) => {
-    const secret = Buffer.from('secret key')
+    const secret = Buffer.from(key)
     const shares = sss.split(secret, { shares: 3, threshold: 2 })
     return shares.map((s) => s.toString('base64'))
 }
 export const recoverShare = (shares: string[]) => {
-    return sss.combine(shares.map((s) => Buffer.from(s, 'base64')))
+    return sss.combine(shares.map((s) => Buffer.from(s, 'base64'))).toString()
 }

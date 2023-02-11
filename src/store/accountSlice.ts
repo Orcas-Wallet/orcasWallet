@@ -1,6 +1,7 @@
-import {  createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { api, IPendingAccount } from '../services/api'
 import { getData } from '../services/storage'
+import { STORAGEKEYS } from '../services/storage/storeKeyMap'
 import { generateEthWallets } from '../services/walletAdapter/ethereum'
 import { CHAIN_TYPE } from '../types'
 import { RootState } from './index'
@@ -98,7 +99,7 @@ export const accountSlice = createSlice({
 })
 
 export const asyncStoredData = createAsyncThunk("account/asyncStoredData", async () => {
-    const access_token = await getData("access_token")
+    const access_token = await getData(STORAGEKEYS.ACCESS_TROKEN)
     const isEnableFaceId = await getData("isEnableFaceId")
     return { access_token, isEnableFaceId }
 })
@@ -112,14 +113,14 @@ export const confirmRegister = createAsyncThunk('account/confirmRegister', async
 })
 export const walletSync = createAsyncThunk('account/walletSync', async (code: string) => {
     const res = await api.confirmRegister(code)
-    const mnemonic = await getData('mnemonic')
+    const mnemonic = await getData(STORAGEKEYS.MNEMONIC)
     if (mnemonic) {
         const [wallet] = await generateEthWallets(1, mnemonic)
     }
 })
 export const loginWithToken = createAsyncThunk('account/loginWithToken', async (access_token: string) => {
     const _w = await api.loginWithToken(access_token)
-    const mnemonic = await getData("mnemonic")
+    const mnemonic = await getData(STORAGEKEYS.MNEMONIC)
     const wallets = await generateEthWallets(_w.length, mnemonic!)
     return wallets
 
