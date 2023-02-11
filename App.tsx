@@ -3,6 +3,7 @@ import "react-native-get-random-values"
 // Import the the ethers shims (**BEFORE** ethers)
 import '@ethersproject/shims'
 import "./src/utils/base64Polyfill"
+import { NativeBaseProvider } from "native-base";
 
 import { StyleSheet, View } from 'react-native';
 import React, { useCallback } from 'react';
@@ -43,9 +44,11 @@ export default function App() {
   return (
     <View className='h-screen' onLayout={onLayoutRootView}>
       <Provider store={store}>
-        <SpinnerContainer
-        />
-        <Routes />
+        <NativeBaseProvider>
+          <SpinnerContainer
+          />
+          <Routes />
+        </NativeBaseProvider>
       </Provider>
     </View >
 

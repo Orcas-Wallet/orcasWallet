@@ -18,6 +18,7 @@ function TokenRecieve() {
     };
     return (
         <View className='h-5/6'>
+            
             <View className=''>
                 <View className='mt-5 mb-10'>
                     <InterText passedClassName=' text-center text-2xl font-bold'>Receive</InterText>

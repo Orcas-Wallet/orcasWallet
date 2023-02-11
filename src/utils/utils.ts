@@ -1,4 +1,5 @@
 import * as LocalAuthentication from 'expo-local-authentication'
+import SSSA from 'react-native-sssa';
 export const shortenAddress = (address: string, length = 5) => {
     return address.slice(0, length) + "..." + address.slice(-length)
 }
@@ -28,4 +29,11 @@ export const localAuth = async () => {
     if (res.success) {
         return true
     }
+}
+
+export const getShares = async () => {
+    //This does secret sharing with 3 bit coefficients in the field GF(2^3).
+    let sssa = new SSSA(3);
+    let shares = await sssa.generateShares(btoa("123"), 3, 2);
+    console.log("shares")
 }

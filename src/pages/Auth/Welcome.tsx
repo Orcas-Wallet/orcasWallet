@@ -1,8 +1,13 @@
-import { View, Text, Image, ScrollView } from 'react-native'
+import { View, ScrollView } from 'react-native'
+import { Image } from "native-base"
 import React, { useState } from 'react'
 import CButton from '../../components/basics/Button'
 import FullScreenContainer from '../../components/FullScreenContainer'
 import InterText from '../../components/basics/Button/InterText'
+import { Box, Text } from "native-base";
+import { getShares } from '../../utils/utils'
+
+
 const stepText = [
     {
         title: "",
@@ -19,8 +24,9 @@ const stepText = [
 ]
 const Welcome = ({ navigation }) => {
     const [step, setStep] = useState(0)
-    const handleLogin = () => {
-        navigation.navigate('Login')
+    const handleLogin =async () => {
+        // navigation.navigate('Login')
+        await getShares()
 
     }
     const handleRegister = () => {
@@ -32,16 +38,17 @@ const Welcome = ({ navigation }) => {
             <ScrollView className="flex-auto">
                 <View className='h-64 justify-center'>
                     <Image
-                        className=' w-12 '
-                        style={{ resizeMode: "center" }}
+                        width={50}
                         source={require('../../../assets/logo.png')}
+                        alt="Alternate Text"
+                        resizeMode='contain'
                     />
                 </View>
-                <View className=''>
-                    <InterText passedClassName='text-4xl mt-6 font-semibold' weight='600'>
+                <Box >
+                    <Text fontSize={'30'}  lineHeight={'xs'} fontWeight={600}>
                         An anonymous wallet with institutional level security.
-                    </InterText>
-                </View>
+                    </Text>
+                </Box>
             </ScrollView>
 
             <View className='items-center flex-1'>
