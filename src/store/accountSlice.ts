@@ -68,7 +68,6 @@ export const accountSlice = createSlice({
 
         builder
             .addCase(confirmRecoverEmail.fulfilled, (state, action) => {
-                state.account.email = action.payload.cipher_email
                 state.pendingAccount = undefined
             }).addCase(confirmRecoverEmail.rejected, (state) => {
                 state.pendingAccount = undefined

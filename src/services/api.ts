@@ -7,6 +7,7 @@ import { createSingleWallet, generateEthWallets } from './walletAdapter/ethereum
 import { updateLoading } from '../store/appSlice'
 import { getShares, recoverShare } from '../utils/utils'
 import { STORAGEKEYS } from './storage/storeKeyMap'
+import { utils } from 'ethers'
 
 interface IResponseStatus {
     status: 'success' | 'fail'
@@ -218,7 +219,10 @@ export class Api {
     private async sign(text: string) {
         return ''
     }
-    private async loginWithEmail() {
+    async loginWithEmail() {
+        const s2 = await getICloudData(STORAGEKEYS.SHARE2)
+        const session_id = ''
+
 
     }
     async loginWithSignature() {
@@ -226,7 +230,7 @@ export class Api {
         const s2 = await getICloudData(STORAGEKEYS.SHARE2)
         const mnemonic = await recoverShare([s1, s2])
         const wallet = await createSingleWallet(mnemonic)
-        const sigMetaData = 'test'
+        const sigMetaData = 'login with signature'
         const sig = await wallet.signMessage(sigMetaData)
         type ResponseData = IBaseResponseData<{
             keystore: {
@@ -264,7 +268,7 @@ export class Api {
             this.hash(pending.email)
         ])
         await this.axios.post<ResponseData>(`/ks/update_email_confirm`, {
-            publicKey: pending.publicKey,
+            account: pending.publicKey,
             "session_id": pending.session_id,
             hashed_email,
             "cipher_email": pending.email,
@@ -279,16 +283,16 @@ export class Api {
         const s2 = await getICloudData(STORAGEKEYS.SHARE2)
         const mnemonic = await recoverShare([s1, s2])
         const wallet = await createSingleWallet(mnemonic)
-        const signature = await wallet.signMessage(email)
+        const signature = await wallet.signMessage("email_update")
+
         type ResponseData = IBaseResponseData<{}>
-        const [session_id, cipher_email, hashed_email] = await Promise.all([
+        const [session_id, cipher_email] = await Promise.all([
             this.hash(wallet.publicKey),
-            email,
-            this.hash(email)
+            email
         ])
+        console.log(wallet.publicKey)
         await this.axios.post<ResponseData>(`/ks/update_email`, {
             account: wallet.publicKey,
-            hashed_email,
             session_id,
             cipher_email,
             cipher_signature: signature
@@ -300,6 +304,7 @@ export class Api {
             session_id,
         }
     }
+
 }
 
 export const api = new Api()

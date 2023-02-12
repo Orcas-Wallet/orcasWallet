@@ -18,11 +18,12 @@ const Login = () => {
             })
         }
     }, [access_token])
-   
+    const onCodeConfirm = () => { }
+    const onRequestEmailCode = () => { }
 
     return (
         <View>
-            <EmailVerify type={"LOGIN"} />
+            <EmailVerify type={"LOGIN"} onCodeConfirm={onCodeConfirm} onRequestEmailCode={onRequestEmailCode} />
         </View>
     )
 }

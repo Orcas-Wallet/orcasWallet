@@ -59,11 +59,10 @@ const text = {
 interface IEmailVerify {
     type: TEmailVerifyType,
     onRequestEmailCode: (email: string) => void,
-    onCodeConfirm: (code: string) => void
-    onSuccess?: (email: string) => void
+    onCodeConfirm:  (code: string, email?: string) => Promise<void>
 }
 
-const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER', onRequestEmailCode, onCodeConfirm, onSuccess }) => {
+const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER', onRequestEmailCode, onCodeConfirm }) => {
     const [email, setEmail] = useState('')
     const [code, setCode] = useState('')
     const [step, setStep] = useState(EStep.FILL_EMAIL)
@@ -72,11 +71,13 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER', onRequestEmailCode, 
         try {
             await onRequestEmailCode(email)
             setStep(EStep.FILL_CODE)
-            onSuccess && onSuccess(email)
         } catch (e) {
             console.warn(`show warning`)
             console.error(`register failed reason ${e}`)
         }
+    }
+    const onConfirm = () => {
+        onCodeConfirm(code, email)
     }
 
     return (
@@ -127,7 +128,7 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER', onRequestEmailCode, 
                         </CButton>
                     )}
                     {step === EStep.FILL_CODE && (
-                        <CButton theme="dark" disabled={code.length !== 6} passedClassName="w-full" onPress={() => onCodeConfirm(code)}>
+                        <CButton theme="dark" disabled={code.length !== 6} passedClassName="w-full" onPress={onConfirm}>
                             Verify
                         </CButton>
                     )}

@@ -11,17 +11,21 @@ import { useNavigation } from '@react-navigation/native';
 
 const ResetEmail = () => {
     const navigation = useNavigation()
-    const [isShow, setIsShow] = useState(false)
+    const [isShow, setIsShow] = useState(true)
     const [email, setEmail] = useState('')
     const dispatch = useAppDispatch()
     const onRequestEmailCode = (email) => {
         return dispatch(recoverEmail(email))
     }
-    const onCodeConfirm = (code) => {
-        return dispatch(confirmRecoverEmail(code))
-    }
-    const onSuccess = (email) => {
-        setEmail(email)
+    const onCodeConfirm = async (code, _email) => {
+        try {
+            await dispatch(confirmRecoverEmail(code)).unwrap()
+            setEmail(_email)
+            setIsShow(true)
+        } catch (error) {
+            console.log(error)
+
+        }
     }
     const onClose = () => {
         setEmail('')
@@ -31,7 +35,7 @@ const ResetEmail = () => {
 
     return (
         <View>
-            <CModal isVisible={isShow && !!email} onClose={() => { setIsShow(false) }}>
+            <CModal isVisible={isShow} onClose={() => { setIsShow(false) }}>
                 <View className='px-6 mb-12 w-full'>
                     <InterText passedClassName=' text-2xl text-center my-6'>
                         Success!
@@ -45,7 +49,7 @@ const ResetEmail = () => {
                     <CButton passedClassName='w-full' theme='dark' onPress={onClose} >Got it</CButton>
                 </View>
             </CModal>
-            <EmailVerify type={"RECOVER"} onCodeConfirm={onCodeConfirm} onRequestEmailCode={onRequestEmailCode} onSuccess={onSuccess} />
+            <EmailVerify type={"RECOVER"} onCodeConfirm={onCodeConfirm} onRequestEmailCode={onRequestEmailCode} />
         </View>
     )
 }
