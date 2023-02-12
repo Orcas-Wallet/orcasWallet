@@ -39,14 +39,21 @@ const items = [
 ]
 const TxDetail = () => {
     const route = useRoute();
+    const navigation = useNavigation()
     const [txDetail, setTxDetail] = useState(null)
     const { ethPrice } = useAppSelector(state => state.token)
+    useEffect(() => {
+        navigation.setOptions({
+            titile: ''
+            
+        })
+
+    }, [])
     useEffect(() => {
         getTxDetails(route.params.hash).then(res => {
             setTxDetail(res)
         })
     }, [route.params])
-    console.log(route.params)
 
 
     return (
@@ -124,7 +131,7 @@ const TxDetail = () => {
                     <View>
                         <InterText weight='500' passedClassName={"text-base text-[#2D2D2D]"}>
                             {
-                                txDetail && "$ " + shortNumber(Number(utils.formatUnits(Number(txDetail.gasUsed)), 'gwei') * Number(ethPrice) + Number(route.params.value))
+                                txDetail && "$ " + shortNumber(Number(utils.formatUnits(Number(txDetail.gasUsed))) * Number(ethPrice) + Number(route.params.value))
                             }
                         </InterText>
                     </View>

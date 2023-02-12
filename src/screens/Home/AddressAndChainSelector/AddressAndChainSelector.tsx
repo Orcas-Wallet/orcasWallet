@@ -3,16 +3,18 @@ import { Button, View, Text, ScrollView, TouchableOpacity, TextInput } from 'rea
 import ChainSelector from './ChainSelector'
 import AddressSelector from './AddressSelector'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Modal from "react-native-modal";
-import { useAppSelector } from '../../../store';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../../store';
 import { toggleChainAddressSelectorVisiable, updateSelectedAddress, updateTokenBalance } from '../../../store/addressSlice';
 import { CHAIN_TYPE } from '../../../types';
 import CModal from '../../../components/basics/CModal';
 import CoinIcon from '../../../components/CoinIcon';
-import { getData, storeData } from '../../../services/storage';
-import ListItem from '../../../components/Token/ListItem';
+import { getData, getICloudData, storeData } from '../../../services/storage';
 import CButton from '../../../components/basics/Button';
+import { STORAGEKEYS } from '../../../services/storage/storeKeyMap';
+import { recoverShare } from '../../../utils/utils';
+import { createSingleWallet } from '../../../services/walletAdapter/ethereum';
+import { createWallets } from '../../../store/accountSlice';
+import { useToast } from 'native-base';
 
 const chainList = [
     {
@@ -68,10 +70,12 @@ enum STEP {
     ADD_ACCOUNT
 }
 function AddressAndChainSelector() {
+    const toast = useToast();
+
     const [selectChain, setSelectChain] = useState(chainList[0])
     const [step, setStep] = useState(STEP.SELECT_CHAIN)
     const { selectedAddress } = useAppSelector((state) => state.address)
-    const { wallets } = useAppSelector((state) => state.account)
+    const { wallets, access_token } = useAppSelector((state) => state.account)
     const chainAddressSelectorVisiable = useAppSelector((state) => state.address.chainAddressSelectorVisiable)
     const [walletName, setWalletName] = useState('')
 
@@ -84,9 +88,10 @@ function AddressAndChainSelector() {
         wallets.length > 0 && saveAddressInfo(wallets[0])
     }, [wallets])
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const closeModal = () => {
         dispatch(toggleChainAddressSelectorVisiable(false))
+        setWalletName('')
         setStep(0)
     }
     const onChainSeleted = (chain) => {
@@ -101,7 +106,30 @@ function AddressAndChainSelector() {
         // await storeData('selectedAccount', JSON.stringify(addressInfo))
         dispatch(updateSelectedAddress(addressInfo))
     }
-    const onCreate = () => { }
+    const onCreate = async () => {
+        try {
+            const s1 = await getData(STORAGEKEYS.SHARE1)
+            const s2 = await getICloudData(STORAGEKEYS.SHARE2)
+            const mnemonic = await recoverShare([s1, s2])
+            const idx = wallets.length
+            const _w = await createSingleWallet(mnemonic, idx)
+            const wallet = {
+                name: walletName ?? `EVM #${idx}`,
+                address: _w.address,
+                index: idx,
+                chain: CHAIN_TYPE.ETHEREUM
+            }
+
+            await dispatch(createWallets({ wallets: [wallet], access_token }))
+            closeModal()
+            toast.show({
+                description: "Create success!"
+            })
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
 
 
     return (

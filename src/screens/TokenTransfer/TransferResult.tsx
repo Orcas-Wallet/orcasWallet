@@ -1,12 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import CButton from '../../components/basics/Button'
 import InterText from '../../components/basics/Button/InterText'
 import { useNavigation } from '@react-navigation/native'
 
 const TransferResult = ({ result, amount, value, onClose }) => {
     const navigation = useNavigation()
+
     const viewTransfer = () => {
+        navigation.setOptions({ title: "" })
         onClose()
         navigation.navigate('TxDetail',
             {

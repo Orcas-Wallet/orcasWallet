@@ -8,7 +8,7 @@ export const shortNumber = (num: number, length = 2) => {
         return 0
     }
     if (typeof num === "number") {
-        return num.toFixed(length)
+        return num.toFixed(2)
     } else {
         return num
     }
@@ -31,7 +31,7 @@ export const localAuth = async () => {
     }
 }
 
-export const getShares = async (key: string) => {
+export const getShares = async (key: string): Promise<Array<string>> => {
     const secret = Buffer.from(key)
     const shares = sss.split(secret, { shares: 3, threshold: 2 })
     return shares.map((s) => s.toString('base64'))

@@ -9,7 +9,6 @@ import MCIcons from 'react-native-vector-icons/Fontisto'
 import VerifyCodeInput from './VerifyCodeInput'
 import TextButton from './basics/Button/TextButton'
 import { useAppDispatch } from '../store'
-import { confirmRegister, registerAccount } from '../store/accountSlice'
 
 
 enum EStep {
@@ -43,44 +42,44 @@ const text = {
             desc: '',
         },
     ],
+    RECOVER: [
+        {
+            title: 'Enter your new email',
+            subTitle: 'Your email will be kept private and secure by DAuth. Even Orcas will not have access to this information.',
+            desc: '',
+        },
+        {
+            title: 'Verify your identity',
+            subTitle: 'We have just sent a code to',
+            desc: '',
+        },
+    ],
 }
 
 interface IEmailVerify {
-    type: TEmailVerifyType
+    type: TEmailVerifyType,
+    onRequestEmailCode: (email: string) => void,
+    onCodeConfirm:  (code: string, email?: string) => Promise<void>
 }
 
-const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
+const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER', onRequestEmailCode, onCodeConfirm }) => {
     const [email, setEmail] = useState('')
     const [code, setCode] = useState('')
     const [step, setStep] = useState(EStep.FILL_EMAIL)
     const dispatch = useAppDispatch()
     const onNextPress = async () => {
-       
-
-
-        if (step === EStep.FILL_EMAIL) {
-            try {
-                console.warn(`send register request ...`)
-                await dispatch(registerAccount(email))
-                console.warn(`handle registered`)
-                // request email verify code
-                setStep(EStep.FILL_CODE)
-            } catch (e) {
-                console.warn(`show warning`)
-                console.error(`register failed reason ${e}`)
-            }
-        }
-    }
-    const onVerify = async () => {
         try {
-            console.warn(`send confirm register request ...`)
-            await dispatch(confirmRegister(code)).unwrap()
-            console.warn(`handle confirm registered`)
+            await onRequestEmailCode(email)
+            setStep(EStep.FILL_CODE)
         } catch (e) {
             console.warn(`show warning`)
-            console.error(`confirm register failed reason ${e}`)
+            console.error(`register failed reason ${e}`)
         }
     }
+    const onConfirm = () => {
+        onCodeConfirm(code, email)
+    }
+
     return (
         <FullScreenContainer>
             <View className="flex-1">
@@ -111,12 +110,12 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
                         By creating an account, you agree to our
                     </InterText>
                     <View className="flex-row items-center justify-center">
-                        <TextButton onPress={() => {}}>Terms</TextButton>
+                        <TextButton onPress={() => { }}>Terms</TextButton>
                         <InterText passedClassName="text-sm text-gray-100 text-center" weight="300">
                             {' '}
                             and{' '}
                         </InterText>
-                        <TextButton onPress={() => {}}>Conditions</TextButton>
+                        <TextButton onPress={() => { }}>Conditions</TextButton>
                     </View>
                 </View>
             </View>
@@ -129,7 +128,7 @@ const EmailVerify: FC<IEmailVerify> = ({ type = 'REGISTER' }) => {
                         </CButton>
                     )}
                     {step === EStep.FILL_CODE && (
-                        <CButton theme="dark" disabled={code.length !== 6} passedClassName="w-full" onPress={onVerify}>
+                        <CButton theme="dark" disabled={code.length !== 6} passedClassName="w-full" onPress={onConfirm}>
                             Verify
                         </CButton>
                     )}

@@ -34,6 +34,7 @@ function TokenDetail({ onSendBtnPress, onRecieveBtnPress }) {
     useEffect(() => {
         if (selectedToken.symbol === 'ETH') {
             getETHTransferTx(selectedAddress.address).then(res => {
+                console.log(res)
                 setHisTxs(res)
             })
         } else {

@@ -31,6 +31,7 @@ export default function App() {
     Inter_800: require('./assets/fonts/Inter-ExtraBold.otf'),
     Inter_900: require('./assets/fonts/Inter-Black.otf'),
   });
+  
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
       await SplashScreen.hideAsync();

@@ -5,9 +5,13 @@ import CButton from '../../components/basics/Button'
 import FullScreenContainer from '../../components/FullScreenContainer'
 import InterText from '../../components/basics/Button/InterText'
 import { Box, Text } from "native-base";
-import { getShares } from '../../utils/utils'
-import { getICloudData, storeICloudData } from '../../services/storage'
+import { getShares, localAuth } from '../../utils/utils'
+import { getData, getICloudData, storeICloudData } from '../../services/storage'
 import { api } from '../../services/api'
+import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../store'
+import { loginWighSig, loginWithEmail, loginWithToken } from '../../store/accountSlice'
+import { STORAGEKEYS } from '../../services/storage/storeKeyMap'
 
 
 const stepText = [
@@ -25,10 +29,24 @@ const stepText = [
     }
 ]
 const Welcome = ({ navigation }) => {
-    const [step, setStep] = useState(0)
+    const { access_token } = useAppSelector((state) => state.account)
+    const dispatch = useAppDispatch()
     const handleLogin = async () => {
-        navigation.navigate('Login')
-        // await api.loginWithSignature()
+        // access_token existed
+        if (access_token) {
+            await dispatch(loginWithToken(access_token)).unwrap()
+        } else {
+            const s1 = await getData(STORAGEKEYS.SHARE1)
+            const s2 = await getICloudData(STORAGEKEYS.SHARE2)
+            if (s1 && s2) {
+                await localAuth()
+                await dispatch(loginWighSig())
+            } else if (!s1 && s2) {
+                // use email to get s3
+                navigation.navigate('Login')
+            }
+        }
+
     }
     const handleRegister = () => {
         navigation.navigate('Aboard')

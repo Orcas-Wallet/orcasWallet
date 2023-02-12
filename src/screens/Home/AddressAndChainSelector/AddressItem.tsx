@@ -10,7 +10,7 @@ function AddressItem({ onSelect, addressInfo }) {
         <ListItem onPress={() => { onSelect(addressInfo) }} passedClassName={"w-full"}>
             <View className='flex-row justify-center items-center'>
                 <View className='bg-main-900 p-2 flex justify-start items-center rounded-full mr-5'>
-                    <MCIcons name={"wallet"} size={"32"} color={"#fff"} />
+                    <MCIcons name={"wallet"} size={32} color={"#fff"} />
                 </View>
                 <View className='justify-items-start'>
                     <InterText passedClassName='mb-1'>{addressInfo.name}</InterText>
