@@ -2,9 +2,11 @@ import _axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { myCrypto } from './crypto'
 import { createRandom } from './generic'
 import { store } from '../store'
-import { getData, storeData } from './storage'
-import { createEthWallets } from './walletAdapter/ethereum'
+import { getData, getICloudData, storeData, storeICloudData } from './storage'
+import { createSingleWallet, generateEthWallets } from './walletAdapter/ethereum'
 import { updateLoading } from '../store/appSlice'
+import { getShares, recoverShare } from '../utils/utils'
+import { STORAGEKEYS } from './storage/storeKeyMap'
 
 interface IResponseStatus {
     status: 'success' | 'fail'
@@ -22,7 +24,6 @@ interface RegisterEmailRequestData {
     session_id: string
     // sha256
     cipher_email: string
-    // 公钥
     account: string
     // sha256
     cipher_account: string
@@ -128,11 +129,13 @@ export class Api {
     }
 
     async confirmRegister(code: string) {
+
         const pending = store.getState().account.pendingAccount
         if (!pending) throw new Error(`register email first.`)
 
         // split pending.mnemonic
-        const s3 = ''
+        const [s1, s2, s3] = await getShares(pending.mnemonic)
+
         interface RequestData {
             session_id: string
             account: string
@@ -159,15 +162,18 @@ export class Api {
         const res = await this.axios.post<ResponseData>(`ks/register_email_confirm`, data)
         if (res.data.status === 'fail') throw new Error(`confirm register failed ${res.data}`)
         const access_token = res.data.access_token
-        const ws = await createEthWallets(2, pending.mnemonic)
-        await this.createWallets(ws, access_token)
-        storeData("mnemonic", pending.mnemonic)
-        storeData("access_token", access_token)
+        const wallets = await generateEthWallets(2, pending.mnemonic)
+        await this.createWallets(wallets, access_token)
+        await storeData(STORAGEKEYS.MNEMONIC, pending.mnemonic)
+        await storeData(STORAGEKEYS.ACCESS_TROKEN, access_token)
+        await storeData(STORAGEKEYS.SHARE1, s1)
+        await storeICloudData(STORAGEKEYS.SHARE2, s2)
 
         return {
-            wallets: ws,
+            wallets,
             access_token
         }
+
     }
 
     async loginWithToken(access_token: string) {
@@ -216,20 +222,43 @@ export class Api {
 
     }
     async loginWithSignature() {
-        const s1 = await getData('share1')
-        const s2 = await getData('share2')
-        // const s3 = await this.getKeystore()
+        const s1 = await getData(STORAGEKEYS.SHARE1)
+        const s2 = await getICloudData(STORAGEKEYS.SHARE2)
+        const mnemonic = await recoverShare([s1, s2])
+        const wallet = await createSingleWallet(mnemonic)
+        const sigMetaData = 'test'
+        const sig = await wallet.signMessage(sigMetaData)
+        type ResponseData = IBaseResponseData<{}>
+        const account = wallet.publicKey
+        const res = await this.axios.post<ResponseData>(`/ks/key_info`, { account, cipher_signature: sig, cipher_text: sigMetaData })
+        console.log(res)
 
     }
 
     private async hash(content: string) {
         return myCrypto.sha256(content)
     }
-    private async splitM(str) {
-        const s1 = str.slice(0, 10)
-        const s2 = str.slice(10)
-        const s3 = s2
-        return [s1, s2, s3]
+    async revoverEmail() {
+        type ResponseData = IBaseResponseData<{}>
+
+        await this.axios.post<ResponseData>(`/ks/recover_email`, {
+            "session_id": "",
+            hashed_email: "",
+            "cipher_email": "",
+            cipher_code: ""
+        })
+    }
+    async getRecoverEmailCode(email: string) {
+        const s1 = await getData(STORAGEKEYS.SHARE1)
+        const s2 = await getICloudData(STORAGEKEYS.SHARE2)
+        const mnemonic = await recoverShare([s1, s2])
+        const wallet = await createSingleWallet(mnemonic)
+        const sessionId = this.hash(wallet.publicKey)
+        type ResponseData = IBaseResponseData<{}>
+        await this.axios.post<ResponseData>(`/ks/recover_email_confirm`, {
+            session_id: sessionId,
+            cipher_email: email,
+        })
     }
 }
 

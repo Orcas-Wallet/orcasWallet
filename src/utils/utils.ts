@@ -1,4 +1,5 @@
 import * as LocalAuthentication from 'expo-local-authentication'
+import sss from 'shamirs-secret-sharing';
 export const shortenAddress = (address: string, length = 5) => {
     return address.slice(0, length) + "..." + address.slice(-length)
 }
@@ -28,4 +29,13 @@ export const localAuth = async () => {
     if (res.success) {
         return true
     }
+}
+
+export const getShares = async (key: string) => {
+    const secret = Buffer.from(key)
+    const shares = sss.split(secret, { shares: 3, threshold: 2 })
+    return shares.map((s) => s.toString('base64'))
+}
+export const recoverShare = (shares: string[]) => {
+    return sss.combine(shares.map((s) => Buffer.from(s, 'base64'))).toString()
 }

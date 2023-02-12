@@ -1,0 +1,7 @@
+export enum STORAGEKEYS {
+    SHARE1 = "SHARE1",
+    SHARE2 = "SHARE2",
+    SHARE3 = "SHARE3",
+    ACCESS_TROKEN = "ACCESS_TROKEN",
+    MNEMONIC = "MNEMONIC"
+}

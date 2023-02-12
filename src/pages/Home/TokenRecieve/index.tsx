@@ -18,6 +18,7 @@ function TokenRecieve() {
     };
     return (
         <View className='h-5/6'>
+            
             <View className=''>
                 <View className='mt-5 mb-10'>
                     <InterText passedClassName=' text-center text-2xl font-bold'>Receive</InterText>
@@ -30,7 +31,7 @@ function TokenRecieve() {
                     <View className={"p-10 rounded-3xl bg-white border-4 border-gray-200"}>
                         <QRCode
                             size={150}
-                            value="http://awesome.link.qr"
+                            value={`Ethereum: ${selectedAddress.address}`}
                         />
                     </View>
                 </View>

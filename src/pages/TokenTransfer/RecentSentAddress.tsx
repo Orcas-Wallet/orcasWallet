@@ -22,7 +22,7 @@ const RecentSentAddress = ({ account, onSelect }) => {
     return (
         <View>{
 
-            recentList.map((_r) => <ListItem onPress={() => onSelect(_r)} passedClassName={"w-full"}>
+            recentList.map((_r) => <ListItem key={_r} onPress={() => onSelect(_r)} passedClassName={"w-full"}>
 
                 <View className='flex-row justify-center items-center'>
                     <View className='bg-main-900 p-2 flex justify-start items-center rounded-full mr-5'>

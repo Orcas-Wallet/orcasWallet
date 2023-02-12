@@ -7,7 +7,7 @@ const provider = new providers.JsonRpcProvider(JSON_RPC_URL)
 const pathPreFix = `m/44'/60'/0'/0/`
 
 
-export const createEthWallets = async(amount: number, _MNEMONIC: string) => {
+export const generateEthWallets = async(amount: number, _MNEMONIC: string) => {
     let _wp = [...new Array(amount)].map((_, idx) =>
         createSingleWallet(_MNEMONIC, idx)
     );
@@ -29,7 +29,7 @@ export const createEthWallets = async(amount: number, _MNEMONIC: string) => {
  * @param index  = Account index
  * @returns wallet
  */
-export const createSingleWallet = async (mnemonic: string, index: number): Promise<Wallet> => {
+export const createSingleWallet = async (mnemonic: string, index = 0): Promise<Wallet> => {
     const seed = await Bip39.mnemonicToSeedSync(mnemonic);
     const hdNode = hdkey.fromMasterSeed(seed);
     const node = hdNode.derivePath(`m/44'/60'/0'`)
