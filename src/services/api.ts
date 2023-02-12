@@ -8,6 +8,7 @@ import { updateLoading } from '../store/appSlice'
 import { getShares, recoverShare } from '../utils/utils'
 import { STORAGEKEYS } from './storage/storeKeyMap'
 import { utils } from 'ethers'
+import dayjs from 'dayjs'
 
 interface IResponseStatus {
     status: 'success' | 'fail'
@@ -219,11 +220,47 @@ export class Api {
     private async sign(text: string) {
         return ''
     }
-    async loginWithEmail() {
+    async loginWithEmail(email) {
+        const session_id = dayjs().valueOf().toString()
+        const cipher_email = email
+        await this.axios.post('/ks/recover_email', {
+            session_id,
+            cipher_email
+        })
+        return {
+            session_id,
+            email
+        }
+    }
+    async loginWithEmailConfirm(code) {
         const s2 = await getICloudData(STORAGEKEYS.SHARE2)
-        const session_id = ''
 
-
+        const pending = store.getState().account.pendingAccount
+        const hashed_email = await this.hash(pending.email)
+        type ResponseData = IBaseResponseData<{
+            keystore: {
+                account: string
+                cipher_email: string
+                cipher_share: string
+                hashed_email: string
+                access_token: string
+            }
+        }>
+        const res = await this.axios.post<ResponseData>('/ks/recover_email_confirm', {
+            session_id: pending.session_id,
+            cipher_email: pending.email,
+            hashed_email,
+            cipher_code: code
+        })
+        const s3 = res.data.keystore.cipher_share
+        const mnemonic = await recoverShare([s2, s3])
+        const [s1] = await getShares(mnemonic)
+        console.log(s1)
+        storeData(STORAGEKEYS.SHARE1, s1)
+        console.log(mnemonic)
+        return {
+            access_token: res.data.keystore.access_token,
+        }
     }
     async loginWithSignature() {
         const s1 = await getData(STORAGEKEYS.SHARE1)
@@ -308,3 +345,4 @@ export class Api {
 }
 
 export const api = new Api()
+

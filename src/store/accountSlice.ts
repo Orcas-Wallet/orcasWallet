@@ -105,6 +105,16 @@ export const accountSlice = createSlice({
         builder.addCase(logoutThunk.fulfilled, (state) => {
             state.isLogin = false
         })
+        builder.addCase(loginWithEmail.fulfilled, (state, action) => {
+            state.pendingAccount = action.payload as any
+        }).addCase(loginWithEmail.rejected, (state) => {
+            state.pendingAccount = undefined
+        })
+        builder.addCase(loginWithEmailConfirm.fulfilled, (state, action) => {
+            state.access_token = action.payload.access_token   
+        }).addCase(loginWithEmailConfirm.rejected, (state) => {
+            state.pendingAccount = undefined
+        })
 
         builder.addCase(loginWighSig.fulfilled, (state, action) => {
             state.wallets = action.payload.wallets
@@ -125,6 +135,12 @@ export const asyncStoredData = createAsyncThunk("account/asyncStoredData", async
 
 export const registerAccount = createAsyncThunk('account/registerAccount', async (email: string) => {
     return api.registerEmail(email)
+})
+export const loginWithEmail = createAsyncThunk('account/loginWithEmail', async (email: string) => {
+    return api.loginWithEmail(email)
+})
+export const loginWithEmailConfirm = createAsyncThunk('account/loginWithEmailConfirm', async (email: string) => {
+    return api.loginWithEmailConfirm(email)
 })
 
 export const confirmRegister = createAsyncThunk('account/confirmRegister', async (code: string) => {
