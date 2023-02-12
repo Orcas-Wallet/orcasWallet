@@ -9,6 +9,8 @@ import { getShares, recoverShare } from '../utils/utils'
 import { STORAGEKEYS } from './storage/storeKeyMap'
 import { utils } from 'ethers'
 import dayjs from 'dayjs'
+import { CHAIN_TYPE } from '../types'
+import _ from 'lodash'
 
 interface IResponseStatus {
     status: 'success' | 'fail'
@@ -20,6 +22,7 @@ interface IWallet {
     name: string
     addr: string
     status: string
+    index: number
 }
 
 interface RegisterEmailRequestData {
@@ -166,7 +169,7 @@ export class Api {
         const access_token = res.data.access_token
         const wallets = await generateEthWallets(2, pending.mnemonic)
         await this.createWallets(wallets, access_token)
-        await storeData(STORAGEKEYS.MNEMONIC, pending.mnemonic)
+        // await storeData(STORAGEKEYS.MNEMONIC, pending.mnemonic)
         await storeData(STORAGEKEYS.ACCESS_TROKEN, access_token)
         await storeData(STORAGEKEYS.SHARE1, s1)
         await storeICloudData(STORAGEKEYS.SHARE2, s2)
@@ -186,13 +189,19 @@ export class Api {
                         name: string,
                         addr: string,
                         status: string
+                        index: number
                     }>
             }
         >
         const data = { access_token }
         const res = await this.axios.post<ResponseData>(`ks/wallet_info`, data)
-        console.log(res)
-        return res.data.wallets
+        const wallets = res.data.wallets.map((_w) => ({
+            address: _w.addr,
+            name: _w.name,
+            index: _w.index,
+            chain: CHAIN_TYPE.ETHEREUM
+        })).sort((a, b) => a.index - b.index)
+        return wallets
     }
 
     // @TODO
@@ -201,18 +210,19 @@ export class Api {
     }
     async createWallets(_ws, access_token) {
         type ResponseData = IBaseResponseData<{}>
-        console.log(_ws)
         const wallets = _ws.map((_w) => ({
             name: _w.name,
             addr: _w.address,
-            index: _w.index.toString(),
+            index: _w.index,
             status: "0"
         }))
         const res = await this.axios.post<ResponseData>(`/ks/create_wallet`, {
             access_token,
             wallets
         })
-        console.log(res)
+        return {
+            wallet: _ws
+        }
 
     }
 
@@ -281,13 +291,13 @@ export class Api {
         const account = wallet.publicKey
         const res = await this.axios.post<ResponseData>(`/ks/key_info`, { account, cipher_signature: sig, cipher_text: sigMetaData })
         const { access_token, cipher_email } = res.data.keystore
-        const _w = await api.loginWithToken(access_token)
-        const wallets = await generateEthWallets(_w.length, mnemonic!)
+        const _ws = await api.loginWithToken(access_token)
+
 
         return {
             access_token,
             cipher_email,
-            wallets
+            wallets: _ws
         }
 
     }

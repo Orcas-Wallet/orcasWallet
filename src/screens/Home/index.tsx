@@ -43,7 +43,7 @@ const Home = () => {
   const [showModal, setShowModal] = useState(false)
   const navigation = useNavigation()
   const [refreshing, setRefreshing] = React.useState(false);
-  
+
 
   const dispatch = useAppDispatch()
   const handleButtonPress = (btnType: string) => {
@@ -64,10 +64,10 @@ const Home = () => {
     const price = tokenPrice[token.name].usd
     return Number(balance) * Number(price) + pre
   }, 0), [tokenPrice, tokenBalance])
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
     dispatch(fetchTokenBalance(selectedAddress.address) as any)
-    wait(1000).then(() => setRefreshing(false));
+    wait(2000).then(() => setRefreshing(false));
   }, []);
   useEffect(() => {
     dispatch(fetchTokenBalance(selectedAddress.address) as any)

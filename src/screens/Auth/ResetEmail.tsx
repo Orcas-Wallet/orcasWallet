@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const ResetEmail = () => {
     const navigation = useNavigation()
-    const [isShow, setIsShow] = useState(true)
+    const [isShow, setIsShow] = useState(false)
     const [email, setEmail] = useState('')
     const dispatch = useAppDispatch()
     const onRequestEmailCode = (email) => {

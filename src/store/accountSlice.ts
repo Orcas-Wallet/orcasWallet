@@ -111,7 +111,7 @@ export const accountSlice = createSlice({
             state.pendingAccount = undefined
         })
         builder.addCase(loginWithEmailConfirm.fulfilled, (state, action) => {
-            state.access_token = action.payload.access_token   
+            state.access_token = action.payload.access_token
         }).addCase(loginWithEmailConfirm.rejected, (state) => {
             state.pendingAccount = undefined
         })
@@ -122,6 +122,11 @@ export const accountSlice = createSlice({
             state.isLogin = true
         }).addCase(loginWighSig.rejected, (state) => {
             state.wallets = []
+        })
+        builder.addCase(createWallets.fulfilled, (state, action) => {
+            state.wallets = [...state.wallets, ...action.payload.wallet]
+        }).addCase(createWallets.rejected, (state) => {
+
         })
 
     },
@@ -153,17 +158,10 @@ export const recoverEmail = createAsyncThunk('account/recoverEmail', async (emai
 export const confirmRecoverEmail = createAsyncThunk('account/confirmRecoverEmail', async (code: string) => {
     return api.recoverEmailConfirm(code)
 })
-export const walletSync = createAsyncThunk('account/walletSync', async (code: string) => {
-    const res = await api.confirmRegister(code)
-    const mnemonic = await getData(STORAGEKEYS.MNEMONIC)
-    if (mnemonic) {
-        const [wallet] = await generateEthWallets(1, mnemonic)
-    }
-})
+
 export const loginWithToken = createAsyncThunk('account/loginWithToken', async (access_token: string) => {
-    const _w = await api.loginWithToken(access_token)
+    const wallets = await api.loginWithToken(access_token)
     const mnemonic = await getData(STORAGEKEYS.MNEMONIC)
-    const wallets = await generateEthWallets(_w.length, mnemonic!)
     return wallets
 
 })
@@ -173,6 +171,9 @@ export const loginWighSig = createAsyncThunk('account/loginWithSig', async () =>
 })
 export const logoutThunk = createAsyncThunk('account/logout', () => {
     return
+})
+export const createWallets = createAsyncThunk('account/createWallets', async ({ wallets, access_token }: any) => {
+    return api.createWallets(wallets, access_token)
 })
 
 export const selectCurrentAccount = (state: RootState) => state.account.account

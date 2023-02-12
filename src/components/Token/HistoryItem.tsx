@@ -6,6 +6,7 @@ import { HISTORY_TYPE } from '../../types';
 import InterText from '../basics/Button/InterText';
 import { useNavigation } from '@react-navigation/native';
 import { shortNumber } from '../../utils/utils';
+import dayjs from 'dayjs';
 
 function HistoryItem({ item, price, onPress }) {
     const navigation = useNavigation()
@@ -28,7 +29,7 @@ function HistoryItem({ item, price, onPress }) {
                 </View>
                 <View className=''>
                     <InterText weight='600'>{HISTORY_TYPE[item.type]}</InterText>
-                    <InterText passedClassName='text-[#8F92A1]' weight='300'>July 26, 2019</InterText>
+                    <InterText passedClassName='text-[#8F92A1]' weight='300'>{dayjs(item.metadata.blockTimestamp).format('MMM DD, YYYY')}</InterText>
                 </View>
             </View>
             <View className='flex-row items-baseline'>

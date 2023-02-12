@@ -8,13 +8,19 @@ import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CoinIcon from '../../../components/CoinIcon';
 import { useAppSelector } from '../../../store';
 import InterText from '../../../components/basics/Button/InterText';
+import { useToast } from 'native-base';
 
 
 function TokenRecieve() {
+    const toast = useToast();
+
     const selectedAddress = useAppSelector((state) => state.address.selectedAddress)
 
     const copyToClipboard = async () => {
         await Clipboard.setStringAsync(selectedAddress.address);
+        toast.show({
+            description: "Copy success!"
+          })
     };
     return (
         <View className='h-5/6'>
@@ -43,7 +49,7 @@ function TokenRecieve() {
             <View className='items-center mt-10'>
                 <CButton passedClassName='h-8 border border-gray-200  mb-10 w-3/6 bg-[#f5f5f5]' onPress={copyToClipboard} >
                     <Text className='text-black '>
-                        <MCIcons name={"content-copy"} color={'black'} size="14" />
+                        <MCIcons name={"content-copy"} color={'black'} size={14} />
                         <InterText weight='400' passedClassName='font-sm'> &nbsp;Copy Address</InterText>
                     </Text>
                 </CButton>

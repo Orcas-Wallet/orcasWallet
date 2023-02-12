@@ -70,14 +70,16 @@ export const getETHReceiveTx = (account: string) => {
     return alchemy.core.getAssetTransfers({
         toAddress: account,
         category: [AssetTransfersCategory.EXTERNAL],
-        order: SortingOrder.DESCENDING
+        order: SortingOrder.DESCENDING,
+        withMetadata: true
     })
 }
 export const getETHSentTx = async (account: string) => {
     return alchemy.core.getAssetTransfers({
         fromAddress: account,
         category: [AssetTransfersCategory.EXTERNAL],
-        order: SortingOrder.DESCENDING
+        order: SortingOrder.DESCENDING, 
+        withMetadata: true
     })
 
 }

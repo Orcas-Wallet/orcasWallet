@@ -8,7 +8,7 @@ export const shortNumber = (num: number, length = 2) => {
         return 0
     }
     if (typeof num === "number") {
-        return num.toFixed(length)
+        return num.toFixed(2)
     } else {
         return num
     }

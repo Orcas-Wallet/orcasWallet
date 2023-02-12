@@ -73,7 +73,7 @@ function TokenTransfer({ route }) {
         _step = _step - 1
         setStep(_step)
         if (_step <= STEP.INPUT_ADDRESS) {
-            navigation.goBack()
+            navigation.navigate('Home')
         }
     }
     const onPress = () => {
