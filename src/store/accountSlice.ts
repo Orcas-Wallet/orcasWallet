@@ -20,9 +20,6 @@ export interface AccountState {
     access_token: string,
     account: {
         email: string
-        mnemonic: string
-        privateKey: string
-        publicKey: string,
         wallet_account: number
     } | null,
     wallets: Array<IWallet>
@@ -75,9 +72,6 @@ export const accountSlice = createSlice({
         builder.addCase(confirmRegister.fulfilled, (state, action) => {
             const account = {
                 email: state.pendingAccount!.email,
-                mnemonic: state.pendingAccount!.mnemonic,
-                privateKey: state.pendingAccount!.privateKey,
-                publicKey: state.pendingAccount!.publicKey,
                 wallet_account: 5
             }
             state.account = account
@@ -103,9 +97,19 @@ export const accountSlice = createSlice({
         builder.addCase(loginWithToken.rejected, (state) => {
             state.wallets = []
         })
+    
         builder.addCase(logoutThunk.fulfilled, (state) => {
             state.isLogin = false
         })
+
+        builder.addCase(loginWighSig.fulfilled, (state, action) => {
+            state.wallets = action.payload.wallets
+            state.access_token = action.payload.access_token
+            state.isLogin = true
+        }).addCase(loginWighSig.rejected, (state) => {
+            state.wallets = []
+        })
+
     },
 })
 
@@ -142,6 +146,10 @@ export const loginWithToken = createAsyncThunk('account/loginWithToken', async (
     const wallets = await generateEthWallets(_w.length, mnemonic!)
     return wallets
 
+})
+
+export const loginWighSig = createAsyncThunk('account/loginWithSig', async () => {
+    return api.loginWithSignature()
 })
 export const logoutThunk = createAsyncThunk('account/logout', () => {
     return

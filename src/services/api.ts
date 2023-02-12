@@ -228,10 +228,26 @@ export class Api {
         const wallet = await createSingleWallet(mnemonic)
         const sigMetaData = 'test'
         const sig = await wallet.signMessage(sigMetaData)
-        type ResponseData = IBaseResponseData<{}>
+        type ResponseData = IBaseResponseData<{
+            keystore: {
+                account: string
+                cipher_email: string
+                cipher_share: string
+                hashed_email: string
+                access_token: string
+            }
+        }>
         const account = wallet.publicKey
         const res = await this.axios.post<ResponseData>(`/ks/key_info`, { account, cipher_signature: sig, cipher_text: sigMetaData })
-        console.log(res)
+        const { access_token, cipher_email } = res.data.keystore
+        const _w = await api.loginWithToken(access_token)
+        const wallets = await generateEthWallets(_w.length, mnemonic!)
+
+        return {
+            access_token,
+            cipher_email,
+            wallets
+        }
 
     }
 

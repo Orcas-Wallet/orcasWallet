@@ -5,9 +5,12 @@ import CButton from '../../components/basics/Button'
 import FullScreenContainer from '../../components/FullScreenContainer'
 import InterText from '../../components/basics/Button/InterText'
 import { Box, Text } from "native-base";
-import { getShares } from '../../utils/utils'
+import { getShares, localAuth } from '../../utils/utils'
 import { getICloudData, storeICloudData } from '../../services/storage'
 import { api } from '../../services/api'
+import { useDispatch } from 'react-redux'
+import { useAppDispatch } from '../../store'
+import { loginWighSig } from '../../store/accountSlice'
 
 
 const stepText = [
@@ -26,9 +29,11 @@ const stepText = [
 ]
 const Welcome = ({ navigation }) => {
     const [step, setStep] = useState(0)
+    const dispatch = useAppDispatch()
     const handleLogin = async () => {
-        navigation.navigate('Login')
-        // await api.loginWithSignature()
+        await localAuth()
+        await dispatch(loginWighSig()).unwrap()
+        // navigation.navigate('Home')
     }
     const handleRegister = () => {
         navigation.navigate('Aboard')
