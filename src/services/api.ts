@@ -254,40 +254,50 @@ export class Api {
     private async hash(content: string) {
         return myCrypto.sha256(content)
     }
-    async recoverEmail(code: string) {
+    async recoverEmailConfirm(code: string) {
         type ResponseData = IBaseResponseData<{}>
         const pending = store.getState().account.pendingAccount
 
-        const [cipher_code, hashed_email] = await Promise.all([
-            this.hash(code),
+        const [cipher_code, cipher_email, hashed_email] = await Promise.all([
+            code,
             pending.email,
+            this.hash(pending.email)
         ])
-        await this.axios.post<ResponseData>(`/ks/recover_email`, {
+        await this.axios.post<ResponseData>(`/ks/update_email_confirm`, {
+            publicKey: pending.publicKey,
             "session_id": pending.session_id,
             hashed_email,
             "cipher_email": pending.email,
             cipher_code
         })
+        return {
+            cipher_email
+        }
     }
     async getRecoverEmailCode(email: string) {
         const s1 = await getData(STORAGEKEYS.SHARE1)
         const s2 = await getICloudData(STORAGEKEYS.SHARE2)
         const mnemonic = await recoverShare([s1, s2])
         const wallet = await createSingleWallet(mnemonic)
-        const sessionId = await this.hash(wallet.publicKey)
+        const signature = await wallet.signMessage(email)
         type ResponseData = IBaseResponseData<{}>
-        const [session_id, cipher_email] = await Promise.all([
+        const [session_id, cipher_email, hashed_email] = await Promise.all([
             this.hash(wallet.publicKey),
-            wallet.publicKey,
+            email,
+            this.hash(email)
         ])
-        await this.axios.post<ResponseData>(`/ks/recover_email_confirm`, {
+        await this.axios.post<ResponseData>(`/ks/update_email`, {
+            account: wallet.publicKey,
+            hashed_email,
             session_id,
-            cipher_email: cipher_email,
+            cipher_email,
+            cipher_signature: signature
         })
         return {
+            publicKey: wallet.publicKey,
             cipher_email,
             email,
-            sessionId,
+            session_id,
         }
     }
 }

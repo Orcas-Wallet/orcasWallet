@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo     , useState } from 'react'
 import { getData } from '../../services/storage'
 import ListItem from '../../components/Token/ListItem'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -33,9 +33,8 @@ const RecentSentAddress = ({ account, onSelect }) => {
                         <InterText passedClassName='text-[#808A9E] font-sm' weight='300'>{shortenAddress(_r)}</InterText>
                     </View>
                 </View>
-                <View></View>
-
-
+                <View>
+                </View>
             </ListItem>)
         }</View>
     )

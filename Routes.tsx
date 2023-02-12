@@ -21,9 +21,10 @@ import HelpCenter from './src/screens/Menu/MenuNav/HelpCenter';
 import ContactUs from './src/screens/Menu/MenuNav/ContactUs';
 import TxDetail from './src/screens/TxDetail';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useSelector, useDispatch } from 'react-redux';
 import { useAppDispatch, useAppSelector } from './src/store';
-import { asyncStoredData, loginWithToken } from './src/store/accountSlice';
+import { asyncStoredData } from './src/store/accountSlice';
+import ResetEmail from './src/screens/Auth/ResetEmail';
+// import ResetEmail from './src/screens/Auth/ResetEmail';
 const Stack = createNativeStackNavigator();
 const MyTheme = {
     ...DefaultTheme,
@@ -66,6 +67,7 @@ const Routes = () => {
                         <Stack.Screen name="ContactUs" component={ContactUs} />
                         <Stack.Screen name="TxDetail" component={TxDetail} />
                         <Stack.Screen name="EnableFaceId" component={EnablefaceId} />
+                        <Stack.Screen name="ResetEmail" component={ResetEmail} />
                     </Stack.Group>
                 ) : (
                     <Stack.Group >
