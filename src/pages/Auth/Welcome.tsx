@@ -3,11 +3,8 @@ import { Image } from "native-base"
 import React, { useState } from 'react'
 import CButton from '../../components/basics/Button'
 import FullScreenContainer from '../../components/FullScreenContainer'
-import InterText from '../../components/basics/Button/InterText'
 import { Box, Text } from "native-base";
-import { getShares } from '../../utils/utils'
-import { getICloudData, storeICloudData } from '../../services/storage'
-import { api } from '../../services/api'
+import SwipButton from '../../components/SwipButton'
 
 
 const stepText = [
@@ -26,6 +23,7 @@ const stepText = [
 ]
 const Welcome = ({ navigation }) => {
     const [step, setStep] = useState(0)
+    const [positon, setPositon] = useState(0)
     const handleLogin = async () => {
         navigation.navigate('Login')
         // await api.loginWithSignature()
@@ -53,7 +51,8 @@ const Welcome = ({ navigation }) => {
             </ScrollView>
 
             <View className='items-center flex-1'>
-                <CButton theme='dark' passedClassName='w-full' onPress={handleRegister}>Register</CButton>
+                {/* <CButton theme='dark' passedClassName='w-full' onPress={handleRegister}>Register</CButton> */}
+                <SwipButton onToggle={() => {}}></SwipButton>
                 <CButton passedClassName='w-full mt-6' onPress={handleLogin}>Login</CButton>
             </View>
         </FullScreenContainer>
